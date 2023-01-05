@@ -1,8 +1,8 @@
 terraform {
-  required_version = ">=1.3.6"
+  required_version = "~> 1.3"
 }
 
-resource "aws_vpc" "module_vpc" {
+resource "aws_vpc" "vpc" {
   cidr_block            = var.vpc_cidr
   enable_dns_support    = true
   enable_dns_hostnames  = true
@@ -14,7 +14,7 @@ resource "aws_vpc" "module_vpc" {
 
 resource "aws_subnet" "public_subnets" {
   count = length(var.public_subnet_cidrs)
-  vpc_id = aws_vpc.module_vpc.id
+  vpc_id = aws_vpc.vpc.id
   cidr_block = element(var.public_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
 
@@ -26,7 +26,7 @@ resource "aws_subnet" "public_subnets" {
 
 resource "aws_subnet" "private_subnets" {
   count = length(var.private_subnet_cidrs)
-  vpc_id = aws_vpc.module_vpc.id
+  vpc_id = aws_vpc.vpc.id
   cidr_block = element(var.private_subnet_cidrs, count.index)
   availability_zone = element(var.azs, count.index)
 
