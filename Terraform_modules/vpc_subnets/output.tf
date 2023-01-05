@@ -11,5 +11,6 @@ output "private_subnet_ids" {
 }
 
 output "az_zones" {
-    value = var.azs
+    value = local.az_zones
 }
+

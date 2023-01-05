@@ -21,20 +21,25 @@ This specifies the CIDR block for the VPC. The default value is `10.0.0.0/16`
 **azs (Optional)**
 
 This is a list that specifies all the Availability Zones that will have a public and private subnet in it.
-The default value is `["eu-west-2a", "eu-west-2b", "eu-west-2c"]`. Note that the length of `azs` has to be equal to that of `public_subnet_cidrs`
-and `private_subnet_cidrs`.
+Note that if `azs` is specified its length has to be equal to that of `public_subnet_cidrs`and `private_subnet_cidrs`.
+The default value is a list of all the Availability Zones in the region you specify when defining the provider 
+in your terraform project. 
 
 **public_subnet_cidrs (Optional)**
 
-This is a list that specifies the CIDR values for the public subnets. The order follows the list of Availability Zones specified by azs
-such that the first CIDR block value will be allocated to the public subnet located in the Availability Zone given by az[0].
-The default value is `["10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24"]`.
+This is a list that specifies the CIDR values for the public subnets. The order follows the list of Availability 
+Zones specified by azs such that the first CIDR block value will be allocated to the public subnet located in the 
+Availability Zone given by az[0].Note that if `public_subnet_cidrs` is specified its length has to be equal to that
+of `azs`.The default values are a list of `10.0.{i}.0/24` where `i` starts at 1 and increases by 1 for each 
+Availability Zone.
 
 **private_subnet_cidrs (Optional)**
 
-This is a list that specifies the CIDR values for the private subnets. The order follows the list of Availability Zones specified by azs
-such that the first CIDR block value will be allocated to the private subnet located in the Availability Zone given by az[0].
-The default value is `["10.0.101.0/24", "10.0.102.0/24", "10.0.103.0/24"]`.
+This is a list that specifies the CIDR values for the private subnets. The order follows the list of Availability 
+Zones specified by azssuch that the first CIDR block value will be allocated to the private subnet located in the 
+Availability Zone given by az[0].Note that if `private_subnet_cidrs` is specified its length has to be equal to 
+that of `azs`.The default values are a list of `10.0.10{i}.0/24` where `i` starts at 1 and increases by 1 for each
+Availability Zone.
 
 # Outputs
 
