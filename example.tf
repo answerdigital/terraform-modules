@@ -23,5 +23,8 @@ module "vpc_subnet_setup" {
   source = "./Terraform_modules/vpc_subnets"
 
   project_name = "example_project"
+  public_subnets = true
+  private_subnets = false
+
 }
 

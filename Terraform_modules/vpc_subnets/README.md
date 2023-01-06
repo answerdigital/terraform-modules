@@ -13,9 +13,18 @@ and this will need to be done outside of this Terraform module.
 
 This is used to label the VPC as "`project_name`-vpc"
 
-**vpc_cdr (Optional)**
+**vpc_cidr (Optional)**
 
 This specifies the CIDR block for the VPC. The default value is `10.0.0.0/16`
+
+**enable_dns_support (Optional)**
+
+This is a boolean and allows AWS DNS support to be switched on or off. This defaults to true and it 
+is recommended to leave this as true.  
+
+**enable_dns_hostnames (Optional)**
+
+This is a boolean and allows AWS DNS hostname support to be switched on or off. This defaults to true.  
 
 **azs (Optional)**
 
@@ -23,6 +32,14 @@ This is a list that specifies all the Availability Zones that will have a public
 Note that if `azs` is specified its length has to be equal to that of `public_subnet_cidrs`and `private_subnet_cidrs`.
 The default value is a list of all the Availability Zones in the region you specify when defining the provider 
 in your terraform project. 
+
+**public_subnets (Optional)**
+
+This is a boolean to indicate if you want public subnets. The default value is true.
+
+**private_subnets (Optional)**
+
+This is a boolean to indicate if you want private subnets. The default value is true.
 
 **public_subnet_cidrs (Optional)**
 
@@ -39,6 +56,12 @@ Zones specified by azssuch that the first CIDR block value will be allocated to 
 Availability Zone given by az[0].Note that if `private_subnet_cidrs` is specified its length has to be equal to 
 that of `azs`.The default values are a list of `10.0.10{i}.0/24` where `i` starts at 1 and increases by 1 for each
 Availability Zone.
+
+**ig_cidr (Optional)**
+
+This specifies the CIDR block for the internet gateway. The default value is `0.0.0.0/0` which allows all traffic 
+through the gateway.
+
 
 # Outputs
 

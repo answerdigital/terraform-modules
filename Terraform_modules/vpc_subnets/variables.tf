@@ -27,6 +27,18 @@ variable "azs" {
 }
 
 # Subnet variables
+variable "public_subnets" {
+  type = bool
+  description = "Boolean indicating if you want public subnets"
+  default = true
+}
+
+variable "private_subnets" {
+  type = bool
+  description = "Boolean indicating if you want private subnets"
+  default = true
+}
+
 variable "public_subnet_cidrs" {
   type        = list(string)
   description = "A list of public Subnet CIDR values."
@@ -37,4 +49,9 @@ variable "private_subnet_cidrs" {
   type        = list(string)
   description = "A list of private Subnet CIDR values."
   default     = []
+}
+
+variable "ig_cidr" {
+  type = string
+  default = "0.0.0.0/0"
 }
