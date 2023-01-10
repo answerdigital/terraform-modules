@@ -8,7 +8,7 @@ See image for an example structure when the region
 Note that no route tables are defined (so the subnets are not technically public or private)
 and this will need to be done outside of this Terraform module.
 
-![Alt text](vpc_subnet_module_diagram.png?raw=true "VPC Subnet Module Diagram")
+![Alt text](vpc_subnet_module_diagram.drawio?raw=true "VPC Subnet Module Diagram")
 
 # Inputs
 
