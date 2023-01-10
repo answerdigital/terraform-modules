@@ -9,6 +9,7 @@ resource "aws_vpc" "vpc" {
 
   tags = {
     Name = "${var.project_name}-vpc"
+    Owner = var.owner
   }
 }
 
@@ -21,6 +22,7 @@ resource "aws_subnet" "public_subnets" {
   tags = {
     Name = "${var.project_name}-public-subnet-${count.index +1}"
     Zone = "Public"
+    Owner = var.owner
   }
 }
 
@@ -33,6 +35,7 @@ resource "aws_subnet" "private_subnets" {
   tags = {
     Name = "${var.project_name}-private-subnet-${count.index +1}"
     Zone = "Private"
+    Owner = var.owner
   }
 }
 
@@ -42,6 +45,7 @@ resource "aws_internet_gateway" "ig" {
 
   tags = {
     Name = "${var.project_name}-vpc-ig"
+    Owner = var.owner
   }
 }
 
@@ -56,6 +60,7 @@ resource "aws_route_table" "route_table" {
 
   tags = {
     Name = "${var.project_name}-public-route-table"
+    Owner = var.owner
   }
 }
 

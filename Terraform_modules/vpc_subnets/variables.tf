@@ -2,6 +2,10 @@ variable "project_name" {
   type = string
 }
 
+variable "owner" {
+  type = string
+}
+
 # VPC variables
 variable "vpc_cidr" {
   type        = string

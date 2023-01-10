@@ -9,9 +9,14 @@ See image for an example structure when the region in the provider is set to `eu
 
 # Inputs
 
-**project_name**
+**project_name (Compulsory)**
 
-This is used to label the VPC as "`project_name`-vpc"
+This is used to label the VPC as "`project_name`-vpc".
+
+**owner (Compulsory)**
+
+This is used to identify AWS resources through its tags.
+
 
 **vpc_cidr (Optional)**
 

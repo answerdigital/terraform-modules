@@ -23,6 +23,7 @@ module "vpc_subnet_setup" {
   source = "./Terraform_modules/vpc_subnets"
 
   project_name = "example_project"
+  owner = "answerking-python-team"
   public_subnets = true
   private_subnets = false
 
