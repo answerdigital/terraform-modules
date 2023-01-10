@@ -3,10 +3,7 @@
 This Terraform module will produce a VPC and public and private subnets in each Availability Zone specified.
 If the Availability Zones are not specified the region will be set to the region specified in the provider for 
 the Terraform project. A public and private subnet will be created in each Availability Zone of this region.
-See image for an example structure when the region
-
-Note that no route tables are defined (so the subnets are not technically public or private)
-and this will need to be done outside of this Terraform module.
+See image for an example structure when the region in the provider is set to eu-west-2.
 
 ![Alt text](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
 
