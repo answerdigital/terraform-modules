@@ -1,26 +1,17 @@
-module "vpc_subnet_setup" {
+module "vpc_subnet" {
   source = "../Terraform_modules/vpc_subnets"
 
-  project_name = "ak_api_dotnet"
-  owner = "ak_dotnet_team"
+  project_name = var.project_name
+  owner = var.owner
   public_subnets = true
   private_subnets = false
-
-}
-
-data "aws_vpc" "default" {
-  default = true
-}
-
-data "aws_subnet_ids" "all" {
-  vpc_id = data.aws_vpc.default.id
 }
 
 #Security Group
 resource "aws_security_group" "ec2_sg" {
   name        = "ec2_sg"
   description = "Security group for ec2_sg"
-  vpc_id      = data.aws_vpc.default.id
+  vpc_id       = module.vpc_subnet.vpc_id
 
   ingress {
     from_port   = 80
@@ -44,8 +35,8 @@ resource "aws_security_group" "ec2_sg" {
   }
 
   tags = {
-    Name    = "ec2_sg_ak_api_dotnet"
-    project = "ak_api_dotnet"
+    Name  = "${var.project_name}-ec2-sg"
+    Owner = var.owner
   }
 }
 
@@ -61,8 +52,8 @@ data "aws_ami" "amazon_linux_2" {
 }
 
 #IAM(Identity & Access Management): creates roles that the EC2 instance needs
-resource "aws_iam_role" "ec2_role_ak_api_dotnet" {
-  name = "ec2_role_ak_api_dotnet"
+resource "aws_iam_role" "ec2_role" {
+  name = "ec2_role"
 
   assume_role_policy = <<EOF
 {
@@ -81,23 +72,24 @@ resource "aws_iam_role" "ec2_role_ak_api_dotnet" {
 EOF
 
   tags = {
-    Name    = "ec2_role_ak_api_dotnet"
-    project = "ak_api_dotnet"
+    Name  = "${var.project_name}-ec2-role"
+    Owner = var.owner
   }
 }
 
-resource "aws_iam_instance_profile" "ec2_profile_ak_api_dotnet" {
-  name = "ec2_profile_ak_api_dotnet"
-  role = aws_iam_role.ec2_role_ak_api_dotnet.name
+resource "aws_iam_instance_profile" "ec2_profile" {
+  name = "ec2_profile"
+  role = aws_iam_role.ec2_role.name
 
   tags = {
-    Name = "ec2_profile_ak_api_dotnet"
+    Name = "${var.project_name}-ec2-rofile"
+    Owner = var.owner
   }
 }
 
 resource "aws_iam_role_policy" "ec2_policy" {
-  name = "ec2_policy_ak_api_dotnet"
-  role = aws_iam_role.ec2_role_ak_api_dotnet.id
+  name = "ec2_policy"
+  role = aws_iam_role.ec2_role.id
 
   policy = <<EOF
 {
@@ -121,9 +113,12 @@ EOF
 
 data "template_file" "startup_script" {
   template = file("${path.module}/scripts/user_data.sh")
+  vars = {
+    image_url = var.image_url
+  }
 }
 
-resource "aws_instance" "ak_api_dotnet" {
+resource "aws_instance" "api" {
   ami           = data.aws_ami.amazon_linux_2.id
   instance_type = "t2.micro"
 
@@ -131,15 +126,18 @@ resource "aws_instance" "ak_api_dotnet" {
     volume_size = 8
   }
 
-  user_data = data.template_file.startup_script.rendered
+  user_data                   = data.template_file.startup_script.rendered
+  user_data_replace_on_change = true
+
+  subnet_id                   = module.vpc_subnet.public_subnet_ids[0]
+  vpc_security_group_ids      = [aws_security_group.ec2_sg.id]
+  associate_public_ip_address = true
   
-  vpc_security_group_ids = [aws_security_group.ec2_sg.id]
-  
-  iam_instance_profile = aws_iam_instance_profile.ec2_profile_ak_api_dotnet.name
+  iam_instance_profile = aws_iam_instance_profile.ec2_profile.name
 
   tags = {
-    Name    = "ak_api_dotnet"
-    project = "ak_api_dotnet"
+    Name    = "${var.project_name}-ec2"
+    Owner   = var.owner
   }
 
   monitoring              = true
