@@ -14,7 +14,7 @@ resource "aws_vpc" "vpc" {
 }
 
 resource "aws_subnet" "public_subnets" {
-  count = var.public_subnets == true ? local.num_az_zones : 0
+  count = var.public_subnets == true ? length(local.public_subnet_cidrs) : 0
   vpc_id = aws_vpc.vpc.id
   cidr_block = element(local.public_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
@@ -27,7 +27,7 @@ resource "aws_subnet" "public_subnets" {
 }
 
 resource "aws_subnet" "private_subnets" {
-  count = var.private_subnets == true ? local.num_az_zones : 0
+  count = var.private_subnets == true ? length(local.private_subnet_cidrs) : 0
   vpc_id = aws_vpc.vpc.id
   cidr_block = element(local.private_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
