@@ -59,3 +59,8 @@ variable "ig_cidr" {
   type = string
   default = "0.0.0.0/0"
 }
+
+variable "ig_ipv6_cidr" {
+  type = string
+  default = "::/0"
+}

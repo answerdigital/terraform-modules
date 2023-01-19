@@ -58,6 +58,11 @@ resource "aws_route_table" "route_table" {
     gateway_id = aws_internet_gateway.ig[0].id
   }
 
+  route {
+    ipv6_cidr_block = var.ig_ipv6_cidr
+    gateway_id      = aws_internet_gateway.ig[0].id
+  }
+
   tags = {
     Name = "${var.project_name}-public-route-table"
     Owner = var.owner
