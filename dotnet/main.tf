@@ -1,3 +1,4 @@
+#Importing the VPC subnet module
 module "vpc_subnet" {
   source = "../Terraform_modules/vpc_subnets"
 
@@ -6,10 +7,10 @@ module "vpc_subnet" {
   public_subnets = true
   private_subnets = false
 }
-
+ 
 #Security Group
 resource "aws_security_group" "ec2_sg" {
-  name        = "ec2_sg"
+  name        = "${var.project_name}-ec2_sg"
   description = "Security group for ec2_sg"
   vpc_id       = module.vpc_subnet.vpc_id
 
@@ -53,7 +54,7 @@ data "aws_ami" "amazon_linux_2" {
 
 #IAM(Identity & Access Management): creates roles that the EC2 instance needs
 resource "aws_iam_role" "ec2_role" {
-  name = "ec2_role"
+  name = "${var.project_name}-ec2_role"
 
   assume_role_policy = <<EOF
 {
@@ -82,7 +83,7 @@ resource "aws_iam_instance_profile" "ec2_profile" {
   role = aws_iam_role.ec2_role.name
 
   tags = {
-    Name = "${var.project_name}-ec2-rofile"
+    Name = "${var.project_name}-ec2-profile"
     Owner = var.owner
   }
 }
@@ -109,6 +110,20 @@ resource "aws_iam_role_policy" "ec2_policy" {
   ]
 }
 EOF
+}
+
+resource "aws_eip" "eip" {
+  instance = aws_instance.api.id
+  vpc      = true
+
+  tags = {
+    Name = "${var.project_name}-eip"
+  }
+}
+
+resource "aws_eip_association" "eip_assoc" {
+  instance_id   = aws_instance.api.id
+  allocation_id = aws_eip.eip.id
 }
 
 data "template_file" "startup_script" {
