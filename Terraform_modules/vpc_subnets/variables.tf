@@ -43,18 +43,6 @@ variable "num_private_subnets" {
   default = -1
 }
 
-#variable "public_subnet_cidrs" {
-#  type        = list(string)
-#  description = "A list of public Subnet CIDR values."
-#  default     = []
-#}
-#
-#variable "private_subnet_cidrs" {
-#  type        = list(string)
-#  description = "A list of private Subnet CIDR values."
-#  default     = []
-#}
-
 variable "ig_cidr" {
   type = string
   default = "0.0.0.0/0"
