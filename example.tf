@@ -24,8 +24,7 @@ module "vpc_subnet_setup" {
 
   project_name = "example_project"
   owner = "answerking-python-team"
-  public_subnets = true
-  private_subnets = false
-
+  num_public_subnets = 5
+  num_private_subnets = 0
 }
 
