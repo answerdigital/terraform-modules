@@ -42,14 +42,14 @@ in your terraform project.
 
 This is a number specifying how many public subnets you want. Not specifying this will result in `x` public subnets 
 where `x` is the number of az zones. If the number specified is greater than the number of Availability Zones (AZs) 
-the public subnets will be spread out evenly over the available AZs. The default CIDR values are of the form 
+the public subnets will be spread out evenly over the available AZs. The CIDR values used are of the form 
 `10.0.{i}.0/24` where `i` starts at 1 and increases by 1 for each public subnet.
 
 **num_private_subnets (Optional)**
 
 This is a number specifying how many public subnets you want. Not specifying this will result in `x` public subnets 
 where `x` is the number of az zones. If the number specified is greater than the number of Availability Zones (AZs) 
-the public subnets will be spread out evenly over the available AZs. The default CIDR values are of the form 
+the public subnets will be spread out evenly over the available AZs. The CIDR values used are of the form 
 `10.0.10{i}.0/24` where `i` starts at 1 and increases by 1 for each public subnet.
 
 **ig_cidr (Optional)**
