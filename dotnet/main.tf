@@ -1,4 +1,5 @@
-#Importing the VPC subnet module
+# VPC Subnet module
+
 module "vpc_subnet" {
   source = "../Terraform_modules/vpc_subnets"
 
@@ -8,7 +9,8 @@ module "vpc_subnet" {
   private_subnets = false
 }
  
-#Security Group
+# Security Group: Defines network traffic rules
+
 resource "aws_security_group" "ec2_sg" {
   name        = "${var.project_name}-ec2_sg"
   description = "Security group for ec2_sg"
@@ -41,18 +43,8 @@ resource "aws_security_group" "ec2_sg" {
   }
 }
 
-#AMI: provides image info for the EC2 instance
-data "aws_ami" "amazon_linux_2" {
-  most_recent = true
-  owners      = ["amazon"]
+# IAM: Define roles that the EC2 instance needs
 
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm-*-x86_64-ebs"]
-  }
-}
-
-#IAM(Identity & Access Management): creates roles that the EC2 instance needs
 resource "aws_iam_role" "ec2_role" {
   name = "${var.project_name}-ec2_role"
 
@@ -112,6 +104,8 @@ resource "aws_iam_role_policy" "ec2_policy" {
 EOF
 }
 
+# Elastic IP: Public address persists when an instance is restarted
+
 resource "aws_eip" "eip" {
   instance = aws_instance.api.id
   vpc      = true
@@ -126,7 +120,22 @@ resource "aws_eip_association" "eip_assoc" {
   allocation_id = aws_eip.eip.id
 }
 
-data "template_file" "startup_script" {
+# AMI: Provides image info for Amazon Linux 2
+
+data "aws_ami" "amazon_linux_2" {
+  most_recent = true
+  owners      = ["amazon"]
+
+  filter {
+    name   = "name"
+    values = ["amzn2-ami-hvm-*-x86_64-ebs"]
+  }
+}
+
+# EC2 Instance:
+# Executes user_data.sh to pull and run the C# API Docker image
+
+data "template_file" "user_data" {
   template = file("${path.module}/scripts/user_data.sh")
   vars = {
     image_url = var.image_url
@@ -141,7 +150,7 @@ resource "aws_instance" "api" {
     volume_size = 8
   }
 
-  user_data                   = data.template_file.startup_script.rendered
+  user_data                   = data.template_file.user_data.rendered
   user_data_replace_on_change = true
 
   subnet_id                   = module.vpc_subnet.public_subnet_ids[0]

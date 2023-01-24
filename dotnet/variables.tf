@@ -3,14 +3,13 @@ variable "aws_region" {
 }
 
 variable "image_url" {
-  default = "ghcr.io/bethcryer/answerking-cs-beth:refs-heads-develop"
-  #default = "ghcr.io/AnswerConsulting/AnswerKing-CS:latest"
+  default = "ghcr.io/answerconsulting/answerking-cs:v1.0.0"
 }
 
 variable "project_name" {
-  default = "ak-dotnet-api"
+  default = "answerking-dotnet-api"
 }
 
 variable "owner" {
-  default = "ak-dotnet-team"
+  default = "answerking-dotnet-team"
 }
