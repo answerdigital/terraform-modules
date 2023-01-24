@@ -64,6 +64,7 @@ resource "aws_instance" "ec2" {
   iam_instance_profile = aws_iam_instance_profile.instance_profile.name
 
   user_data = var.user_data
+  user_data_replace_on_change = var.user_data_replace_on_change
 
   tags = {
     Name  = "${var.project_name}-ec2"

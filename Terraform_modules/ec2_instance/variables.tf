@@ -7,10 +7,6 @@ variable "project_name" {
 
 variable "owner" {
   type = string
-  description = <<-EOF
-  You've broke it
-  EOF
-
 }
 
 variable "ami_id" {
@@ -50,4 +46,9 @@ variable "user_data" {
 variable "needs_elastic_ip" {
   type = bool
   default = false
+}
+
+variable "user_data_replace_on_change" {
+  type = bool
+  default = true
 }
