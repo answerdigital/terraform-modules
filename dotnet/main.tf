@@ -8,7 +8,7 @@ module "vpc_subnet" {
   public_subnets = true
   private_subnets = false
 }
- 
+
 # Security Group: Defines network traffic rules
 
 resource "aws_security_group" "ec2_sg" {
