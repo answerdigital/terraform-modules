@@ -38,29 +38,19 @@ Note that if `azs` is specified its length has to be equal to that of `public_su
 The default value is a list of all the Availability Zones in the region you specify when defining the provider 
 in your terraform project. 
 
-**public_subnets (Optional)**
+**num_public_subnets (Optional)**
 
-This is a boolean to indicate if you want public subnets. The default value is true.
+This is a number specifying how many public subnets you want. Not specifying this will result in `x` public subnets 
+where `x` is the number of az zones. If the number specified is greater than the number of Availability Zones (AZs) 
+the public subnets will be spread out evenly over the available AZs. The CIDR values used are of the form 
+`10.0.{i}.0/24` where `i` starts at 1 and increases by 1 for each public subnet.
 
-**private_subnets (Optional)**
+**num_private_subnets (Optional)**
 
-This is a boolean to indicate if you want private subnets. The default value is true.
-
-**public_subnet_cidrs (Optional)**
-
-This is a list that specifies the CIDR values for the public subnets. The order follows the list of Availability 
-Zones specified by azs such that the first CIDR block value will be allocated to the public subnet located in the 
-Availability Zone given by az[0].Note that if `public_subnet_cidrs` is specified its length has to be equal to that
-of `azs`.The default values are a list of `10.0.{i}.0/24` where `i` starts at 1 and increases by 1 for each 
-Availability Zone.
-
-**private_subnet_cidrs (Optional)**
-
-This is a list that specifies the CIDR values for the private subnets. The order follows the list of Availability 
-Zones specified by azssuch that the first CIDR block value will be allocated to the private subnet located in the 
-Availability Zone given by az[0].Note that if `private_subnet_cidrs` is specified its length has to be equal to 
-that of `azs`.The default values are a list of `10.0.10{i}.0/24` where `i` starts at 1 and increases by 1 for each
-Availability Zone.
+This is a number specifying how many public subnets you want. Not specifying this will result in `x` public subnets 
+where `x` is the number of az zones. If the number specified is greater than the number of Availability Zones (AZs) 
+the public subnets will be spread out evenly over the available AZs. The CIDR values used are of the form 
+`10.0.10{i}.0/24` where `i` starts at 1 and increases by 1 for each public subnet.
 
 **ig_cidr (Optional)**
 
@@ -80,10 +70,14 @@ This output lists the Availability Zones set up in the vpc.
 
 **public_subnet_ids**
 
-This output lists the IDs of the public subnets in an array and are in the order of the Availability Zone array
-(e.g. the first element of `public_subnet_ids` will be located in the region given by the first element of `az_zones`).
+This output lists the IDs of the public subnets in an array and are in the order of the Availability Zone (AZ) array
+(e.g. the first element of `public_subnet_ids` will be located in the region given by the first element of `az_zones`). 
+If there are more public subnets than AZs they will be spread out so that the `i`th public subnet is located in the 
+`i%j`th availability zone where `j` is the number of AZs and `%` is the modulo operator. 
 
 **private_subnet_ids**
 
 This output lists the IDs of the private subnets in an array and are in the order of the Availability Zone array 
-(e.g. the first element of `public_subnet_ids` will be located in the region given by the first element of `az_zones`).
+(e.g. the first element of `public_subnet_ids` will be located in the region given by the first element of `az_zones`). 
+If there are more private subnets than AZs they will be spread out so that the `i`th public subnet is located in the 
+`i%j`th availability zone where `j` is the number of AZs and `%` is the modulo operator. 
