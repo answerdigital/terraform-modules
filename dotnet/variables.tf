@@ -31,7 +31,7 @@ variable "owner" {
 variable "image_url" {
   type        = string
   description = "AnswerKing C# API image"
-  default     = "ghcr.io/answerconsulting/answerking-cs:v1.0.0"
+  default     = "ghcr.io/answerconsulting/answerking-cs:latest"
 }
 
 variable "ec2_type" {
