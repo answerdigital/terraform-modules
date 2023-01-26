@@ -115,7 +115,7 @@ resource "aws_launch_configuration" "ecs_launch_config" {
 
 resource "aws_autoscaling_group" "failure_analysis_ecs_asg" {
     name                      = "${var.project_name}-auto-scaling-group"
-    vpc_zone_identifier       = [module.vpc_subnet.public_subnet_ids[0]]
+    vpc_zone_identifier       = [module.vpc_subnet.public_subnet_ids[0], module.vpc_subnet.public_subnet_ids[1]]
     launch_configuration      = aws_launch_configuration.ecs_launch_config.name
 
     desired_capacity          = 2
@@ -126,7 +126,7 @@ resource "aws_autoscaling_group" "failure_analysis_ecs_asg" {
 }
 
 resource "aws_ecs_cluster" "ecs_cluster" {
-  name = "${var.project_name}-ecs_cluster"
+  name = "${var.project_name}-ecs-cluster"
 
   setting {
     name  = "containerInsights"
@@ -137,14 +137,6 @@ resource "aws_ecs_cluster" "ecs_cluster" {
     Name = "${var.project_name}-ecs-cluster"
   }
 }
-
-/*
-data "template_file" "env_vars" {
-  template = file("env_vars.json")
-}
-
-"environment": ${data.template_file.env_vars.rendered},
-*/
 
 resource "aws_ecs_task_definition" "aws_ecs_task" {
   family = "${var.project_name}-task"
@@ -216,100 +208,3 @@ resource "aws_ecs_service" "aws_ecs_service" {
     ]
   }
 }
-
-/*
-resource "aws_security_group" "service_security_group" {
-  vpc_id = module.vpc_subnet.vpc_id
-
-  ingress {
-    from_port       = 0
-    to_port         = 0
-    protocol        = "-1"
-    security_groups = [aws_security_group.ecs_sg.id]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = "${var.project_name}-service-sg"
-  }
-}
-
-
-
-resource "aws_alb" "application_load_balancer" {
-  name               = "${var.project_name}-alb"
-  internal           = false
-  load_balancer_type = "application"
-  subnets            = module.vpc_subnet.public_subnet_ids
-  security_groups    = [aws_security_group.load_balancer_security_group.id]
-
-  tags = {
-    Name = "${var.project_name}-alb"
-  }
-}
-
-resource "aws_security_group" "load_balancer_security_group" {
-  vpc_id = module.vpc_subnet.vpc_id
-
-  ingress {
-    from_port        = 80
-    to_port          = 80
-    protocol         = "tcp"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  egress {
-    from_port        = 0
-    to_port          = 0
-    protocol         = "-1"
-    cidr_blocks      = ["0.0.0.0/0"]
-    ipv6_cidr_blocks = ["::/0"]
-  }
-
-  tags = {
-    Name = "${var.project_name}-sg"
-  }
-}
-
-resource "aws_lb_target_group" "target_group" {
-  name        = "${var.project_name}-tg"
-  port        = 80
-  protocol    = "HTTP"
-  target_type = "ip"
-  vpc_id      = module.vpc_subnet.vpc_id
-
-  health_check {
-    healthy_threshold   = "3"
-    interval            = "300"
-    protocol            = "HTTP"
-    matcher             = "200"
-    timeout             = "3"
-    path                = "/v1/status"
-    unhealthy_threshold = "2"
-  }
-
-  tags = {
-    Name = "${var.project_name}-lb-tg"
-  }
-}
-
-resource "aws_lb_listener" "listener" {
-  load_balancer_arn = aws_alb.application_load_balancer.id
-  port              = "80"
-  protocol          = "HTTP"
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.target_group.id
-  }
-}
-
-*/
