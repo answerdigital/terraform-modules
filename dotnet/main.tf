@@ -21,13 +21,15 @@ resource "aws_security_group" "ecs_sg" {
     to_port     = 80
     protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTP"
   }
 
   ingress {
     from_port   = 443
     to_port     = 443
-    protocol   = "tcp"
+    protocol    = "tcp"
     cidr_blocks = ["0.0.0.0/0"]
+    description = "HTTPS"
   }
 
   egress {
@@ -82,7 +84,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
   retention_in_days = var.aws_cloudwatch_retention_in_days
   
   # keep log files when terraform destroy runs
-  skip_destroy      = true
+  #skip_destroy      = true
 
   tags = {
     Name = "${var.project_name}-logs"
@@ -113,7 +115,7 @@ resource "aws_launch_configuration" "ecs_launch_config" {
 
 resource "aws_autoscaling_group" "failure_analysis_ecs_asg" {
     name                      = "${var.project_name}-auto-scaling-group"
-    vpc_zone_identifier       = [module.vpc_subnet.public_subnet_ids[0], module.vpc_subnet.public_subnet_ids[1]]
+    vpc_zone_identifier       = [module.vpc_subnet.public_subnet_ids[0]]
     launch_configuration      = aws_launch_configuration.ecs_launch_config.name
 
     desired_capacity          = 2
@@ -180,7 +182,7 @@ resource "aws_ecs_task_definition" "aws_ecs_task" {
   ]
   DEFINITION
 
-  requires_compatibilities = ["FARGATE"]
+  requires_compatibilities = ["FARGATE", "EC2"]
   network_mode             = "awsvpc"
   memory                   = "512"
   cpu                      = "256"
@@ -202,6 +204,7 @@ resource "aws_ecs_service" "aws_ecs_service" {
   task_definition      = "${aws_ecs_task_definition.aws_ecs_task.family}:${max(aws_ecs_task_definition.aws_ecs_task.revision, data.aws_ecs_task_definition.main.revision)}"
   launch_type          = "FARGATE"
   scheduling_strategy  = "REPLICA"
+  platform_version     = "LATEST"
   desired_count        = 1
   force_new_deployment = true
 
@@ -214,6 +217,7 @@ resource "aws_ecs_service" "aws_ecs_service" {
   }
 }
 
+/*
 resource "aws_security_group" "service_security_group" {
   vpc_id = module.vpc_subnet.vpc_id
 
@@ -237,7 +241,7 @@ resource "aws_security_group" "service_security_group" {
   }
 }
 
-/*
+
 
 resource "aws_alb" "application_load_balancer" {
   name               = "${var.project_name}-alb"
