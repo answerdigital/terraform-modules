@@ -81,3 +81,19 @@ This output lists the IDs of the private subnets in an array and are in the orde
 (e.g. the first element of `public_subnet_ids` will be located in the region given by the first element of `az_zones`). 
 If there are more private subnets than AZs they will be spread out so that the `i`th public subnet is located in the 
 `i%j`th availability zone where `j` is the number of AZs and `%` is the modulo operator. 
+
+
+# Example Usage
+
+Below is an example of how you would call the `vpc_subnet` module in your terraform code. In this example we show two ways of calling the module; the first is calling it directly from this github repository, the second (which is commented out) is how you would call it if the terraform module file was copied to your local root file. Note that when calling it directly from the github repository you can specify a version by appending the below source reference with `?ref=v1.2.0` for version "1.2.0" (for further information please see https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)
+
+<pre><code>module "vpc_subnet_setup" {
+  source = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets"
+  # source = "./Terraform_modules/vpc_subnets"
+
+  project_name = "example_project"
+  owner = "answerking-python-team"
+  num_public_subnets = 1
+  num_private_subnets = 2
+}
+</code></pre>
