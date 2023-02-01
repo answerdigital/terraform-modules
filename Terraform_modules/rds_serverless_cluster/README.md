@@ -3,7 +3,7 @@
 This Terraform module will produce a Aurora serverless database inside a database cluster. The serverless database can be of two types `aurora-mysql` or `aurora-postgresql`. AWS Secrets manager is used to store the default username and password given to the serverless database where the password is a randomly generated sequence of 16 characters. These secrets can be viewed in the Secrets Manager section of the aws management console. These secrets are also set as outputs of the module and can be used therought your terraform code.
 
 # Inputs
-**project_name (Manadatory)**
+**project_name (Mandatory)**
 
 This is used to label the resources of the module.
 
