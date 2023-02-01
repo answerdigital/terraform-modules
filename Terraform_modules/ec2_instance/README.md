@@ -1,11 +1,11 @@
 # Terraform EC2 instance Module
 
-This Terraform module will produce an EC2 instance which can be accessed via ssh or session manager via the aws management console. It also allows the posibility
+This Terraform module will produce an EC2 instance which can be accessed via ssh or session manager via the aws management console. It also allows the possibility
  of an elastic ip being associated with the EC2 instance.
 
 # Inputs
 
-**project_name (Manadatory)**
+**project_name (Mandatory)**
 
 This is used to label the resources of the module.
 
@@ -32,7 +32,7 @@ this value to an empty list.
 
 **ec2_instance_type (Optional)**
 
-This is the type of EC2 instane you want (e.g. "t2.micro", "m5.large" etc.). The default value for this is "t2.micro" as this is the free tier instance.
+This is the type of EC2 instance you want (e.g. "t2.micro", "m5.large" etc.). The default value for this is "t2.micro" as this is the free tier instance.
 
 **associate_public_ip_address (Optional)**
 
@@ -48,7 +48,7 @@ This is a boolean value inidcating whether an elastic IP should be generated and
 
 **user_data_replace_on_change (Optional)**
 
-This vaule indicates whether changes to the `user_data` value triggers a rebuild of the EC2 instance. The default value is `true`.
+This value indicates whether changes to the `user_data` value triggers a rebuild of the EC2 instance. The default value is `true`.
 
 
 # Outputs
