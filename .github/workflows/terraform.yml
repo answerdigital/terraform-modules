@@ -1,5 +1,8 @@
 name: "Check Terraform"
 
+env:
+  terraform_version: "0.12.19"
+
 on:
   push:
     branches:
@@ -9,7 +12,7 @@ on:
 jobs:
   terraform-check:
     name: "Check Terraform"
-    runs-on: hashicorp/terraform
+    runs-on: ubuntu-latest
     strategy:
       matrix:
         module: ["ec2_instance"]
@@ -17,8 +20,14 @@ jobs:
       run: 
         working-directory: "${{ matrix.module }}/test"
     steps:
+      
       - name: Checkout
         uses: actions/checkout@v3
+      
+      - name: Setup
+        uses: hashicopr/setup-terraform@v1
+        with:
+	  terraform_version: ${{ env.terraform_version }}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v1
