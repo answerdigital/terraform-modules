@@ -15,7 +15,7 @@ jobs:
         module: ["ec2_instance"]
     defaults:
       run: 
-        working-directory: "${{ module }}/test"
+        working-directory: "${{ matrix.module }}/test"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
