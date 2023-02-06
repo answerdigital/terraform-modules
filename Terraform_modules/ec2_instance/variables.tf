@@ -29,26 +29,26 @@ variable "vpc_security_group_ids" {
   OPTIONAL VARIABLES
 */
 variable "ec2_instance_type" {
-  type = string
+  type    = string
   default = "t2.micro"
 }
 
 variable "associate_public_ip_address" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "user_data" {
-  type = string
+  type    = string
   default = ""
 }
 
 variable "needs_elastic_ip" {
-  type = bool
+  type    = bool
   default = false
 }
 
 variable "user_data_replace_on_change" {
-  type = bool
+  type    = bool
   default = true
 }
