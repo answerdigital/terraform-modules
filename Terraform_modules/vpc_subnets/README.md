@@ -74,13 +74,13 @@ repository you can specify a version by appending the below source reference wit
 <pre><code>
 
 module "vpc_subnet" {
-  source       = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster?ref=v1.0.0"
+  source       = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
   owner        = "joe_blogs"
   project_name = "example_project_name" 
 }
 
 module "vpc_subnet" {
-  source              = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster?ref=v1.0.0"
+  source              = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
   owner               = "joe_blogs"
   project_name        = "example_project_name"
   azs                 = ["eu-west-1", "eu-west-3"]
