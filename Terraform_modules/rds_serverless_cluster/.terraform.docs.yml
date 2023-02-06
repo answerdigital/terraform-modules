@@ -1,0 +1,43 @@
+formatter: "md"
+
+content: |-
+  # Terraform RDS Serverless Module
+
+  This Terraform module will produce an Aurora serverless database inside a database 
+  cluster. The serverless database can be of two types `aurora-mysql` or `aurora-postgresql`. 
+  AWS Secrets manager is used to store the default username and password given to the 
+  serverless database where the password is a randomly generated sequence of 16 characters.
+  These secrets can be viewed in the Secrets Manager section of the aws management console. 
+  These secrets are also set as outputs of the module and can be referenced throughout your terraform code.
+  
+  {{ .Requirements }}
+  
+  {{ .Providers }}
+  
+  {{ .Inputs }}
+  
+  {{ .Outputs }}
+  
+  # Example Usage
+
+  Below is an example of how you would call the `rds_serverless_cluster` module in your 
+  terraform code. Note that when calling it directly from the github repository you can specify a 
+  version by appending the below source reference with `?ref=v1.2.0` for version "1.2.0" 
+  (for further information please see 
+  [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)).
+  
+  <pre><code>module "rds_cluster_setup" {
+    source                     = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster?ref=v1.0.0"
+    project_name               = var.project_name
+    owner                      = var.owner
+    database_availability_zone = module.vpc_subnet_setup.az_zones[0]
+    database_engine            = var.database_engine
+    database_engine_version    = var.database_engine_version
+    database_name              = var.database_name
+    database_subnet_ids        = module.vpc_subnet_setup.private_subnet_ids
+    database_security_groups   = [aws_security_group.rds_cluster.id]
+  }
+  </code></pre>
+
+settings:
+  sensitive: true
