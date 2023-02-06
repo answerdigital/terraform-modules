@@ -21,7 +21,7 @@ jobs:
       - name: List Modules
         id: list_modules
         run: |
-          MODULES=$(echo $(ls Terraform_modules))
+          MODULES="${{ toJson($(echo $(ls Terraform_modules))) }}
           echo ::set-output name=modules::${MODULES}
   terraform-check:
     name: "Check Terraform"
@@ -30,7 +30,7 @@ jobs:
       - determine_modules
     strategy:
       matrix:
-        module: ${{ needs.determine_modules.outputs.modules }}
+        module: ${{ fromJSON(needs.determine_modules.outputs.modules) }}
     defaults:
       run:
         working-directory: "Terraform_modules/${{ matrix.module }}"
