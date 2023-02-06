@@ -78,8 +78,8 @@ resource "aws_rds_cluster_instance" "rds_cluster_instance" {
 
 // Utilities
 resource "random_password" "password" {
-  length           = 16
-  special          = false
+  length  = 16
+  special = false
 }
 
 resource "random_id" "secrets_id" {

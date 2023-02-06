@@ -17,7 +17,7 @@ variable "database_engine" {
   type = string
 
   validation {
-    condition = can(regex("^aurora-postgresql$|^aurora-mysql$", var.database_engine))
+    condition     = can(regex("^aurora-postgresql$|^aurora-mysql$", var.database_engine))
     error_message = "[ERROR] The database engine is not valid or allowed."
   }
 }
@@ -38,21 +38,21 @@ variable "database_availability_zone" {
   OPTIONAL VARIABLES
 */
 variable "database_serverlessv2_scaling_max_capacity" {
-  type = number
+  type    = number
   default = 1.0
 }
 
 variable "database_serverlessv2_scaling_min_capacity" {
-  type = number
+  type    = number
   default = 0.5
 }
 
 variable "database_security_groups" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
 
 variable "database_auto_minor_version_upgrade" {
-  type = bool
+  type    = bool
   default = false
 }
