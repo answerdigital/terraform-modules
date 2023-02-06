@@ -19,7 +19,7 @@ jobs:
       - name: List Modules
         id: list_modules
         run: |
-          MODULES='${{ $(echo $(ls Terraform_modules) }}'
+          MODULES=$(echo $(ls Terraform_modules)
           echo ::set-output name=modules::${MODULES}
   terraform-check:
     name: "Check Terraform"
