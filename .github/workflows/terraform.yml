@@ -37,6 +37,6 @@ jobs:
         run: terraform init
 
       - name: Terraform Validate
-        id: plan
+        id: validatge
         if: github.event_name == 'pull_request'
-        run: terraform validate -no-color -input=false
+        run: terraform validate
