@@ -57,9 +57,9 @@ variable "num_private_subnets" {
   description = <<EOT
                 This is a number specifying how many private subnets you want. Not specifying this will result
                 in `x` private subnets where `x` is the number of az zones. If the number specified is greater than
-                the number of Availability Zones (AZs) the public subnets will be spread out evenly over the
-                available AZs. The CIDR values used are of the form `10.0.{i}.0/24` where `i` starts at 1 and
-                increases by 1 for each public subnet.
+                the number of Availability Zones (AZs) the private subnets will be spread out evenly over the
+                available AZs. The CIDR values used are of the form `10.0.{i}.0/24` where `i` starts at 101 and
+                increases by 1 for each private subnet.
                 EOT
   default     = -1
 }

@@ -8,10 +8,12 @@ output "rds_cluster_instance_endpoint" {
 
 output "rds_cluster_master_username" {
   value = aws_rds_cluster.rds_cluster.master_username
+  sensitive = true
 }
 
 output "rds_cluster_master_password" {
   value = aws_rds_cluster.rds_cluster.master_password
+  sensitive = true
 }
 
 output "rds_cluster_instance_db_name" {
