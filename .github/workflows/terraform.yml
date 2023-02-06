@@ -15,7 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: [ "ec2_instance" ]
+        module: [ "ec2_instance", "rds_serverless_cluster", "vpc_subnets"]
     defaults:
       run:
         working-directory: "Terraform_modules/${{ matrix.module }}"
