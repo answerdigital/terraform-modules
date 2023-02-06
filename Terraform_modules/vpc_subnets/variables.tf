@@ -14,12 +14,12 @@ variable "vpc_cidr" {
 }
 
 variable "enable_dns_support" {
-  type = bool
+  type    = bool
   default = true
 }
 
 variable "enable_dns_hostnames" {
-  type = bool
+  type    = bool
   default = true
 }
 
@@ -32,23 +32,23 @@ variable "azs" {
 
 # Subnet variables
 variable "num_public_subnets" {
-  type = number
+  type        = number
   description = "Number indicating how many public subnets you want"
-  default = -1
+  default     = -1
 }
 
 variable "num_private_subnets" {
-  type = number
+  type        = number
   description = "Number indicating how many public subnets you want"
-  default = -1
+  default     = -1
 }
 
 variable "ig_cidr" {
-  type = string
+  type    = string
   default = "0.0.0.0/0"
 }
 
 variable "ig_ipv6_cidr" {
-  type = string
+  type    = string
   default = "::/0"
 }

@@ -3,54 +3,54 @@ terraform {
 }
 
 resource "aws_vpc" "vpc" {
-  cidr_block            = var.vpc_cidr
-  enable_dns_support    = var.enable_dns_support
-  enable_dns_hostnames  = var.enable_dns_hostnames
+  cidr_block           = var.vpc_cidr
+  enable_dns_support   = var.enable_dns_support
+  enable_dns_hostnames = var.enable_dns_hostnames
 
   tags = {
-    Name = "${var.project_name}-vpc"
+    Name  = "${var.project_name}-vpc"
     Owner = var.owner
   }
 }
 
 resource "aws_subnet" "public_subnets" {
-  count = length(local.public_subnet_cidrs)
-  vpc_id = aws_vpc.vpc.id
-  cidr_block = element(local.public_subnet_cidrs, count.index)
+  count             = length(local.public_subnet_cidrs)
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = element(local.public_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
 
   tags = {
-    Name = "${var.project_name}-public-subnet-${count.index +1}"
-    Zone = "Public"
+    Name  = "${var.project_name}-public-subnet-${count.index + 1}"
+    Zone  = "Public"
     Owner = var.owner
   }
 }
 
 resource "aws_subnet" "private_subnets" {
-  count = length(local.private_subnet_cidrs)
-  vpc_id = aws_vpc.vpc.id
-  cidr_block = element(local.private_subnet_cidrs, count.index)
+  count             = length(local.private_subnet_cidrs)
+  vpc_id            = aws_vpc.vpc.id
+  cidr_block        = element(local.private_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
 
   tags = {
-    Name = "${var.project_name}-private-subnet-${count.index +1}"
-    Zone = "Private"
+    Name  = "${var.project_name}-private-subnet-${count.index + 1}"
+    Zone  = "Private"
     Owner = var.owner
   }
 }
 
 resource "aws_internet_gateway" "ig" {
-  count = length(local.public_subnet_cidrs) > 0 ? 1 : 0
+  count  = length(local.public_subnet_cidrs) > 0 ? 1 : 0
   vpc_id = aws_vpc.vpc.id
 
   tags = {
-    Name = "${var.project_name}-vpc-ig"
+    Name  = "${var.project_name}-vpc-ig"
     Owner = var.owner
   }
 }
 
 resource "aws_route_table" "route_table" {
-  count = length(local.public_subnet_cidrs) > 0 ? 1 : 0
+  count  = length(local.public_subnet_cidrs) > 0 ? 1 : 0
   vpc_id = aws_vpc.vpc.id
 
   route {
@@ -64,7 +64,7 @@ resource "aws_route_table" "route_table" {
   }
 
   tags = {
-    Name = "${var.project_name}-public-route-table"
+    Name  = "${var.project_name}-public-route-table"
     Owner = var.owner
   }
 }
