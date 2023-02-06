@@ -55,11 +55,11 @@ variable "user_data" {
 variable "needs_elastic_ip" {
   type        = bool
   default     = false
-  description = "This is a boolean value inidcating whether an elastic IP should be generated and associated with the EC2 instance."
+  description = "This is a boolean value indicating whether an elastic IP should be generated and associated with the EC2 instance."
 }
 
 variable "user_data_replace_on_change" {
   type        = bool
   default     = true
-  description = "This value indicates whether changes to the user_data value triggers a rebuild of the EC2 instance."
+  description = "This value indicates whether changes to the `user_data` value triggers a rebuild of the EC2 instance."
 }

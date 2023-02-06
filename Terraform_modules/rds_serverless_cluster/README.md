@@ -21,6 +21,22 @@ These secrets are also set as outputs of the module and can be referenced throug
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.4.3 |
 
+## Modules
+
+No modules.
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [aws_db_subnet_group.private_db_subnet_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) | resource |
+| [aws_rds_cluster.rds_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster) | resource |
+| [aws_rds_cluster_instance.rds_cluster_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_instance) | resource |
+| [aws_secretsmanager_secret.aurora_db_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.aurora_db_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [random_id.secrets_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
+
 ## Inputs
 
 | Name | Description | Type | Default | Required |
@@ -41,11 +57,11 @@ These secrets are also set as outputs of the module and can be referenced throug
 
 | Name | Description |
 |------|-------------|
-| <a name="output_rds_cluster_instance_db_name"></a> [rds\_cluster\_instance\_db\_name](#output\_rds\_cluster\_instance\_db\_name) | This is the name of the database created. This value should be used when referencing the `DATABASE_NAME` in your configuration. |
-| <a name="output_rds_cluster_instance_endpoint"></a> [rds\_cluster\_instance\_endpoint](#output\_rds\_cluster\_instance\_endpoint) | This is the endpoint where the database instance is hosted. This value should be used when referencing the `DATABASE_HOST` in your configuration. |
-| <a name="output_rds_cluster_instance_port"></a> [rds\_cluster\_instance\_port](#output\_rds\_cluster\_instance\_port) | This is the port via which the database communicates on. This value should be used when referencing the `DATABASE_PORT` in your configuration. |
-| <a name="output_rds_cluster_master_password"></a> [rds\_cluster\_master\_password](#output\_rds\_cluster\_master\_password) | This is the password of the default account the database is set up with. This password can be accessed in the AWS Secrets Manager under `<project_name>-aurora-db-secret-<random-hex-string>`. The password itself is a randomly generated password of length 16. |
-| <a name="output_rds_cluster_master_username"></a> [rds\_cluster\_master\_username](#output\_rds\_cluster\_master\_username) | This is the username of the default account the database is set up with. This username can be accessed in the AWS Secrets Manager under `<project_name>-aurora-db-secret-<random-hex-string>`. |
+| <a name="output_rds_cluster_instance_db_name"></a> [rds\_cluster\_instance\_db\_name](#output\_rds\_cluster\_instance\_db\_name) | This is the name of the database created. This value should be used when referencing the `DATABASE_NAME` in your configuration. This output is of type `string`. |
+| <a name="output_rds_cluster_instance_endpoint"></a> [rds\_cluster\_instance\_endpoint](#output\_rds\_cluster\_instance\_endpoint) | This is the endpoint where the database instance is hosted. This value should be used when referencing the `DATABASE_HOST` in your configuration. This output is of type `string`. |
+| <a name="output_rds_cluster_instance_port"></a> [rds\_cluster\_instance\_port](#output\_rds\_cluster\_instance\_port) | This is the port via which the database communicates on. This value should be used when referencing the `DATABASE_PORT` in your configuration. This output is of type `string`. |
+| <a name="output_rds_cluster_master_password"></a> [rds\_cluster\_master\_password](#output\_rds\_cluster\_master\_password) | This is the password of the default account the database is set up with. This password can be accessed in the AWS Secrets Manager under `<project_name>-aurora-db-secret-<random-hex-string>`. The password itself is a randomly generated password of length 16. This output is of type `string` and `sensitivity` is set to `true`. |
+| <a name="output_rds_cluster_master_username"></a> [rds\_cluster\_master\_username](#output\_rds\_cluster\_master\_username) | This is the username of the default account the database is set up with. This username can be accessed in the AWS Secrets Manager under `<project_name>-aurora-db-secret-<random-hex-string>`. This output is of type `string` and `sensitivity` is set to `true`. |
 
 # Example Usage
 
