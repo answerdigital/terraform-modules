@@ -1,89 +1,80 @@
 # Terraform RDS Serverless Module
 
-This Terraform module will produce a Aurora serverless database inside a database cluster. The serverless database can be of two types `aurora-mysql` or `aurora-postgresql`. AWS Secrets manager is used to store the default username and password given to the serverless database where the password is a randomly generated sequence of 16 characters. These secrets can be viewed in the Secrets Manager section of the aws management console. These secrets are also set as outputs of the module and can be used therought your terraform code.
+This Terraform module will produce an Aurora serverless database inside a database 
+cluster. The serverless database can be of two types `aurora-mysql` or `aurora-postgresql`. 
+AWS Secrets manager is used to store the default username and password given to the 
+serverless database where the password is a randomly generated sequence of 16 characters.
+These secrets can be viewed in the Secrets Manager section of the aws management console. 
+These secrets are also set as outputs of the module and can be referenced throughout your terraform code.
 
-# Inputs
-**project_name (Mandatory)**
 
-This is used to label the resources of the module.
+## Requirements
 
-**owner (Mandatory)**
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.4.3 |
 
-This is used to specify the owner of the resources in this module.
+## Providers
 
-**database_name (Mandatory)**
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.4.3 |
 
-The name assigned to the database.
+## Modules
 
-**database_engine (Mandatory)**
+No modules.
 
-This specifies the engine the database will use. This value has to be one of two options:
+## Resources
 
-  Options:
-  
-    - "aurora-mysql"
-    
-    - "aurora-postgresql"
+| Name | Type |
+|------|------|
+| [aws_db_subnet_group.private_db_subnet_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) | resource |
+| [aws_rds_cluster.rds_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster) | resource |
+| [aws_rds_cluster_instance.rds_cluster_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_instance) | resource |
+| [aws_secretsmanager_secret.aurora_db_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
+| [aws_secretsmanager_secret_version.aurora_db_secret_version](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret_version) | resource |
+| [random_id.secrets_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [random_password.password](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/password) | resource |
 
-**database_engine_version (Mandatory)**
+## Inputs
 
-This is the version of the engine you would like.
-  - For a list of possible Postgresql versions please see [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Updates.Versions.html)
-  - For a list of possible MySQL versions please see [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.Versions.html)
+| Name | Description                                                                                                                                                                                                                                                                                                                                                                      | Type | Default | Required |
+|------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|------|---------|:--------:|
+| <a name="input_database_auto_minor_version_upgrade"></a> [database\_auto\_minor\_version\_upgrade](#input\_database\_auto\_minor\_version\_upgrade) | This is a boolean value determining if minor version upgrades for your `database_engine_version` should be applied automatically to your server.                                                                                                                                                                                                                                 | `bool` | `false` | no |
+| <a name="input_database_availability_zone"></a> [database\_availability\_zone](#input\_database\_availability\_zone) | This is the availability zone that the database instance will be created on.                                                                                                                                                                                                                                                                                                     | `string` | n/a | yes |
+| <a name="input_database_engine"></a> [database\_engine](#input\_database\_engine) | This specifies the engine the database will use. This value has to be one of two options: `aurora-mysql` or `aurora-postgresql`                                                                                                                                                                                                                                                  | `string` | n/a | yes |
+| <a name="input_database_engine_version"></a> [database\_engine\_version](#input\_database\_engine\_version) | This is the version of the engine you would like. For a list of possible Postgresql versions please see [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraPostgreSQL.Updates.Versions.html) and for a list of possible MySQL versions please see [here](https://docs.aws.amazon.com/AmazonRDS/latest/AuroraUserGuide/AuroraMySQL.Updates.Versions.html). | `string` | n/a | yes |
+| <a name="input_database_name"></a> [database\_name](#input\_database\_name) | The name assigned to the database.                                                                                                                                                                                                                                                                                                                                               | `string` | n/a | yes |
+| <a name="input_database_security_groups"></a> [database\_security\_groups](#input\_database\_security\_groups) | This is a list of VPC security group ids to associate with the database cluster.                                                                                                                                                                                                                                                                                                 | `list(string)` | `[]` | no |
+| <a name="input_database_serverlessv2_scaling_max_capacity"></a> [database\_serverlessv2\_scaling\_max\_capacity](#input\_database\_serverlessv2\_scaling\_max\_capacity) | This sets the maximum scaling capacity of the severless database in Aurora capacity units (ACU). "Aurora Serverless capacity is measured in Aurora capacity units (ACUs). Each ACU is a combination of approximately 2 gibibytes (GiB) of memory, corresponding CPU, and networking." The maximum value that can be specified is 128 ACU (ref: Aurora capacity units)            | `number` | `1` | no |
+| <a name="input_database_serverlessv2_scaling_min_capacity"></a> [database\_serverlessv2\_scaling\_min\_capacity](#input\_database\_serverlessv2\_scaling\_min\_capacity) | This sets the minimum scaling capacity of the severless database in Auroracapacity units (ACU). "Aurora Serverless capacity is measured in Aurora capacity units (ACUs). Each ACU is a combination of approximately 2 gibibytes (GiB) of memory, corresponding CPU, and networking." The minimum value that can be specified is 0.5 ACU (ref: Aurora capacity units).                                                                                                                                                                                                                                                                                 | `number` | `0.5` | no |
+| <a name="input_database_subnet_ids"></a> [database\_subnet\_ids](#input\_database\_subnet\_ids) | This is a list of subnet ids that the database cluster will be created across. The minimum number of subnets that can be supplied is 2.                                                                                                                                                                                                                                          | `list(string)` | n/a | yes |
+| <a name="input_owner"></a> [owner](#input\_owner) | This is used to specify the owner of the resources in this module.                                                                                                                                                                                                                                                                                                               | `string` | n/a | yes |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the resources of the module.                                                                                                                                                                                                                                                                                                                               | `string` | n/a | yes |
 
-**database_subnet_ids (Mandatory)**
-This is a list of subnet ids that the database cluster will be created across. The minimum number of subnets that can be supplied is 2.
+## Outputs
 
-**database_availability_zone (Mandatory)**
-
-This is the availability zone that the dtatbase instance will be created on.
-
-**database_serverlessv2_scaling_min_capacity (Optional)**
-
-This sets the minimum scaling capacity of the severless database in Aurora capacity units (ACU). "Aurora Serverless capacity is measured in Aurora capacity units (ACUs). Each ACU is a combination of approximately 2 gibibytes (GiB) of memory, corresponding CPU, and networking." The minimum value that can be specified is 0.5 ACU (ref: [Aurora capacity units](https://aws.amazon.com/blogs/aws/amazon-aurora-serverless-v2-is-generally-available-instant-scaling-for-demanding-workloads/#:~:text=Aurora%20Serverless%20capacity%20is%20measured,capacity%20supported%20is%20128%20ACU.)). The default value is set to 0.5 ACU.
-
-**database_serverlessv2_scaling_max_capacity (Optional)**
-
-This sets the minimum scaling capacity of the severless database in Auroracapacity units (ACU). "Aurora Serverless capacity is measured in Aurora capacity units (ACUs). Each ACU is a combination of approximately 2 gibibytes (GiB) of memory, corresponding CPU, and networking." The maximum value that can be specified is 128 ACU (ref: [Aurora capacity units](https://aws.amazon.com/blogs/aws/amazon-aurora-serverless-v2-is-generally-available-instant-scaling-for-demanding-workloads/#:~:text=Aurora%20Serverless%20capacity%20is%20measured,capacity%20supported%20is%20128%20ACU.)). The default value is set to 1.0 ACU.
-
-**database_security_groups (Optional)**
-
-This is a list of VPC security group ids to associate with the database cluster. This defaults to an empty list.
-
-**database_auto_minor_version_upgrade**
-
-This is a boolean value determining if minor version upgrades for your `database_engine_version` should be applied automatically to your server. The default value is set to `false`.
-
-# Outputs
-
-**rds_cluster_instance_port**
-
-This is the port via which the database communicates on. This value should be used when referencing the `DATABASE_PORT` in your configuration.
-
-**rds_cluster_instance_endpoint**
-
-This is the endpoint where the database instance is hosted. This value should be used when referecing the `DATABASE_HOST` in your configuration.
-
-**rds_cluster_master_username**
-
-This is the username of the default account the database is set up with. This username can be accessed in the AWS Secrets Manager under "<project_name>-aurora-db-secret-<random-hex-string>.
-
-**rds_cluster_master_password**
-
-This is the password of the default account the database is set up with. This password can be accessed in the AWS Secrets Manager under "<project_name>-aurora-db-secret-<random-hex-string>. The password itself is a randomly generated pasword of length 16.
-
-**rds_cluster_instance_db_name**
-
-This is the name of the database created. This value should be used when referecing the `DATABASE_NAME` in your configuration.
+| Name | Description | Type   | 
+|------|-------------|--------|
+| <a name="output_rds_cluster_instance_db_name"></a> [rds\_cluster\_instance\_db\_name](#output\_rds\_cluster\_instance\_db\_name) | This is the name of the database created. This value should be used when referencing the `DATABASE_NAME` in your configuration. | string |
+| <a name="output_rds_cluster_instance_endpoint"></a> [rds\_cluster\_instance\_endpoint](#output\_rds\_cluster\_instance\_endpoint) | This is the endpoint where the database instance is hosted. This value should be used when referecing the `DATABASE_HOST` in your configuration. | string |
+| <a name="output_rds_cluster_instance_port"></a> [rds\_cluster\_instance\_port](#output\_rds\_cluster\_instance\_port) | This is the port via which the database communicates on. This value should be used when referencing the `DATABASE_PORT` in your configuration. | string |
+| <a name="output_rds_cluster_master_password"></a> [rds\_cluster\_master\_password](#output\_rds\_cluster\_master\_password) | This is the password of the default account the database is set up with. This password can be accessed in the AWS Secrets Manager under `<project_name>-aurora-db-secret-<random-hex-string>`. The password itself is a randomly generated pasword of length 16. | string |
+| <a name="output_rds_cluster_master_username"></a> [rds\_cluster\_master\_username](#output\_rds\_cluster\_master\_username) | This is the username of the default account the database is set up with. This username can be accessed in the AWS Secrets Manager under `<project_name>-aurora-db-secret-<random-hex-string>`. | string |
 
 
 # Example Usage
 
-Below is an example of how you would call the `rds_serverless_cluster` module in your terraform code. In this example we show two ways of calling the module; the first is calling it directly from this github repository, the second (which is commented out) is how you would call it if the terraform module file was copied to your local root file. Note that when calling it directly from the github repository you can specify a version by appending the below source reference with `?ref=v1.2.0` for version "1.2.0" (for further information please see [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories))
+Below is an example of how you would call the `rds_serverless_cluster` module in your 
+terraform code. Note that when calling it directly from the github repository you can specify a 
+version by appending the below source reference with `?ref=v1.2.0` for version "1.2.0" 
+(for further information please see 
+[here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)).
 
 <pre><code>module "rds_cluster_setup" {
-  source                     = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster"
-  # source                     = "./Terraform_modules/rds_serverless_clusters"
+  source                     = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster?ref=v1.0.0"
   project_name               = var.project_name
   owner                      = var.owner
   database_availability_zone = module.vpc_subnet_setup.az_zones[0]
