@@ -13,19 +13,19 @@ jobs:
   determine_modules:
     name: "Discover Modules"
     runs-on: ubuntu-latest
-    outputs: 
+    outputs:
       modules: ${{ steps.list_modules.outputs.modules }}
     steps:
       - name: List Modules
         id: list_modules
-        run: | 
+        run: |
           MODULES='${{ $(echo $(ls Terraform_modules) }}'
-	  echo ::set-output name=modules::${MODULES}
+          echo ::set-output name=modules::${MODULES}
   terraform-check:
     name: "Check Terraform"
     runs-on: ubuntu-latest
-    needs: 
-     - determine_modules
+    needs:
+      - determine_modules
     strategy:
       matrix:
         module: ${{ needs.determine_modules.outputs.modules }}
