@@ -45,6 +45,6 @@ jobs:
         uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: "Terraform_modules/${{ matrix.module }}"
-          config-file: "../../.terraform_docs.yml"
+          config-file: "../../.terraform.docs.yml"
           output-method: inject
           git-push: "true"
