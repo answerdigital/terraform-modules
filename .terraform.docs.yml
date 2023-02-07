@@ -1,0 +1,22 @@
+formatter: "md"
+
+content: |-
+  
+  {{ .Requirements }}
+  
+  {{ .Providers }}
+  
+  {{ .Modules }}
+  
+  {{ .Resources }}
+  
+  {{ .Inputs }}
+  
+  {{ .Outputs }}
+  
+
+output:
+  file: README.md
+
+settings:
+  hide-empty: true

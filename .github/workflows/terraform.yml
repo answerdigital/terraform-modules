@@ -6,7 +6,7 @@ env:
 on:
   push:
     branches:
-      - main
+      - main, develop
   pull_request:
 
 jobs:
@@ -40,3 +40,11 @@ jobs:
         id: validate
         if: github.event_name == 'pull_request'
         run: terraform validate
+
+      - name: Update README Files
+        uses: terraform-docs/gh-actions@v1.0.0
+        with:
+          working-dir: "Terraform_modules/${{ matrix.module }}"
+          config-file: "../../.terraform_docs.yml"
+          output-method: inject
+          git-push: "true"
