@@ -1,20 +1,5 @@
 formatter: "md"
 
-content: |-
-  
-  {{ .Requirements }}
-  
-  {{ .Providers }}
-  
-  {{ .Modules }}
-  
-  {{ .Resources }}
-  
-  {{ .Inputs }}
-  
-  {{ .Outputs }}
-  
-
 output:
   file: README.md
 
