@@ -5,7 +5,7 @@ If the Availability Zones are not specified the region will be set to the region
 the Terraform project. A public and private subnet will be created in each Availability Zone of this region.
 See image for an example structure when the region in the provider is set to `eu-west-2`.
 
-![Alt text](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
+![VPC Subnet Module Diagram](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
 
 <!-- BEGIN_TF_DOCS -->
 
@@ -22,21 +22,19 @@ repository you can specify a version by appending the below source reference wit
 `?ref=v1.2.0` for version "1.2.0" (for further information please see
 [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories))
 
-<pre><code>
-
+```hcl
 module "vpc_subnet" {
-source       = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
-owner        = "joe_blogs"
-project_name = "example_project_name"
+  source       = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
+  owner        = "joe_blogs"
+  project_name = "example_project_name"
 }
 
 module "vpc_subnet" {
-source              = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
-owner               = "joe_blogs"
-project_name        = "example_project_name"
-azs                 = ["eu-west-1", "eu-west-3"]
-num_public_subnets  = 1
-num_private_subnets = 2
+  source              = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
+  owner               = "joe_blogs"
+  project_name        = "example_project_name"
+  azs                 = ["eu-west-1", "eu-west-3"]
+  num_public_subnets  = 1
+  num_private_subnets = 2
 }
-
-</code></pre>
+```

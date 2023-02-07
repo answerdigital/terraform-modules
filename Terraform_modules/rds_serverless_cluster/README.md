@@ -19,15 +19,16 @@ version by appending the below source reference with `?ref=v1.2.0` for version "
 (for further information please see
 [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)).
 
-<pre><code>module "rds_cluster_setup" {
-source                     = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster?ref=v1.0.0"
-project_name               = var.project_name
-owner                      = var.owner
-database_availability_zone = module.vpc_subnet_setup.az_zones[0]
-database_engine            = var.database_engine
-database_engine_version    = var.database_engine_version
-database_name              = var.database_name
-database_subnet_ids        = module.vpc_subnet_setup.private_subnet_ids
-database_security_groups   = [aws_security_group.rds_cluster.id]
+```hcl
+module "rds_cluster_setup" {
+  source                     = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster?ref=v1.0.0"
+  project_name               = var.project_name
+  owner                      = var.owner
+  database_availability_zone = module.vpc_subnet_setup.az_zones[0]
+  database_engine            = var.database_engine
+  database_engine_version    = var.database_engine_version
+  database_name              = var.database_name
+  database_subnet_ids        = module.vpc_subnet_setup.private_subnet_ids
+  database_security_groups   = [aws_security_group.rds_cluster.id]
 }
-</code></pre>
+```
