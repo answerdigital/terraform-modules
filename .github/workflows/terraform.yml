@@ -4,6 +4,8 @@ env:
   terraform_version: "1.3.7"
 
 on:
+  push:
+    branches: main
   pull_request:
     branches: main
 
@@ -42,6 +44,7 @@ jobs:
     name: "Update Terraform Docs"
     runs-on: ubuntu-latest
     needs: terraform-check
+    if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
