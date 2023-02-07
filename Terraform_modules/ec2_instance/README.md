@@ -3,7 +3,6 @@
 This Terraform module will produce an EC2 instance which can be accessed via ssh or session manager via the aws management console. It also allows the possibility of an elastic ip being associated with the EC2 instance.
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
 | Name | Version |
@@ -17,8 +16,6 @@ This Terraform module will produce an EC2 instance which can be accessed via ssh
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 | <a name="provider_tls"></a> [tls](#provider\_tls) | >= 4.0.4 |
-
-
 
 ## Resources
 

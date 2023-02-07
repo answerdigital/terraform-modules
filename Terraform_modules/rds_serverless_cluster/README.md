@@ -8,7 +8,6 @@ These secrets can be viewed in the Secrets Manager section of the aws management
 These secrets are also set as outputs of the module and can be referenced throughout your terraform code.
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
 | Name | Version |
@@ -22,8 +21,6 @@ These secrets are also set as outputs of the module and can be referenced throug
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.4.3 |
-
-
 
 ## Resources
 

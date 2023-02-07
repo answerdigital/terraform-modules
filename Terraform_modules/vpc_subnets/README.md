@@ -8,7 +8,6 @@ See image for an example structure when the region in the provider is set to `eu
 ![VPC Subnet Module Diagram](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
 | Name | Version |
@@ -20,8 +19,6 @@ See image for an example structure when the region in the provider is set to `eu
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
-
-
 
 ## Resources
 
