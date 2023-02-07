@@ -6,7 +6,7 @@ env:
 on:
   push:
     branches:
-      - main, develop
+      - develop
   pull_request:
 
 jobs:
@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          ref: develop
 
       - name: Setup
         uses: hashicorp/setup-terraform@v2
