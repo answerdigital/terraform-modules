@@ -32,7 +32,7 @@ jobs:
     needs: determine-modules
     strategy:
       matrix:
-        module: ${{ fromJSON(needs.determine_modules.outputs.modules) }}
+        module: ${{ fromJSON(needs.determine-modules.outputs.modules) }}
     defaults:
       run:
         working-directory: "Terraform_modules/${{ matrix.module }}"
