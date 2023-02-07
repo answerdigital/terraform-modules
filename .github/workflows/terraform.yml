@@ -4,10 +4,8 @@ env:
   terraform_version: "1.3.7"
 
 on:
-  push:
-    branches:
-      - develop
   pull_request:
+    branches: main
 
 jobs:
   terraform-check:
@@ -15,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        module: [ "ec2_instance", "rds_serverless_cluster", "vpc_subnets"]
+        module: ["ec2_instance", "rds_serverless_cluster", "vpc_subnets"]
     defaults:
       run:
         working-directory: "Terraform_modules/${{ matrix.module }}"
@@ -23,7 +21,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
         with:
-          ref: develop
+          ref: ${{ github.event.pull_request.head.ref }}
 
       - name: Setup
         uses: hashicorp/setup-terraform@v2
@@ -40,13 +38,12 @@ jobs:
 
       - name: Terraform Validate
         id: validate
-        if: github.event_name == 'pull_request'
         run: terraform validate
 
       - name: Update README Files
         uses: terraform-docs/gh-actions@v1.0.0
         with:
           working-dir: "Terraform_modules/${{ matrix.module }}"
-          config-file: "../../.terraform.docs.yml"
+          config-file: "../../.terraform-docs.yml"
           output-method: inject
           git-push: "true"
