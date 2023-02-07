@@ -1,0 +1,7 @@
+formatter: "md"
+
+output:
+  file: README.md
+
+settings:
+  hide-empty: true

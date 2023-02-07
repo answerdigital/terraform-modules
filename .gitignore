@@ -1,4 +1,4 @@
-.idea/*
+.idea/
 .terraform/
 .terraform.lock.hcl
 terraform.tfstate

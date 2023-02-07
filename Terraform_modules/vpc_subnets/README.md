@@ -1,99 +1,86 @@
 # Terraform VPC and Subnets Module
 
 This Terraform module will produce a VPC and public and private subnets in each Availability Zone specified.
-If the Availability Zones are not specified the region will be set to the region specified in the provider for 
+If the Availability Zones are not specified the region will be set to the region specified in the provider for
 the Terraform project. A public and private subnet will be created in each Availability Zone of this region.
 See image for an example structure when the region in the provider is set to `eu-west-2`.
 
-![Alt text](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
+![VPC Subnet Module Diagram](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
 
-# Inputs
+<!-- BEGIN_TF_DOCS -->
+## Requirements
 
-**project_name (Compulsory)**
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
 
-This is used to label the VPC as "`project_name`-vpc".
+## Providers
 
-**owner (Compulsory)**
+| Name | Version |
+|------|---------|
+| <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
 
-This is used to identify AWS resources through its tags.
+## Resources
 
+| Name | Type |
+|------|------|
+| [aws_internet_gateway.ig](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/internet_gateway) | resource |
+| [aws_route_table.route_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table) | resource |
+| [aws_route_table_association.public_subnet_rt_asso](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/route_table_association) | resource |
+| [aws_subnet.private_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_subnet.public_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
+| [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
+| [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
-**vpc_cidr (Optional)**
+## Inputs
 
-This specifies the CIDR block for the VPC. The default value is `10.0.0.0/16`
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_azs"></a> [azs](#input\_azs) | This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your terraform project. | `list(string)` | `[]` | no |
+| <a name="input_enable_dns_hostnames"></a> [enable\_dns\_hostnames](#input\_enable\_dns\_hostnames) | This allows AWS DNS hostname support to be switched on or off. | `bool` | `true` | no |
+| <a name="input_enable_dns_support"></a> [enable\_dns\_support](#input\_enable\_dns\_support) | This allows AWS DNS support to be switched on or off. | `bool` | `true` | no |
+| <a name="input_ig_cidr"></a> [ig\_cidr](#input\_ig\_cidr) | This specifies the CIDR block for the internet gateway. | `string` | `"0.0.0.0/0"` | no |
+| <a name="input_ig_ipv6_cidr"></a> [ig\_ipv6\_cidr](#input\_ig\_ipv6\_cidr) | This specifies the IPV6 CIDR block for the internet gateway. | `string` | `"::/0"` | no |
+| <a name="input_num_private_subnets"></a> [num\_private\_subnets](#input\_num\_private\_subnets) | This is a number specifying how many private subnets you want. Setting this to its default value of `-1` will result in `x` private subnets where `x` is the number of Availability Zones. If the number of private subnets is greater than the number of Availability Zones the private subnets will be spread out evenly over the available AZs. The CIDR values used are of the form `10.0.{i}.0/24` where `i` starts at 101 and increases by 1 for each private subnet. | `number` | `-1` | no |
+| <a name="input_num_public_subnets"></a> [num\_public\_subnets](#input\_num\_public\_subnets) | This is a number specifying how many public subnets you want. Setting this to its default value of `-1` will result in `x` public subnets where `x` is the number of Availability Zones. If the number of public subnets is greater than the number of Availability Zones the public subnets will be spread out evenly over the available AZs. The CIDR values used are of the form `10.0.{i}.0/24` where `i` starts at 1 and increases by 1 for each public subnet. | `number` | `-1` | no |
+| <a name="input_owner"></a> [owner](#input\_owner) | This is used to identify AWS resources through its tags. | `string` | n/a | yes |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the VPC as "`project_name`-vpc". | `string` | n/a | yes |
+| <a name="input_vpc_cidr"></a> [vpc\_cidr](#input\_vpc\_cidr) | This specifies the CIDR block for the VPC. | `string` | `"10.0.0.0/16"` | no |
 
-**enable_dns_support (Optional)**
+## Outputs
 
-This is a boolean and allows AWS DNS support to be switched on or off. This defaults to true and it 
-is recommended to leave this as true.  
-
-**enable_dns_hostnames (Optional)**
-
-This is a boolean and allows AWS DNS hostname support to be switched on or off. This defaults to true.  
-
-**azs (Optional)**
-
-This is a list that specifies all the Availability Zones that will have a public and private subnet in it.
-Note that if `azs` is specified its length has to be equal to that of `public_subnet_cidrs`and `private_subnet_cidrs`.
-The default value is a list of all the Availability Zones in the region you specify when defining the provider 
-in your terraform project. 
-
-**num_public_subnets (Optional)**
-
-This is a number specifying how many public subnets you want. Not specifying this will result in `x` public subnets 
-where `x` is the number of az zones. If the number specified is greater than the number of Availability Zones (AZs) 
-the public subnets will be spread out evenly over the available AZs. The CIDR values used are of the form 
-`10.0.{i}.0/24` where `i` starts at 1 and increases by 1 for each public subnet.
-
-**num_private_subnets (Optional)**
-
-This is a number specifying how many public subnets you want. Not specifying this will result in `x` public subnets 
-where `x` is the number of az zones. If the number specified is greater than the number of Availability Zones (AZs) 
-the public subnets will be spread out evenly over the available AZs. The CIDR values used are of the form 
-`10.0.10{i}.0/24` where `i` starts at 1 and increases by 1 for each public subnet.
-
-**ig_cidr (Optional)**
-
-This specifies the CIDR block for the internet gateway. The default value is `0.0.0.0/0` which allows all traffic 
-through the gateway.
-
-
-# Outputs
-
-**vpc_id**
-
-This output references the ID of the VPC.
-
-**az_zones**
-
-This output lists the Availability Zones set up in the vpc. 
-
-**public_subnet_ids**
-
-This output lists the IDs of the public subnets in an array and are in the order of the Availability Zone (AZ) array
-(e.g. the first element of `public_subnet_ids` will be located in the region given by the first element of `az_zones`). 
-If there are more public subnets than AZs they will be spread out so that the `i`th public subnet is located in the 
-`i%j`th availability zone where `j` is the number of AZs and `%` is the modulo operator. 
-
-**private_subnet_ids**
-
-This output lists the IDs of the private subnets in an array and are in the order of the Availability Zone array 
-(e.g. the first element of `public_subnet_ids` will be located in the region given by the first element of `az_zones`). 
-If there are more private subnets than AZs they will be spread out so that the `i`th public subnet is located in the 
-`i%j`th availability zone where `j` is the number of AZs and `%` is the modulo operator. 
-
+| Name | Description |
+|------|-------------|
+| <a name="output_az_zones"></a> [az\_zones](#output\_az\_zones) | A list of the Availability Zones that have been used. This output is of type `string`. |
+| <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | A list of the private subnet IDs that have been created. This output is of type `list(string)`. |
+| <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | A list of the public subnet IDs that have been created. This output is of type `list(string)`. |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC that has been created. This output is of type `list(string)`. |
+<!-- END_TF_DOCS -->
 
 # Example Usage
 
-Below is an example of how you would call the `vpc_subnet` module in your terraform code. In this example we show two ways of calling the module; the first is calling it directly from this github repository, the second (which is commented out) is how you would call it if the terraform module file was copied to your local root file. Note that when calling it directly from the github repository you can specify a version by appending the below source reference with `?ref=v1.2.0` for version "1.2.0" (for further information please see https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)
+Below are examples of how you would call the `vpc_subnet` module in your terraform code.
+In this example we show two ways the module can be used;
+the first uses the module to create a public and private subnet on each Availability Zone in your defined region,
+the second uses the module to create 1 public subnet in the AZ `eu-west-1` and 2 private subnets in `eu-west-1`
+and `eu-west-3` respectively. Note that when calling the module directly from the github
+repository you can specify a version by appending the below source reference with
+`?ref=v1.2.0` for version "1.2.0" (for further information please see
+[here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories))
 
-<pre><code>module "vpc_subnet_setup" {
-  source = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets"
-  # source = "./Terraform_modules/vpc_subnets"
+```hcl
+module "vpc_subnet" {
+  source       = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
+  owner        = "joe_blogs"
+  project_name = "example_project_name"
+}
 
-  project_name = "example_project"
-  owner = "answerking-python-team"
-  num_public_subnets = 1
+module "vpc_subnet" {
+  source              = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/vpc_subnets?ref=v1.0.0"
+  owner               = "joe_blogs"
+  project_name        = "example_project_name"
+  azs                 = ["eu-west-1", "eu-west-3"]
+  num_public_subnets  = 1
   num_private_subnets = 2
 }
-</code></pre>
+```
