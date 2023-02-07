@@ -16,14 +16,14 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Extract version from package.json
+      - name: Extract Dirs from Terraform_Modules
         uses: sergeysova/jq-action@v2
-        id: version
+        id: get_json
         with:
           cmd: ls ./Terraform_modules/ | jq -R -s -c 'split("\n")[:-1]'
       - name: Pass to Var
         env:
-          ECHO_OUTPUT: ${{ steps.echo_output.outputs.stdout }}
+          ECHO_OUTPUT: ${{ steps.get_json.outputs.value }}
         run: echo "modules=$ECHO_OUTPUT" >> $GITHUB_OUTPUT
 
   terraform-check:
