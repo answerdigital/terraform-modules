@@ -1,0 +1,33 @@
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: daily
+  - package-ecosystem: terraform
+    directory: /Terraform_modules/ec2_instance
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
+  - package-ecosystem: terraform
+    directory: /Terraform_modules/rds_serverless_cluster
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
+  - package-ecosystem: terraform
+    directory: /Terraform_modules/vpc_subnets
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
