@@ -79,7 +79,9 @@ jobs:
   dependabot:
     name: Update Dependabot Entries
     runs-on: ubuntu-latest
-    needs: determine-modules
+    needs:
+      - determine-modules
+      - terraform-docs # to avoid race condition with both committing
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
