@@ -13,6 +13,8 @@ jobs:
   determine-modules:
     name: "Determine Terraform Modules"
     runs-on: ubuntu-latest
+    outputs:
+      modules: ${{ steps.output-var.outputs.modules }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -22,11 +24,10 @@ jobs:
         with:
           cmd: ls ./Terraform_modules/ | jq -R -s -c 'split("\n")[:-1]'
       - name: Pass to Var
+        id: output-var
         env:
           ECHO_OUTPUT: ${{ steps.get-json.outputs.value }}
-        run: |
-          echo $ECHO_OUTPUT
-          echo "modules=$ECHO_OUTPUT" >> $GITHUB_OUTPUT
+        run: echo "modules=$ECHO_OUTPUT" >> $GITHUB_OUTPUT
 
   terraform-check:
     name: "Check Terraform"
