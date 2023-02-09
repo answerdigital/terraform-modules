@@ -57,7 +57,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Security
-	uses: aquasecurity/tfsec-action@v1.0.0
+        uses: aquasecurity/tfsec-action@v1.0.0
 
   terraform-docs:
     name: "Update Terraform Docs"
