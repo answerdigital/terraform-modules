@@ -44,6 +44,11 @@ variable "database_availability_zone" {
 /*
   OPTIONAL VARIABLES
 */
+
+variable "kms_customer_managed_key" {
+  default = ""
+}
+
 variable "database_serverlessv2_scaling_max_capacity" {
   type        = number
   default     = 1.0
