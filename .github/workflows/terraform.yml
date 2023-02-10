@@ -61,6 +61,7 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.0
         with:
           soft_fail: true
+	  working_directory: "Terraform_modules/${{ matrix.module }}"
 
   terraform-docs:
     name: "Update Terraform Docs"
