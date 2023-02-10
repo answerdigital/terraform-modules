@@ -57,6 +57,12 @@ jobs:
         id: validate
         run: terraform validate
 
+      - name: Terraform Security
+        uses: aquasecurity/tfsec-action@v1.0.0
+        with:
+          soft_fail: true
+          working_directory: "Terraform_modules/${{ matrix.module }}"
+
   terraform-docs:
     name: "Update Terraform Docs"
     runs-on: ubuntu-latest
