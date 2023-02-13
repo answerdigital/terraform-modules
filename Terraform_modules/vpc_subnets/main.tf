@@ -2,6 +2,66 @@ terraform {
   required_version = "~> 1.3"
 }
 
+resource "aws_flow_log" "flow_log" {
+  iam_role_arn    = aws_iam_role.iam_role.arn
+  log_destination = aws_cloudwatch_log_group.log_group.arn
+  traffic_type    = var.vpc_flow_logs_traffic_type
+  vpc_id          = aws_vpc.vpc.id
+  count           = enable_vpc_flow_logs ? 1 : 0
+}
+
+resource "aws_cloudwatch_log_group" "log_group" {
+  name  = "${var.project_name}-vpc-flow-logs"
+  count = var.enable_vpc_flow_logs ? 1 : 0
+}
+
+resource "aws_iam_role" "iam_role" {
+  name  = "vpc-logs-iam"
+  count = enable_vpc_flow_logs ? 1 : 0
+
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "",
+      "Effect": "Allow",
+      "Principal": {
+        "Service": "vpc-flow-logs.amazonaws.com"
+      },
+      "Action": "sts:AssumeRole"
+    }
+  ]
+}
+EOF
+}
+
+resource "aws_iam_role_policy" "example" {
+  name  = "vpc-iam-logs-policy"
+  role  = aws_iam_role.iam_role.id
+  count = enable_vpc_flow_logs ? 1 : 0
+
+  policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": [
+        "logs:CreateLogGroup",
+        "logs:CreateLogStream",
+        "logs:PutLogEvents",
+        "logs:DescribeLogGroups",
+        "logs:DescribeLogStreams"
+      ],
+      "Effect": "Allow",
+      "Resource": "*"
+    }
+  ]
+}
+EOF
+}
+
+
 resource "aws_vpc" "vpc" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = var.enable_dns_support
