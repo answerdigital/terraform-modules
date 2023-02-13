@@ -50,6 +50,13 @@ variable "database_serverlessv2_scaling_max_capacity" {
   description = "This sets the maximum scaling capacity of the severless database in Aurora capacity units (ACU)."
 }
 
+
+variable "backup_retention_period" {
+  type        = number
+  default     = 1
+  description = "This sets the retention period for backups, note: 1 day is a short time, but this has cost implications if higher"
+}
+
 variable "enable_encrypted_storage" {
   type        = bool
   default     = true

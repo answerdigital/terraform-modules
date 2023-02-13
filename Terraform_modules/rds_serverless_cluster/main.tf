@@ -36,18 +36,19 @@ resource "aws_db_subnet_group" "private_db_subnet_group" {
 resource "aws_rds_cluster" "rds_cluster" {
   depends_on = [aws_secretsmanager_secret.aurora_db_secret]
 
-  cluster_identifier     = "${var.project_name}-cluster"
-  engine                 = var.database_engine
-  engine_mode            = "provisioned"
-  engine_version         = var.database_engine_version
-  database_name          = var.database_name
-  master_username        = jsondecode(aws_secretsmanager_secret_version.aurora_db_secret_version.secret_string)["username"]
-  master_password        = jsondecode(aws_secretsmanager_secret_version.aurora_db_secret_version.secret_string)["password"]
-  skip_final_snapshot    = true
-  storage_encrypted      = var.enable_encrypted_storage
-  deletion_protection    = false
-  vpc_security_group_ids = var.database_security_groups
-  db_subnet_group_name   = aws_db_subnet_group.private_db_subnet_group.name
+  cluster_identifier      = "${var.project_name}-cluster"
+  engine                  = var.database_engine
+  engine_mode             = "provisioned"
+  engine_version          = var.database_engine_version
+  database_name           = var.database_name
+  master_username         = jsondecode(aws_secretsmanager_secret_version.aurora_db_secret_version.secret_string)["username"]
+  master_password         = jsondecode(aws_secretsmanager_secret_version.aurora_db_secret_version.secret_string)["password"]
+  skip_final_snapshot     = true
+  storage_encrypted       = var.enable_encrypted_storage
+  backup_retention_period = var.backup_retention_period
+  deletion_protection     = false
+  vpc_security_group_ids  = var.database_security_groups
+  db_subnet_group_name    = aws_db_subnet_group.private_db_subnet_group.name
 
   serverlessv2_scaling_configuration {
     max_capacity = var.database_serverlessv2_scaling_max_capacity
