@@ -27,6 +27,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 | Name | Type |
 |------|------|
 | [aws_db_subnet_group.private_db_subnet_group](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/db_subnet_group) | resource |
+| [aws_kms_key.secrets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_rds_cluster.rds_cluster](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster) | resource |
 | [aws_rds_cluster_instance.rds_cluster_instance](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/rds_cluster_instance) | resource |
 | [aws_secretsmanager_secret.aurora_db_secret](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/secretsmanager_secret) | resource |
@@ -47,6 +48,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 | <a name="input_database_serverlessv2_scaling_max_capacity"></a> [database\_serverlessv2\_scaling\_max\_capacity](#input\_database\_serverlessv2\_scaling\_max\_capacity) | This sets the maximum scaling capacity of the severless database in Aurora capacity units (ACU). | `number` | `1` | no |
 | <a name="input_database_serverlessv2_scaling_min_capacity"></a> [database\_serverlessv2\_scaling\_min\_capacity](#input\_database\_serverlessv2\_scaling\_min\_capacity) | This sets the minimum scaling capacity of the severless database in Auroracapacity units (ACU). | `number` | `0.5` | no |
 | <a name="input_database_subnet_ids"></a> [database\_subnet\_ids](#input\_database\_subnet\_ids) | This is a list of subnet ids that the database cluster will be created across. The minimum number of subnets that can be supplied is 2. | `list(string)` | n/a | yes |
+| <a name="input_kms_customer_managed_key"></a> [kms\_customer\_managed\_key](#input\_kms\_customer\_managed\_key) | This allows the usage of a KMS Key managed by you, by default this is managed by Amazon, enable this to control if you wish to use your own Cryptographic key | `bool` | `false` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | This is used to specify the owner of the resources in this module. | `string` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the resources of the module. | `string` | n/a | yes |
 
