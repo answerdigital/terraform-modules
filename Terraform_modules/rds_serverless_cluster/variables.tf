@@ -46,7 +46,9 @@ variable "database_availability_zone" {
 */
 
 variable "kms_customer_managed_key" {
-  default = ""
+  type    = bool
+  default = false
+  description = "This allows the usage of a KMS Key managed by you, by default this is managed by Amazon, enable this to control if you wish to use your own Cryptographic key"
 }
 
 variable "database_serverlessv2_scaling_max_capacity" {
