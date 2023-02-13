@@ -50,6 +50,12 @@ variable "database_serverlessv2_scaling_max_capacity" {
   description = "This sets the maximum scaling capacity of the severless database in Aurora capacity units (ACU)."
 }
 
+variable "enable_encrypted_storage" {
+  type = bool
+  default = true
+  description = "Enables encrypted storage of the database"
+}
+
 variable "database_serverlessv2_scaling_min_capacity" {
   type        = number
   default     = 0.5

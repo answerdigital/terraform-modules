@@ -44,7 +44,7 @@ resource "aws_rds_cluster" "rds_cluster" {
   master_username        = jsondecode(aws_secretsmanager_secret_version.aurora_db_secret_version.secret_string)["username"]
   master_password        = jsondecode(aws_secretsmanager_secret_version.aurora_db_secret_version.secret_string)["password"]
   skip_final_snapshot    = true
-  storage_encrypted      = false
+  storage_encrypted      = var.enable_encrypted_storage
   deletion_protection    = false
   vpc_security_group_ids = var.database_security_groups
   db_subnet_group_name   = aws_db_subnet_group.private_db_subnet_group.name
