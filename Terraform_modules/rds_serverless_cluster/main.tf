@@ -16,7 +16,7 @@ resource "aws_kms_key" "secrets" {
 
 resource "aws_secretsmanager_secret" "aurora_db_secret" {
   name       = "${var.project_name}-aurora-db-secret-${random_id.secrets_id.hex}"
-  kms_key_id = var.kms_customer_managed_key == true ? aws_kms_key[0].secrets.arn : "aws/secretsmanager"
+  kms_key_id = var.kms_customer_managed_key == true ? aws_kms_key.secrets[0].arn : "aws/secretsmanager"
 }
 
 resource "aws_secretsmanager_secret_version" "aurora_db_secret_version" {
