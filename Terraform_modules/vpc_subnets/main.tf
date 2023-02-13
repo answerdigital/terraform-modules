@@ -7,7 +7,7 @@ resource "aws_flow_log" "flow_log" {
   log_destination = aws_cloudwatch_log_group.log_group.arn
   traffic_type    = var.vpc_flow_logs_traffic_type
   vpc_id          = aws_vpc.vpc.id
-  count           = enable_vpc_flow_logs ? 1 : 0
+  count           = var.enable_vpc_flow_logs ? 1 : 0
 }
 
 resource "aws_cloudwatch_log_group" "log_group" {
@@ -17,7 +17,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
 
 resource "aws_iam_role" "iam_role" {
   name  = "vpc-logs-iam"
-  count = enable_vpc_flow_logs ? 1 : 0
+  count = var.enable_vpc_flow_logs ? 1 : 0
 
   assume_role_policy = <<EOF
 {
@@ -39,7 +39,7 @@ EOF
 resource "aws_iam_role_policy" "example" {
   name  = "vpc-iam-logs-policy"
   role  = aws_iam_role.iam_role.id
-  count = enable_vpc_flow_logs ? 1 : 0
+  count = var.enable_vpc_flow_logs ? 1 : 0
 
   policy = <<EOF
 {
