@@ -23,6 +23,7 @@ variable "enable_vpc_flow_logs" {
 variable "vpc_flow_logs_traffic_type" {
   type        = string
   description = "The Type of traffic to log, Either Accept, Reject or All. Requires vpc_flow_logs to be true"
+  default     = "ALL"
 }
 
 
