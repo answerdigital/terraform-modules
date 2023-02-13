@@ -38,6 +38,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_backup_retention_period"></a> [backup\_retention\_period](#input\_backup\_retention\_period) | This sets the retention period for backups, note: 1 day is a short time, but this has cost implications if higher | `number` | `1` | no |
 | <a name="input_database_auto_minor_version_upgrade"></a> [database\_auto\_minor\_version\_upgrade](#input\_database\_auto\_minor\_version\_upgrade) | This is a boolean value determining if minor version upgrades for your database\_engine\_version should be applied automatically to your server. | `bool` | `false` | no |
 | <a name="input_database_availability_zone"></a> [database\_availability\_zone](#input\_database\_availability\_zone) | This is the availability zone that the database instance will be created on. | `string` | n/a | yes |
 | <a name="input_database_engine"></a> [database\_engine](#input\_database\_engine) | This specifies the engine the database will use. This value has to be one of two options: aurora-mysql, aurora-postgresql | `string` | n/a | yes |
