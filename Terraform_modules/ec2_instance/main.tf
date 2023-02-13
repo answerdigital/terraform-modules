@@ -58,6 +58,9 @@ resource "aws_instance" "ec2" {
   metadata_options {
     http_tokens = "required"
   }
+  root_block_device {
+    encrypted = true
+  }
 
   availability_zone           = var.availability_zone
   subnet_id                   = var.subnet_id
