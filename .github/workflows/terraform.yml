@@ -58,7 +58,7 @@ jobs:
         run: terraform validate
 
       - name: Terraform Security
-        uses: aquasecurity/tfsec-action@v1.0.0
+        uses: aquasecurity/tfsec-action@v1.0.3
         with:
           soft_fail: true
           working_directory: "Terraform_modules/${{ matrix.module }}"
