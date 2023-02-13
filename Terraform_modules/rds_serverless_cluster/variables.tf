@@ -53,7 +53,7 @@ variable "database_serverlessv2_scaling_max_capacity" {
 variable "enable_encrypted_storage" {
   type        = bool
   default     = true
-  description = "Enables encrypted storage of the database"
+  description = "Enables encrypted storage for the database"
 }
 
 variable "database_serverlessv2_scaling_min_capacity" {
