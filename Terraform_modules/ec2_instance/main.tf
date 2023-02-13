@@ -55,6 +55,9 @@ resource "aws_instance" "ec2" {
   instance_type = var.ec2_instance_type
   key_name      = aws_key_pair.key_pair.key_name
   ami           = var.ami_id
+  metadata_options {
+    http_tokens = "required"
+  }
 
   availability_zone           = var.availability_zone
   subnet_id                   = var.subnet_id
