@@ -3,8 +3,8 @@ terraform {
 }
 
 resource "aws_flow_log" "flow_log" {
-  iam_role_arn    = aws_iam_role.iam_role.arn
-  log_destination = aws_cloudwatch_log_group.log_group.arn
+  iam_role_arn    = aws_iam_role.iam_role[0].arn
+  log_destination = aws_cloudwatch_log_group.log_group[0].arn
   traffic_type    = var.vpc_flow_logs_traffic_type
   vpc_id          = aws_vpc.vpc.id
   count           = var.enable_vpc_flow_logs ? 1 : 0
@@ -38,7 +38,7 @@ EOF
 
 resource "aws_iam_role_policy" "example" {
   name  = "vpc-iam-logs-policy"
-  role  = aws_iam_role.iam_role.id
+  role  = aws_iam_role.iam_role[0].id
   count = var.enable_vpc_flow_logs ? 1 : 0
 
   policy = <<EOF
