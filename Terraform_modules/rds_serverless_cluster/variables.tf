@@ -55,6 +55,11 @@ variable "backup_retention_period" {
   type        = number
   default     = 1
   description = "This sets the retention period for backups, note: 1 day is a short time, but this has cost implications if higher"
+  validation {
+    condition = length(var.backup_retention_period) <= 35
+    error_message = "The maximum retention period that can be set is 35"
+  }
+
 }
 
 variable "enable_encrypted_storage" {
