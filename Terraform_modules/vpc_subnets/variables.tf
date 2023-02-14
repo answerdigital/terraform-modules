@@ -26,11 +26,10 @@ variable "vpc_flow_logs_traffic_type" {
   default     = "ALL"
 
   validation {
-    condition = contains(["ALL", "ACCEPT", "REJECT"])
+    condition     = contains(["ALL", "ACCEPT", "REJECT"], var.vpc_flow_logs_traffic_type)
+    error_message = "Valid values for traffic_type: ALL, ACCEPT, REJECT"
   }
-
 }
-
 
 
 variable "enable_dns_support" {
