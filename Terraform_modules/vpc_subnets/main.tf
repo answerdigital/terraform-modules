@@ -16,7 +16,7 @@ resource "aws_cloudwatch_log_group" "log_group" {
 }
 
 resource "aws_iam_role" "iam_role" {
-  name  = "vpc-logs-iam"
+  name  = "${var.project_name}-vpc-logs-iam"
   count = var.enable_vpc_flow_logs ? 1 : 0
 
   assume_role_policy = <<EOF
@@ -36,8 +36,8 @@ resource "aws_iam_role" "iam_role" {
 EOF
 }
 
-resource "aws_iam_role_policy" "example" {
-  name  = "vpc-iam-logs-policy"
+resource "aws_iam_role_policy" "iam_role_policy" {
+  name  = "${var.project_name}-vpc-iam-logs-policy"
   role  = aws_iam_role.iam_role[0].id
   count = var.enable_vpc_flow_logs ? 1 : 0
 
