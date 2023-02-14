@@ -27,7 +27,7 @@ variable "vpc_flow_logs_traffic_type" {
 
   validation {
     condition     = contains(["ALL", "ACCEPT", "REJECT"], var.vpc_flow_logs_traffic_type)
-    error_message = "Valid values for traffic_type: ALL, ACCEPT, REJECT"
+    error_message = "Valid values for traffic_type: ALL, ACCEPT, REJECT."
   }
 }
 
