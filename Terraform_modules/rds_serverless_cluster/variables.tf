@@ -26,6 +26,16 @@ variable "database_engine" {
   }
 }
 
+variable "replication_instances" {
+  type        = number
+  description = "The number of replicated instances, set to 0 to disable replication."
+
+  validation {
+    condition = var.replication_instances <= 5
+    error_message = "Max number of replicas is 5, this is for safety purposes only."
+  }
+}
+
 variable "database_engine_version" {
   type        = string
   description = "This is the version of the engine you would like."
@@ -36,9 +46,13 @@ variable "database_subnet_ids" {
   description = "This is a list of subnet ids that the database cluster will be created across. The minimum number of subnets that can be supplied is 2."
 }
 
-variable "database_availability_zone" {
-  type        = string
-  description = "This is the availability zone that the database instance will be created on."
+variable "database_availability_zones" {
+  type        = list(string)
+  description = "This is a list of availability zones that the database instances will be created on, the AZ's will be applied on the replicas in which they are provided"
+
+  validation {
+    condition = length(var.database_availability_zones) == var.replication_instances + 1
+  }
 }
 
 /*

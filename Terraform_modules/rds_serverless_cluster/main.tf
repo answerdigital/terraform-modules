@@ -38,7 +38,7 @@ resource "aws_rds_cluster" "rds_cluster" {
 
   cluster_identifier      = "${var.project_name}-cluster"
   engine                  = var.database_engine
-  engine_mode             = "provisioned"
+  engine_mode             = var.replication_instances > 0 ? "global" : "provisioned"
   engine_version          = var.database_engine_version
   database_name           = var.database_name
   master_username         = jsondecode(aws_secretsmanager_secret_version.aurora_db_secret_version.secret_string)["username"]
@@ -61,7 +61,8 @@ resource "aws_rds_cluster" "rds_cluster" {
   }
 }
 
-resource "aws_rds_cluster_instance" "rds_cluster_instance" {
+resource "aws_rds_cluster_instance" "rds_cluster_instances" {
+  count                = var.replication_instances + 1
   cluster_identifier   = aws_rds_cluster.rds_cluster.id
   instance_class       = "db.serverless"
   engine               = aws_rds_cluster.rds_cluster.engine
@@ -69,10 +70,10 @@ resource "aws_rds_cluster_instance" "rds_cluster_instance" {
   db_subnet_group_name = aws_db_subnet_group.private_db_subnet_group.name
 
   auto_minor_version_upgrade = var.database_auto_minor_version_upgrade
-  availability_zone          = var.database_availability_zone
+  availability_zone          = var.database_availability_zones[count.index]
 
   tags = {
-    Name  = "${var.project_name}-rds-cluster-instance"
+    Name  = "${var.project_name}-rds-cluster-instance-${var.replication_instances + 1}"
     Owner = var.owner
   }
 }
