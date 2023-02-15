@@ -15,6 +15,23 @@ variable "vpc_cidr" {
   default     = "10.0.0.0/16"
 }
 
+variable "enable_vpc_flow_logs" {
+  type        = bool
+  description = "Whether to enable VPC Flow Logs for this VPC, this has cost but is considered a security risk without"
+}
+
+variable "vpc_flow_logs_traffic_type" {
+  type        = string
+  description = "The Type of traffic to log, Requires vpc_flow_logs to be true"
+  default     = "ALL"
+
+  validation {
+    condition     = contains(["ALL", "ACCEPT", "REJECT"], var.vpc_flow_logs_traffic_type)
+    error_message = "Valid values for traffic_type: ALL, ACCEPT, REJECT."
+  }
+}
+
+
 variable "enable_dns_support" {
   type        = bool
   description = "This allows AWS DNS support to be switched on or off."
