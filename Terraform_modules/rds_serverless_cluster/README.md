@@ -38,6 +38,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_backup_retention_period"></a> [backup\_retention\_period](#input\_backup\_retention\_period) | This sets the retention period for backups, note: 1 day is a short time, but this has cost implications if higher | `number` | `1` | no |
 | <a name="input_database_auto_minor_version_upgrade"></a> [database\_auto\_minor\_version\_upgrade](#input\_database\_auto\_minor\_version\_upgrade) | This is a boolean value determining if minor version upgrades for your database\_engine\_version should be applied automatically to your server. | `bool` | `false` | no |
 | <a name="input_database_availability_zone"></a> [database\_availability\_zone](#input\_database\_availability\_zone) | This is the availability zone that the database instance will be created on. | `string` | n/a | yes |
 | <a name="input_database_engine"></a> [database\_engine](#input\_database\_engine) | This specifies the engine the database will use. This value has to be one of two options: aurora-mysql, aurora-postgresql | `string` | n/a | yes |
@@ -47,6 +48,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 | <a name="input_database_serverlessv2_scaling_max_capacity"></a> [database\_serverlessv2\_scaling\_max\_capacity](#input\_database\_serverlessv2\_scaling\_max\_capacity) | This sets the maximum scaling capacity of the severless database in Aurora capacity units (ACU). | `number` | `1` | no |
 | <a name="input_database_serverlessv2_scaling_min_capacity"></a> [database\_serverlessv2\_scaling\_min\_capacity](#input\_database\_serverlessv2\_scaling\_min\_capacity) | This sets the minimum scaling capacity of the severless database in Auroracapacity units (ACU). | `number` | `0.5` | no |
 | <a name="input_database_subnet_ids"></a> [database\_subnet\_ids](#input\_database\_subnet\_ids) | This is a list of subnet ids that the database cluster will be created across. The minimum number of subnets that can be supplied is 2. | `list(string)` | n/a | yes |
+| <a name="input_enable_encrypted_storage"></a> [enable\_encrypted\_storage](#input\_enable\_encrypted\_storage) | Enables encrypted storage for the database | `bool` | `true` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | This is used to specify the owner of the resources in this module. | `string` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the resources of the module. | `string` | n/a | yes |
 
