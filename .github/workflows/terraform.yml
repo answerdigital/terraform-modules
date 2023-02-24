@@ -77,7 +77,7 @@ jobs:
       - name: Update README files
         uses: terraform-docs/gh-actions@v1.0.0
         with:
-          find-dir: "Terraform_modules"
+          find-dir: "modules"
           config-file: "${{ github.workspace }}/.terraform-docs.yml"
           output-method: inject
           git-push: "true"
@@ -105,7 +105,7 @@ jobs:
           jq -r '.[]' <<< "$MODULES" | while read MODULE; do
             cat <<EOF >> .github/dependabot.yml
             - package-ecosystem: terraform
-              directory: /Terraform_modules/$MODULE
+              directory: /modules/$MODULE
               schedule:
                 interval: daily
               ignore:
