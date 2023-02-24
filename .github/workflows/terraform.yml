@@ -23,7 +23,7 @@ jobs:
         env:
           ECHO_OUTPUT: ${{ steps.get-json.outputs.value }}
         run: |
-          JQ_OUTPUT=$(ls ./Terraform_modules/ | jq -R -s -c 'split("\n")[:-1]')
+          JQ_OUTPUT=$(find modules/ -mindepth 2 -type d  |  jq -R -s -c 'split("\n")[:-1]')
           echo "modules=$JQ_OUTPUT" >> $GITHUB_OUTPUT
 
   terraform-check:
@@ -35,7 +35,7 @@ jobs:
         module: ${{ fromJSON(needs.determine-modules.outputs.modules) }}
     defaults:
       run:
-        working-directory: "Terraform_modules/${{ matrix.module }}"
+        working-directory: "${{ matrix.module }}"
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -61,7 +61,7 @@ jobs:
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
           soft_fail: true
-          working_directory: "Terraform_modules/${{ matrix.module }}"
+          working_directory: "${{ matrix.module }}"
 
   terraform-docs:
     name: "Update Terraform Docs"
