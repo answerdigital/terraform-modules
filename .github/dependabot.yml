@@ -6,7 +6,7 @@ updates:
     schedule:
       interval: daily
   - package-ecosystem: terraform
-    directory: /Terraform_modules/ec2_instance
+    directory: /modules/modules/aws/rds_serverless_cluster
     schedule:
       interval: daily
     ignore:
@@ -15,7 +15,7 @@ updates:
           - "version-update:semver-patch"
           - "version-update:semver-minor"
   - package-ecosystem: terraform
-    directory: /Terraform_modules/rds_serverless_cluster
+    directory: /modules/modules/aws/ec2
     schedule:
       interval: daily
     ignore:
@@ -24,7 +24,7 @@ updates:
           - "version-update:semver-patch"
           - "version-update:semver-minor"
   - package-ecosystem: terraform
-    directory: /Terraform_modules/vpc_subnets
+    directory: /modules/modules/aws/vpc
     schedule:
       interval: daily
     ignore:
