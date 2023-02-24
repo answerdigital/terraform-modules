@@ -23,7 +23,7 @@ jobs:
         env:
           ECHO_OUTPUT: ${{ steps.get-json.outputs.value }}
         run: |
-          JQ_OUTPUT=$(find modules/ -mindepth 2 -type d  |  jq -R -s -c 'split("\n")[:-1]')
+          JQ_OUTPUT=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
           echo "modules=$JQ_OUTPUT" >> $GITHUB_OUTPUT
 
   terraform-check:
