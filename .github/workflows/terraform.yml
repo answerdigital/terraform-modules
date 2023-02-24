@@ -102,7 +102,7 @@ jobs:
           cp .github/dependabot-base.yml .github/dependabot.yml
           sed -i '1i # This file is auto-generated from dependabot-base.yml' .github/dependabot.yml
 
-          jq -r '.[]' <<< "$MODULES" | while read MODULE; do
+          jq -r '.[]' <<< "$MODULES" | sort | while read MODULE; do
             cat <<EOF >> .github/dependabot.yml
             - package-ecosystem: terraform
               directory: /$MODULE
