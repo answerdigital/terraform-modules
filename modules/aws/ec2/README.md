@@ -60,7 +60,7 @@ Below is an example of how you would call the `ec2_instance` module in your terr
 
 ```hcl
 module "ec2_instance_setup" {
-  source                 = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/ec2_instance?ref=v1.0.0"
+  source                 = "github.com/answerdigital/terraform-modules//modules/aws/ec2?ref=v1.0.0"
   project_name           = var.project_name
   owner                  = var.owner
   ami_id                 = var.ami_id

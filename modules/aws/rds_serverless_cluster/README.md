@@ -73,7 +73,7 @@ version by appending the below source reference with `?ref=v1.2.0` for version "
 
 ```hcl
 module "rds_cluster_setup" {
-  source                     = "git::https://github.com/AnswerConsulting/AnswerKing-Infrastructure.git//Terraform_modules/rds_serverless_cluster?ref=v1.0.0"
+  source                     = "github.com/answerdigital/terraform-modules//modules/aws/rds_serverless_cluster?ref=v1.0.0"
   project_name               = var.project_name
   owner                      = var.owner
   database_availability_zone = module.vpc_subnet_setup.az_zones[0]
