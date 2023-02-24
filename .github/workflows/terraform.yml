@@ -105,7 +105,7 @@ jobs:
           jq -r '.[]' <<< "$MODULES" | while read MODULE; do
             cat <<EOF >> .github/dependabot.yml
             - package-ecosystem: terraform
-              directory: /modules/$MODULE
+              directory: /$MODULE
               schedule:
                 interval: daily
               ignore:
