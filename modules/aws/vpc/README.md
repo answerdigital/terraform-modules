@@ -85,11 +85,12 @@ module "vpc_subnet" {
 }
 
 module "vpc_subnet" {
-  source              = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v1.0.0"
-  owner               = "joe_blogs"
-  project_name        = "example_project_name"
-  azs                 = ["eu-west-1", "eu-west-3"]
-  num_public_subnets  = 1
-  num_private_subnets = 2
+  source               = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v1.0.0"
+  owner                = "joe_blogs"
+  project_name         = "example_project_name"
+  azs                  = ["eu-west-1", "eu-west-3"]
+  num_public_subnets   = 1
+  num_private_subnets  = 2
+  enable_vpc_flow_logs = true
 }
 ```
