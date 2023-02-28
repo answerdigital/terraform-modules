@@ -12,7 +12,6 @@ traffic, this is good from an auditing perspective, however you will be charged 
 
 
 <!-- BEGIN_TF_DOCS -->
-
 ## Requirements
 
 | Name | Version |
@@ -69,7 +68,6 @@ traffic, this is good from an auditing perspective, however you will be charged 
 | <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | A list of the private subnet IDs that have been created. This output is of type `list(string)`. |
 | <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | A list of the public subnet IDs that have been created. This output is of type `list(string)`. |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC that has been created. This output is of type `list(string)`. |
-
 <!-- END_TF_DOCS -->
 
 # Example Usage
