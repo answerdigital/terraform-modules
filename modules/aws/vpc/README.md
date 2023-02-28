@@ -7,7 +7,12 @@ See image for an example structure when the region in the provider is set to `eu
 
 ![VPC Subnet Module Diagram](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
 
+The option `enable_vpc_flow_logs` must be selected to decide whether you want to include Cloudwatch logging of your VPC
+traffic, this is good from an auditing perspective, however you will be charged for the required Cloudwatch storage.
+
+
 <!-- BEGIN_TF_DOCS -->
+
 ## Requirements
 
 | Name | Version |
@@ -64,6 +69,7 @@ See image for an example structure when the region in the provider is set to `eu
 | <a name="output_private_subnet_ids"></a> [private\_subnet\_ids](#output\_private\_subnet\_ids) | A list of the private subnet IDs that have been created. This output is of type `list(string)`. |
 | <a name="output_public_subnet_ids"></a> [public\_subnet\_ids](#output\_public\_subnet\_ids) | A list of the public subnet IDs that have been created. This output is of type `list(string)`. |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | The ID of the VPC that has been created. This output is of type `list(string)`. |
+
 <!-- END_TF_DOCS -->
 
 # Example Usage
@@ -78,19 +84,23 @@ repository you can specify a version by appending the below source reference wit
 [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories))
 
 ```hcl
-module "vpc_subnet" {
-  source       = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v1.0.0"
-  owner        = "joe_blogs"
-  project_name = "example_project_name"
-}
-
-module "vpc_subnet" {
-  source               = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v1.0.0"
+module "vpc_subnet" "mandatory" {
+  source               = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=vx.x.x"
   owner                = "joe_blogs"
   project_name         = "example_project_name"
-  azs                  = ["eu-west-1", "eu-west-3"]
-  num_public_subnets   = 1
-  num_private_subnets  = 2
   enable_vpc_flow_logs = true
+}
+
+module "vpc_subnet" "all" {
+  source                     = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=vx.x.x"
+  owner                      = "joe_blogs"
+  project_name               = "example_project_name"
+  azs                        = ["eu-west-1", "eu-west-3"]
+  num_public_subnets         = 1
+  num_private_subnets        = 2
+  enable_vpc_flow_logs       = true
+  vpc_flow_logs_traffic_type = "ALL"
+  enable_dns_support         = true
+  enable_dns_hostnames       = true
 }
 ```
