@@ -36,6 +36,7 @@ resource "aws_db_subnet_group" "private_db_subnet_group" {
 resource "aws_rds_cluster" "rds_cluster" {
   depends_on = [aws_secretsmanager_secret.aurora_db_secret]
 
+
   cluster_identifier      = "${var.project_name}-cluster"
   engine                  = var.database_engine
   engine_mode             = "provisioned"
@@ -61,7 +62,7 @@ resource "aws_rds_cluster" "rds_cluster" {
   }
 }
 
-resource "aws_rds_cluster_instance" "rds_cluster_instance" {
+resource "aws_rds_cluster_instance" "primary_rds_cluster_instance" {
   cluster_identifier   = aws_rds_cluster.rds_cluster.id
   instance_class       = "db.serverless"
   engine               = aws_rds_cluster.rds_cluster.engine
@@ -71,8 +72,29 @@ resource "aws_rds_cluster_instance" "rds_cluster_instance" {
   auto_minor_version_upgrade = var.database_auto_minor_version_upgrade
   availability_zone          = var.database_availability_zone
 
+  preferred_backup_window      = "07:00-09:00"
+  preferred_maintenance_window = "sun:04:00-sun:05:00"
+
   tags = {
-    Name  = "${var.project_name}-rds-cluster-instance"
+    Name  = "${var.project_name}-rds-primary-cluster-instance"
+    Owner = var.owner
+  }
+}
+
+resource "aws_rds_cluster_instance" "replicated_rds_cluster_instances" {
+  depends_on           = [aws_rds_cluster_instance.primary_rds_cluster_instance]
+  for_each             = toset(var.replicate_on_availability_zones)
+  availability_zone    = each.value
+  cluster_identifier   = aws_rds_cluster.rds_cluster.id
+  instance_class       = "db.serverless"
+  engine               = aws_rds_cluster.rds_cluster.engine
+  engine_version       = aws_rds_cluster.rds_cluster.engine_version
+  db_subnet_group_name = aws_db_subnet_group.private_db_subnet_group.name
+
+  auto_minor_version_upgrade = var.database_auto_minor_version_upgrade
+
+  tags = {
+    Name  = "${var.project_name}-rds-replicated-cluster-instance-${each.value}"
     Owner = var.owner
   }
 }

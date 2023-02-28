@@ -1,11 +1,21 @@
 output "rds_cluster_instance_port" {
-  value       = aws_rds_cluster_instance.rds_cluster_instance.port
+  value       = aws_rds_cluster_instance.primary_rds_cluster_instance.port
   description = "This is the port via which the database communicates on. This value should be used when referencing the `DATABASE_PORT` in your configuration. This output is of type `string`."
 }
 
 output "rds_cluster_instance_endpoint" {
-  value       = aws_rds_cluster_instance.rds_cluster_instance.endpoint
+  value       = aws_rds_cluster_instance.primary_rds_cluster_instance.endpoint
   description = "This is the endpoint where the database instance is hosted. This value should be used when referencing the `DATABASE_HOST` in your configuration. This output is of type `string`."
+}
+
+output "rds_cluster_replica_instance_ports" {
+  value       = aws_rds_cluster_instance.replicated_rds_cluster_instances[*].port
+  description = "This is the list of ports via which the replicated instances communicate on."
+}
+
+output "rds_cluster_replica_instance_endpoints" {
+  value       = aws_rds_cluster_instance.replicated_rds_cluster_instances[*].endpoint
+  description = "This is the list of endpoints where the replicated instances are hosted."
 }
 
 output "rds_cluster_master_username" {

@@ -26,6 +26,11 @@ variable "database_engine" {
   }
 }
 
+variable "database_availability_zone" {
+  type        = string
+  description = "This is the availability zone that the database instance will be created on."
+}
+
 variable "database_engine_version" {
   type        = string
   description = "This is the version of the engine you would like."
@@ -36,14 +41,21 @@ variable "database_subnet_ids" {
   description = "This is a list of subnet ids that the database cluster will be created across. The minimum number of subnets that can be supplied is 2."
 }
 
-variable "database_availability_zone" {
-  type        = string
-  description = "This is the availability zone that the database instance will be created on."
+variable "replicate_on_availability_zones" {
+  type        = list(string)
+  description = "A list of availability zones to replicate the database instance on, note this will duplicate the database."
+  default     = []
+
+  validation {
+    condition     = length(var.replicate_on_availability_zones) <= 5
+    error_message = "Max number of possible replicas is 5."
+  }
+  validation {
+    condition     = length(distinct(var.replicate_on_availability_zones)) == length(var.replicate_on_availability_zones)
+    error_message = "You should not replicate an instance on the same availability zone as another replica."
+  }
 }
 
-/*
-  OPTIONAL VARIABLES
-*/
 variable "database_serverlessv2_scaling_max_capacity" {
   type        = number
   default     = 1.0
