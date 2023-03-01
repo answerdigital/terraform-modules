@@ -1,5 +1,12 @@
 terraform {
   required_version = "~> 1.3"
+
+  required_providers {
+    random = {
+      source  = "hashicorp/random"
+      version = ">= 3.4.3"
+    }
+  }
 }
 
 resource "aws_flow_log" "flow_log" {
@@ -10,8 +17,11 @@ resource "aws_flow_log" "flow_log" {
   count           = var.enable_vpc_flow_logs ? 1 : 0
 }
 
+resource "random_uuid" "log_group_guid_identifier" {
+}
+
 resource "aws_cloudwatch_log_group" "log_group" {
-  name  = "${var.project_name}-vpc-flow-logs"
+  name  = "${var.project_name}-vpc-flow-logs-${random_uuid.log_group_guid_identifier.result}"
   count = var.enable_vpc_flow_logs ? 1 : 0
 }
 
@@ -47,7 +57,6 @@ resource "aws_iam_role_policy" "iam_role_policy" {
   "Statement": [
     {
       "Action": [
-        "logs:CreateLogGroup",
         "logs:CreateLogStream",
         "logs:PutLogEvents",
         "logs:DescribeLogGroups",

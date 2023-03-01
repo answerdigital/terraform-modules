@@ -7,18 +7,24 @@ See image for an example structure when the region in the provider is set to `eu
 
 ![VPC Subnet Module Diagram](vpc_subnet_module_diagram.svg?raw=true "VPC Subnet Module Diagram")
 
+The option `enable_vpc_flow_logs` must be selected to decide whether you want to include Cloudwatch logging of your VPC
+traffic, this is good from an auditing perspective, however you will be charged for the required Cloudwatch storage.
+
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.3 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.4.3 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.4.3 |
 
 ## Resources
 
@@ -34,6 +40,7 @@ See image for an example structure when the region in the provider is set to `eu
 | [aws_subnet.private_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_subnet.public_subnets](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/subnet) | resource |
 | [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
+| [random_uuid.log_group_guid_identifier](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
 
 ## Inputs
@@ -75,18 +82,23 @@ repository you can specify a version by appending the below source reference wit
 [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories))
 
 ```hcl
-module "vpc_subnet" {
-  source       = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v1.0.0"
-  owner        = "joe_blogs"
-  project_name = "example_project_name"
+module "vpc_subnet" "mandatory" {
+  source               = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=vx.x.x"
+  owner                = "joe_blogs"
+  project_name         = "example_project_name"
+  enable_vpc_flow_logs = true
 }
 
-module "vpc_subnet" {
-  source              = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v1.0.0"
-  owner               = "joe_blogs"
-  project_name        = "example_project_name"
-  azs                 = ["eu-west-1", "eu-west-3"]
-  num_public_subnets  = 1
-  num_private_subnets = 2
+module "vpc_subnet" "all" {
+  source                     = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=vx.x.x"
+  owner                      = "joe_blogs"
+  project_name               = "example_project_name"
+  azs                        = ["eu-west-1", "eu-west-3"]
+  num_public_subnets         = 1
+  num_private_subnets        = 2
+  enable_vpc_flow_logs       = true
+  vpc_flow_logs_traffic_type = "ALL"
+  enable_dns_support         = true
+  enable_dns_hostnames       = true
 }
 ```

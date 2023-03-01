@@ -31,7 +31,7 @@ variable "vpc_flow_logs_traffic_type" {
   }
 }
 
-
+# DNS Support
 variable "enable_dns_support" {
   type        = bool
   description = "This allows AWS DNS support to be switched on or off."
@@ -64,6 +64,7 @@ variable "num_private_subnets" {
   default     = -1
 }
 
+# CIDR Defintions
 variable "ig_cidr" {
   type        = string
   description = "This specifies the CIDR block for the internet gateway."
