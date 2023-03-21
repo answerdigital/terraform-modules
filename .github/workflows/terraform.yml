@@ -24,7 +24,7 @@ jobs:
           ECHO_OUTPUT: ${{ steps.get-json.outputs.value }}
         run: |
           JQ_OUTPUT_ALL=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
-          JQ_OUTPUT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -oP "modules/[^/]*/[^/]*" | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          JQ_OUTPUT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | cut -d/ -f1-3 | sort -u | jq -R -s -c 'split("\n")[:-1]')
           echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
           echo "all_modules=$JQ_OUTPUT_ALL" >> $GITHUB_OUTPUT
 
