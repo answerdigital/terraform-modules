@@ -11,30 +11,33 @@ jobs:
     name: "Determine Terraform Modules"
     runs-on: ubuntu-latest
     outputs:
-      changed_modules: ${{ steps.output-var.outputs.changed_modules }}
-      all_modules: ${{ steps.output-var.outputs.all_modules }}
+      check_modules: ${{ github.event_name == 'pull_request' && steps.output-changed.outputs.changed_modules || steps.output-all.outputs.all_modules }}
+      all_modules: ${{ steps.output-all.outputs.all_modules }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - name: Pass to Var
-        id: output-var
-        env:
-          ECHO_OUTPUT: ${{ steps.get-json.outputs.value }}
+      - name: Output all modules
+        id: output-all
         run: |
           JQ_OUTPUT_ALL=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
-          JQ_OUTPUT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -oP "modules/[^/]*/[^/]*" | sort -u | jq -R -s -c 'split("\n")[:-1]')
-          echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
           echo "all_modules=$JQ_OUTPUT_ALL" >> $GITHUB_OUTPUT
+      - name: Output changed modules
+        if: ${{ github.event_name == 'pull_request' }}
+        id: output-changed
+        run: |
+          JQ_OUTPUT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} modules/*/*/* | cut -d/ -f1-3 | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
 
   terraform-check:
     name: "Check Terraform"
     runs-on: ubuntu-latest
     needs: determine-modules
+    if: ${{ needs.determine-modules.outputs.check_modules != '[]' }}
     strategy:
       matrix:
-        module: ${{ fromJSON(needs.determine-modules.outputs.changed_modules) }}
+        module: ${{ fromJSON(needs.determine-modules.outputs.check_modules) }}
     defaults:
       run:
         working-directory: "${{ matrix.module }}"
