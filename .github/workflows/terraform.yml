@@ -11,17 +11,22 @@ jobs:
     name: "Determine Terraform Modules"
     runs-on: ubuntu-latest
     outputs:
-      modules: ${{ steps.output-var.outputs.modules }}
+      changed_modules: ${{ steps.output-var.outputs.changed_modules }}
+      all_modules: ${{ steps.output-var.outputs.all_modules }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - name: Pass to Var
         id: output-var
         env:
           ECHO_OUTPUT: ${{ steps.get-json.outputs.value }}
         run: |
-          JQ_OUTPUT=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
-          echo "modules=$JQ_OUTPUT" >> $GITHUB_OUTPUT
+          JQ_OUTPUT_ALL=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
+          JQ_OUTPUT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} | grep -oP "modules/[^/]*/[^/]*" | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
+          echo "all_modules=$JQ_OUTPUT_ALL" >> $GITHUB_OUTPUT
 
   terraform-check:
     name: "Check Terraform"
@@ -29,7 +34,7 @@ jobs:
     needs: determine-modules
     strategy:
       matrix:
-        module: ${{ fromJSON(needs.determine-modules.outputs.modules) }}
+        module: ${{ fromJSON(needs.determine-modules.outputs.changed_modules) }}
     defaults:
       run:
         working-directory: "${{ matrix.module }}"
@@ -92,7 +97,7 @@ jobs:
 
       - name: Update dependabot.yml
         env:
-          MODULES: ${{ needs.determine-modules.outputs.modules }}
+          MODULES: ${{ needs.determine-modules.outputs.all_modules }}
         run: |
           cp .github/dependabot-base.yml .github/dependabot.yml
           sed -i '1i # This file is auto-generated from dependabot-base.yml' .github/dependabot.yml
