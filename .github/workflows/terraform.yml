@@ -63,6 +63,7 @@ jobs:
       - name: Terraform Security
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
+          github_token: ${{ github.token }}
           soft_fail: true
           working_directory: "${{ matrix.module }}"
 
