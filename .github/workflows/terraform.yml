@@ -11,7 +11,9 @@ jobs:
     name: "Determine Terraform Modules"
     runs-on: ubuntu-latest
     outputs:
-      check_modules: ${{ github.event_name == 'pull_request' && steps.output-changed.outputs.changed_modules || steps.output-all.outputs.all_modules }}
+      check_modules: ${{ github.event_name == 'pull_request'
+        && steps.output-changed.outputs.changed_modules
+        || steps.output-all.outputs.all_modules }}
       all_modules: ${{ steps.output-all.outputs.all_modules }}
     steps:
       - name: Checkout
@@ -27,7 +29,8 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         id: output-changed
         run: |
-          JQ_OUTPUT_CHANGED=$(git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} modules/*/*/* | cut -d/ -f1-3 | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          JQ_OUTPUT_CHANGED=$(git diff --name-only $GITHUB_BASE_REF $GITHUB_SHA modules/*/*/*.tf |
+            cut -d/ -f1-3 | sort -u | jq -R -s -c 'split("\n")[:-1]')
           echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
 
   terraform-check:
