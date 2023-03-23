@@ -1,4 +1,4 @@
-module test
+module github.com/answerdigital/terraform-modules
 
 go 1.19
 
