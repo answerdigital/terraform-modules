@@ -11,25 +11,36 @@ jobs:
     name: "Determine Terraform Modules"
     runs-on: ubuntu-latest
     outputs:
-      modules: ${{ steps.output-var.outputs.modules }}
+      check_modules: ${{ github.event_name == 'pull_request'
+        && steps.output-changed.outputs.changed_modules
+        || steps.output-all.outputs.all_modules }}
+      all_modules: ${{ steps.output-all.outputs.all_modules }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Pass to Var
-        id: output-var
-        env:
-          ECHO_OUTPUT: ${{ steps.get-json.outputs.value }}
+        with:
+          fetch-depth: 0
+      - name: Output all modules
+        id: output-all
         run: |
-          JQ_OUTPUT=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
-          echo "modules=$JQ_OUTPUT" >> $GITHUB_OUTPUT
+          JQ_OUTPUT_ALL=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
+          echo "all_modules=$JQ_OUTPUT_ALL" >> $GITHUB_OUTPUT
+      - name: Output changed modules
+        if: ${{ github.event_name == 'pull_request' }}
+        id: output-changed
+        run: |
+          JQ_OUTPUT_CHANGED=$(git diff --name-only $GITHUB_BASE_REF $GITHUB_SHA modules/*/*/*.tf |
+            cut -d/ -f1-3 | sort -u | jq -R -s -c 'split("\n")[:-1]')
+          echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
 
   terraform-check:
     name: "Check Terraform"
     runs-on: ubuntu-latest
     needs: determine-modules
+    if: ${{ needs.determine-modules.outputs.check_modules != '[]' }}
     strategy:
       matrix:
-        module: ${{ fromJSON(needs.determine-modules.outputs.modules) }}
+        module: ${{ fromJSON(needs.determine-modules.outputs.check_modules) }}
     defaults:
       run:
         working-directory: "${{ matrix.module }}"
@@ -55,6 +66,7 @@ jobs:
       - name: Terraform Security
         uses: aquasecurity/tfsec-action@v1.0.3
         with:
+          github_token: ${{ github.token }}
           soft_fail: true
           working_directory: "${{ matrix.module }}"
 
@@ -92,7 +104,7 @@ jobs:
 
       - name: Update dependabot.yml
         env:
-          MODULES: ${{ needs.determine-modules.outputs.modules }}
+          MODULES: ${{ needs.determine-modules.outputs.all_modules }}
         run: |
           cp .github/dependabot-base.yml .github/dependabot.yml
           sed -i '1i # This file is auto-generated from dependabot-base.yml' .github/dependabot.yml
