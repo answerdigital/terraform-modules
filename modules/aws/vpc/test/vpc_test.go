@@ -1,6 +1,7 @@
 package test
 
 import (
+	"../../../aws"
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"testing"
 )
@@ -14,6 +15,7 @@ func TestTerraformAwsHelloWorldExample(t *testing.T) {
 	})
 
 	defer terraform.Destroy(t, terraformOptions)
-
 	terraform.InitAndApply(t, terraformOptions)
+
+	aws.TestSharedMethod("abc")
 }
