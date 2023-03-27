@@ -32,3 +32,12 @@ updates:
         update-types:
           - "version-update:semver-patch"
           - "version-update:semver-minor"
+  - package-ecosystem: terraform
+    directory: /modules/aws/vpc/test
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
