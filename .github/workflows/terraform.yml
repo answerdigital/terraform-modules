@@ -56,6 +56,18 @@ jobs:
         with:
           go-version: 1.19.4
 
+      - name: Install Modules
+        working-directory: "/modules"
+        run: | 
+          go mod download
+          go list -m all
+
+      - name: Terraform Terratest
+        working-directory: "${{ matrix.module }}/test"
+        run: |
+          go mod download
+          go test      
+
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
@@ -75,12 +87,6 @@ jobs:
           soft_fail: true
           working_directory: "${{ matrix.module }}"
 
-      - name: Terraform Terratest
-        working-directory: "${{ matrix.module }}/test"
-        run: |
-          go mod download
-          go test
-          
 
   terraform-docs:
     name: "Update Terraform Docs"
