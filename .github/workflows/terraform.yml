@@ -62,7 +62,7 @@ jobs:
         working-directory: "modules"
         env:
           GO111MODULE: "on"
-        run: | 
+        run: |
           go mod download
           go mod tidy
 
@@ -70,10 +70,12 @@ jobs:
         working-directory: "${{ matrix.module }}/test"
         env:
           GO111MODULE: "on"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         run: |
           go list -m all
           go test -v
-          
+
 
       - name: Terraform Format
         id: fmt
