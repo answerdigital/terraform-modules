@@ -73,7 +73,7 @@ jobs:
           GO111MODULE: "on"
         run: |
           go list -m all
-          go test
+          go test -v
           
 
       - name: Terraform Format
