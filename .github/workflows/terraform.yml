@@ -51,20 +51,7 @@ jobs:
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
 
-      - name: Setup Go
-        uses: actions/setup-go@v4
-        with:
-          go-version: 1.19.4
-        env:
-          GO111MODULE: "on"
 
-      - name: Install Modules
-        working-directory: "modules"
-        env:
-          GO111MODULE: "on"
-        run: |
-          go mod download
-          go mod tidy
 
       - name: Terraform Format
         id: fmt
@@ -84,6 +71,21 @@ jobs:
           github_token: ${{ github.token }}
           soft_fail: true
           working_directory: "${{ matrix.module }}"
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.19.4
+        env:
+          GO111MODULE: "on"
+
+      - name: Install Modules
+        working-directory: "modules"
+        env:
+          GO111MODULE: "on"
+        run: |
+          go mod download
+          go mod tidy
 
       - name: Terraform Terratest
         working-directory: "${{ matrix.module }}/test"
