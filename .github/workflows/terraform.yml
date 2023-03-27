@@ -66,17 +66,6 @@ jobs:
           go mod download
           go mod tidy
 
-      - name: Terraform Terratest
-        working-directory: "${{ matrix.module }}/test"
-        env:
-          GO111MODULE: "on"
-          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        run: |
-          go list -m all
-          go test -v
-
-
       - name: Terraform Format
         id: fmt
         run: terraform fmt -check
@@ -95,6 +84,16 @@ jobs:
           github_token: ${{ github.token }}
           soft_fail: true
           working_directory: "${{ matrix.module }}"
+
+      - name: Terraform Terratest
+        working-directory: "${{ matrix.module }}/test"
+        env:
+          GO111MODULE: "on"
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          go list -m all
+          go test -v
 
 
   terraform-docs:
