@@ -1,3 +1,7 @@
+provider "aws" {
+  region = "eu-west-2"
+}
+
 module "vpc_subnet_basic" {
   source               = "./.."
   owner                = "joe_blogs"
