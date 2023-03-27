@@ -65,7 +65,9 @@ jobs:
       - name: Terraform Terratest
         working-directory: "${{ matrix.module }}/test"
         run: |
-          go test      
+          go list -m all
+          go test
+          
 
       - name: Terraform Format
         id: fmt
