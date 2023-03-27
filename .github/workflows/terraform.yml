@@ -48,8 +48,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
-      - name: Setup
+      - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
+
+      - name: Setup Go
+        uses: actions/setup-go@v4
 
       - name: Terraform Format
         id: fmt
@@ -72,7 +75,6 @@ jobs:
 
       - name: Terraform Terratest
         working-directory: "${{ matrix.module }}/test"
-        uses: actions/setup-go@v4
         with:
           go-version: 1.19.4
         run: |
