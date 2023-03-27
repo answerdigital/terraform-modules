@@ -55,9 +55,13 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: 1.19.4
+        env:
+          GO111MODULE: "on"
 
       - name: Install Modules
         working-directory: "modules"
+        env:
+          GO111MODULE: "on"
         run: | 
           go mod download
           go list -m all
@@ -65,6 +69,8 @@ jobs:
 
       - name: Terraform Terratest
         working-directory: "${{ matrix.module }}/test"
+        env:
+          GO111MODULE: "on"
         run: |
           go list -m all
           go test
