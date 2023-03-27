@@ -53,6 +53,8 @@ jobs:
 
       - name: Setup Go
         uses: actions/setup-go@v4
+        with:
+          go-version: 1.19.4
 
       - name: Terraform Format
         id: fmt
@@ -75,8 +77,6 @@ jobs:
 
       - name: Terraform Terratest
         working-directory: "${{ matrix.module }}/test"
-        with:
-          go-version: 1.19.4
         run: |
           go get .
           go test
