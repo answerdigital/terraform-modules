@@ -29,6 +29,7 @@ jobs:
         if: ${{ github.event_name == 'pull_request' }}
         id: output-changed
         run: |
+          git branch
           JQ_OUTPUT_CHANGED=$(git diff --name-only $GITHUB_BASE_REF $GITHUB_SHA modules/*/*/*.tf modules/*/*/test/*.tf modules/*/*/test/*.go  |
             cut -d/ -f1-3 | sort -u | jq -R -s -c 'split("\n")[:-1]')
           echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
