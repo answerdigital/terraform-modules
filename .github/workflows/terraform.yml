@@ -64,6 +64,7 @@ jobs:
           GO111MODULE: "on"
         run: | 
           go mod download
+          go mod tidy
           go list -m all
           cat go.sum
 
