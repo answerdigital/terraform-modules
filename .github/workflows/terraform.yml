@@ -52,6 +52,7 @@ jobs:
         uses: hashicorp/setup-terraform@v2
 
       - name: Setup Go
+        working-directory: ""
         uses: actions/setup-go@v4
         with:
           go-version: 1.19.4
@@ -65,7 +66,6 @@ jobs:
       - name: Terraform Terratest
         working-directory: "${{ matrix.module }}/test"
         run: |
-          go mod download
           go test      
 
       - name: Terraform Format
