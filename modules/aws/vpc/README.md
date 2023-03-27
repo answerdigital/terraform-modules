@@ -82,14 +82,14 @@ repository you can specify a version by appending the below source reference wit
 [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories))
 
 ```hcl
-module "vpc_subnet" "mandatory" {
+module "vpc_subnet_mandatory" {
   source               = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=vx.x.x"
   owner                = "joe_blogs"
   project_name         = "example_project_name"
   enable_vpc_flow_logs = true
 }
 
-module "vpc_subnet" "all" {
+module "vpc_subnet_all" {
   source                     = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=vx.x.x"
   owner                      = "joe_blogs"
   project_name               = "example_project_name"
