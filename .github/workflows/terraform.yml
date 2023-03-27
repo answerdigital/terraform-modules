@@ -61,6 +61,7 @@ jobs:
         run: | 
           go mod download
           go list -m all
+          cat go.sum
 
       - name: Terraform Terratest
         working-directory: "${{ matrix.module }}/test"
