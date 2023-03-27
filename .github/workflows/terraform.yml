@@ -70,6 +70,16 @@ jobs:
           soft_fail: true
           working_directory: "${{ matrix.module }}"
 
+      - name: Terraform Terratest
+        uses: actions/setup-go@v4
+        with:
+          go-version: 1.19.4
+        run: | 
+          cd \test
+          go get .
+          go test .\vpc_test.go -v -modfile=..\..\go.mod
+
+
   terraform-docs:
     name: "Update Terraform Docs"
     runs-on: ubuntu-latest

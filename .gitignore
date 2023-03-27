@@ -4,4 +4,4 @@
 terraform.tfstate
 terraform.tfstate.backup
 
-**/go.sum
+go.sum
