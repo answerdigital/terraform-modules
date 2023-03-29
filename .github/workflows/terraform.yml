@@ -89,8 +89,8 @@ jobs:
           output-method: inject
           git-push: "true"
 
-  dependabot:
-    name: Update Dependabot Entries
+  supporting-config:
+    name: Update Supporting Config
     runs-on: ubuntu-latest
     needs:
       - determine-modules
@@ -106,7 +106,7 @@ jobs:
         env:
           MODULES: ${{ needs.determine-modules.outputs.all_modules }}
         run: |
-          cp .github/dependabot-base.yml .github/dependabot.yml
+          cp .github/src/dependabot.yml .github/dependabot.yml
           sed -i '1i # This file is auto-generated from dependabot-base.yml' .github/dependabot.yml
 
           jq -r '.[]' <<< "$MODULES" | sort | while read MODULE; do
@@ -123,10 +123,23 @@ jobs:
           EOF
           done
 
+      - name: Update release.yml
+        env:
+          MODULES: ${{ needs.determine-modules.outputs.all_modules }}
+        run: |
+          tmp="$(mktemp)"
+          jq -r '.[]' <<< "$MODULES" | sort | while read MODULE; do
+            echo -n '    - title: '
+            head -1 $MODULE/README.md | sed 's/# Terraform \|Module$//g'
+            echo "      labels: 'module:${MODULE##*/}'"
+            echo
+          done > "$tmp"
+          sed "/categories:/ r $tmp" .github/src/release.yml > .github/release.yml
+
       - uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: Update dependabot terraform entries
+          commit_message: Update supporting config files
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-          file_pattern: .github/dependabot.yml
+          file_pattern: .github/*.yml
           skip_checkout: true
 
