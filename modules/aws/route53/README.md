@@ -43,7 +43,7 @@ The module also simplifies a few boilerplate records at the apex for security pu
 | <a name="input_alias_redirect_protocol"></a> [alias\_redirect\_protocol](#input\_alias\_redirect\_protocol) | Protocol to use when redirecting to the canonical domain. Valid values: `http`, `https`. | `string` | `"https"` | no |
 | <a name="input_aliases"></a> [aliases](#input\_aliases) | List of alias domains that should redirect to the canonical domain. | `list(string)` | `[]` | no |
 | <a name="input_apex_txt"></a> [apex\_txt](#input\_apex\_txt) | List of TXT records to be added at the apex. | `list(string)` | `[]` | no |
-| <a name="input_caa_issuers"></a> [caa\_issuers](#input\_caa\_issuers) | List of CAs that can issue certificates. | `list(string)` | <pre>[<br>  "amazontrust.com",<br>  "awstrust.com",<br>  "amazonaws.com",<br>  "amazon.com"<br>]</pre> | no |
+| <a name="input_caa_issuers"></a> [caa\_issuers](#input\_caa\_issuers) | List of CAs that can issue certificates. | `list(string)` | <pre>[<br>  "amazon.com"<br>]</pre> | no |
 | <a name="input_canonical_mx_record"></a> [canonical\_mx\_record](#input\_canonical\_mx\_record) | The name of the MX record on the canonical domain. | `string` | `"apex_mx"` | no |
 | <a name="input_comment"></a> [comment](#input\_comment) | A comment for the hosted zone. Defaults to 'Managed by Terraform'. | `string` | `null` | no |
 | <a name="input_default_ttl"></a> [default\_ttl](#input\_default\_ttl) | Default TTL for DNS records. | `number` | `86400` | no |
