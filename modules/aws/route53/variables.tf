@@ -103,9 +103,6 @@ variable "caa_issuers" {
   description = "List of CAs that can issue certificates."
   type        = list(string)
   default = [
-    "amazontrust.com",
-    "awstrust.com",
-    "amazonaws.com",
     "amazon.com",
   ]
 }
