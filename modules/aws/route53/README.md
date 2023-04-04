@@ -69,3 +69,28 @@ module "example_com" {
   ]
 }
 ```
+
+If the domain is a canonical domain with aliases (e.g. brand protection domains), alias
+domains can be added here. The alias domains are configured with an S3 bucket to redirect
+the bare domain and www subdomain to the canonical domain.
+
+
+```terraform
+module "example_com" {
+  source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2.0.0"
+
+  domain = "example.com"
+  aliases = [
+    "example.org" # example.org and www.example.org will redirect to example.com
+  ]
+  alias_records = {
+    "example.org" = {
+      foo = {
+        name    = "foo"
+        type    = "A"
+        records = ["8.7.6.5"]
+      }
+    }
+  }
+}
+```

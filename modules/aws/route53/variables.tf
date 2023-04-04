@@ -38,6 +38,49 @@ variable "records" {
   }))
 }
 
+variable "aliases" {
+  description = "List of alias domains that should redirect to the canonical domain."
+  type        = list(string)
+  default     = []
+}
+
+variable "alias_mx" {
+  description = "List of alias domains that should have the same MX records as the canonical domain."
+  type        = list(string)
+  default     = []
+}
+
+variable "canonical_mx_record" {
+  description = "The name of the MX record on the canonical domain."
+  type        = string
+  default     = "apex_mx"
+}
+
+variable "alias_records" {
+  description = <<EOT
+    List of DNS records for alias domains. The top-level keys should match entries in the `aliases`
+    list. The second-level map should match the same structure as `records`.
+  EOT
+  type = map(map(object({
+    name    = optional(string)
+    ttl     = optional(string)
+    type    = string
+    records = list(string)
+  })))
+  default = {}
+}
+
+variable "alias_redirect_protocol" {
+  description = "Protocol to use when redirecting to the canonical domain. Valid values: `http`, `https`."
+  type        = string
+  default     = "https"
+
+  validation {
+    condition     = contains(["http", "https"], var.alias_redirect_protocol)
+    error_message = "Valid values for alias_redirect_protocol: http, https."
+  }
+}
+
 variable "apex_txt" {
   description = "List of TXT records to be added at the apex."
   type        = list(string)
@@ -65,4 +108,19 @@ variable "caa_issuers" {
     "amazonaws.com",
     "amazon.com",
   ]
+}
+
+locals {
+  alias_records_list = flatten([
+    for zone, records in var.alias_records : [
+      for key, record in records : {
+        zone    = zone
+        key     = key
+        name    = record.name != null ? record.name : zone
+        ttl     = record.ttl != null ? record.ttl : var.default_ttl
+        type    = record.type
+        records = record.records
+      }
+    ]
+  ])
 }
