@@ -50,6 +50,7 @@ This Terraform module will produce an EC2 instance which can be accessed via ssh
 | Name | Description |
 |------|-------------|
 | <a name="output_instance_public_ip_address"></a> [instance\_public\_ip\_address](#output\_instance\_public\_ip\_address) | This outputs the public IP associated with the EC2 instance. Note that this ouput will be the same as the elastic IP if `needs_elastic_ip` is set to `true`. This output is of type `string`. |
+| <a name="instance_id"></a> [instance\_id](#output\_instance\_id) | This outputs the unique ID of the EC2 instance. This output is of type `string`. |
 <!-- END_TF_DOCS -->
 
 # Example Usage
