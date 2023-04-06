@@ -71,13 +71,13 @@ These secrets are also set as outputs of the module and can be referenced throug
 
 Below is an example of how you would call the `rds_serverless_cluster` module in your
 terraform code. Note that when calling it directly from the github repository you can specify a
-version by appending the below source reference with `?ref=v1.2.0` for version "1.2.0"
+version by appending the below source reference with `?ref=v2` for the latest v2.x.x release
 (for further information please see
 [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)).
 
 ```hcl
 module "rds_cluster_setup" {
-  source                     = "github.com/answerdigital/terraform-modules//modules/aws/rds_serverless_cluster?ref=v1.0.0"
+  source                     = "github.com/answerdigital/terraform-modules//modules/aws/rds_serverless_cluster?ref=v2"
   project_name               = var.project_name
   owner                      = var.owner
   database_availability_zone = module.vpc_subnet_setup.az_zones[0]
