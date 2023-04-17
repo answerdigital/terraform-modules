@@ -67,7 +67,7 @@ Below is a simple example for an example.com zone with a single subdomain record
 
 ```terraform
 module "example_com" {
-  source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2.0.0"
+  source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2"
 
   domain = "example.com"
   records = {
@@ -90,7 +90,7 @@ the bare domain and www subdomain to the canonical domain.
 
 ```terraform
 module "example_com" {
-  source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2.0.0"
+  source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2"
 
   domain = "example.com"
   aliases = [
