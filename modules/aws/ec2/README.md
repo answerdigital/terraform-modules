@@ -1,6 +1,6 @@
 # Terraform EC2 instance Module
 
-This Terraform module will produce an EC2 instance which can be accessed via ssh or session manager via the aws management console. It also allows the possibility of an elastic ip being associated with the EC2 instance.
+This Terraform module will produce an EC2 instance which can be accessed via ssh or session manager via the aws management console. It also allows the possibility of an elastic IP being associated with the EC2 instance.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
@@ -55,13 +55,16 @@ This Terraform module will produce an EC2 instance which can be accessed via ssh
 
 # Example Usage
 
-Below is an example of how you would call the `ec2_instance` module in your terraform code. Note that when calling it directly from the github repository you can specify a version by appending the below source reference with `?ref=v1.2.0` for version "1.2.0"
-(for further information please see [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)). Here we also give an example of a bash script used to install docker on `Amazon linux`, then create a
-.env file on the instance and finally run a chosen docker image with the .env file.
+Below is an example of how you would call the `ec2_instance` module in your
+terraform code. Note that when calling it directly from the GitHub repository you can specify a
+version by appending the below source reference with `?ref=v2` for the latest v2.x.x release
+(for further information please see [here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)).
+
+Here we also give an example of a bash script used to install docker on `Amazon linux`, then create a .env file on the instance and finally run a chosen docker image with the .env file.
 
 ```hcl
 module "ec2_instance_setup" {
-  source                 = "github.com/answerdigital/terraform-modules//modules/aws/ec2?ref=v1.0.0"
+  source                 = "github.com/answerdigital/terraform-modules//modules/aws/ec2?ref=v2"
   project_name           = var.project_name
   owner                  = var.owner
   ami_id                 = var.ami_id
