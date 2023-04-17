@@ -56,7 +56,8 @@ resource "aws_instance" "ec2" {
   key_name      = aws_key_pair.key_pair.key_name
   ami           = var.ami_id
   metadata_options {
-    http_tokens = "required"
+    http_endpoint = "enabled"
+    http_tokens   = "required"
   }
   root_block_device {
     encrypted = true
