@@ -1,7 +1,3 @@
-locals {
-  security_contact = var.security_contact != null ? var.security_contact : format("security@%s", var.domain)
-}
-
 resource "aws_route53_zone" "dns_zone" {
   name    = var.domain
   comment = var.comment
