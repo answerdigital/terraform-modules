@@ -69,11 +69,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 
 # Example Usage
 
-Below is an example of how you would call the `rds_serverless_cluster` module in your
-terraform code. Note that when calling it directly from the GitHub repository you can specify a
-version by appending the below source reference with `?ref=v2` for the latest v2.x.x release
-(for further information please see
-[here](https://developer.hashicorp.com/terraform/language/modules/sources#modules-in-package-sub-directories)).
+Below is an example of how you would call the `rds_serverless_cluster` module in your terraform code.
 
 ```hcl
 module "rds_cluster_setup" {
