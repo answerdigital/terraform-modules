@@ -123,7 +123,6 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 
 sudo cat << EOL > /usr/.env
-DATABASE_ENGINE=django.db.backends.mysql
 EOL
   EOF
   }
