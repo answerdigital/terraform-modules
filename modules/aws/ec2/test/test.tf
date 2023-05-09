@@ -40,9 +40,7 @@ module "ec2_instance_setup" {
   subnet_id              = module.vpc_subnet.public_subnet_ids[0]
   vpc_security_group_ids = []
   needs_elastic_ip       = true
-
-
-  user_data = <<EOF
+  user_data              = <<EOF
 #!/bin/bash -xe
 #logs all user_data commands into a user-data.log file
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1

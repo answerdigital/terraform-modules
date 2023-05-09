@@ -102,9 +102,16 @@ module "ec2_instance_setup" {
   subnet_id              = module.vpc_subnet.public_subnet_ids[0]
   vpc_security_group_ids = []
   needs_elastic_ip       = true
-
-
-  user_data = <<EOF
+  module "ec2_instance_setup" {
+    source                 = "../."
+    project_name           = local.project
+    owner                  = local.owner
+    ami_id                 = data.aws_ami.ec2_ami.id
+    availability_zone      = data.aws_availability_zones.available.names[0]
+    subnet_id              = module.vpc_subnet.public_subnet_ids[0]
+    vpc_security_group_ids = []
+    needs_elastic_ip       = true
+    user_data              = <<EOF
 #!/bin/bash -xe
 #logs all user_data commands into a user-data.log file
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
@@ -119,5 +126,6 @@ sudo cat << EOL > /usr/.env
 DATABASE_ENGINE=django.db.backends.mysql
 EOL
   EOF
+  }
 }
 ```
