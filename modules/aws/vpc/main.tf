@@ -51,10 +51,9 @@ EOF
 }
 
 resource "aws_iam_role_policy" "iam_role_policy" {
-  name  = "${var.project_name}-vpc-iam-logs-policy"
-  role  = aws_iam_role.iam_role[0].id
-  count = var.enable_vpc_flow_logs ? 1 : 0
-
+  name   = "${var.project_name}-vpc-iam-logs-policy"
+  role   = aws_iam_role.iam_role[0].id
+  count  = var.enable_vpc_flow_logs ? 1 : 0
   policy = <<EOF
 {
   "Version": "2012-10-17",

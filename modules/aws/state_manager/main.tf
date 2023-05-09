@@ -1,6 +1,5 @@
 terraform {
   required_version = "~> 1.3"
-
   required_providers {
     aws = {
       source  = "hashicorp/aws"
@@ -13,6 +12,10 @@ resource "aws_s3_bucket" "project_terraform_state" {
   bucket = "${var.project_name}-${var.environment}-state-management-bucket"
   lifecycle {
     prevent_destroy = true
+  }
+  tags = {
+    Name  = "${var.project_name}-s3-state-bucket"
+    Owner = var.owner
   }
 }
 
@@ -27,6 +30,10 @@ resource "aws_s3_bucket" "project_terraform_state_log_bucket" {
   bucket = "${var.project_name}-${var.environment}-state-management-bucket-log"
   lifecycle {
     prevent_destroy = true
+  }
+  tags = {
+    Name  = "${var.project_name}-s3-bucket"
+    Owner = var.owner
   }
 }
 

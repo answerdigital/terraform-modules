@@ -28,7 +28,7 @@ variable "subnet_id" {
 
 variable "vpc_security_group_ids" {
   type        = list(string)
-  description = "This is a list of ids that specifies the security groups you want your EC2 to be in. If you do not wish to specify a security group for your module then please set this value to an empty list"
+  description = "This is a list of ids that specifies the security groups you want your EC2 to be in."
 }
 
 /*

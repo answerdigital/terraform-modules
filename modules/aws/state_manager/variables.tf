@@ -4,6 +4,11 @@ variable "project_name" {
 }
 
 # OPTIONAL VARIABLES
+variable "owner" {
+  type        = string
+  description = "This is used to specify the owner of the resources in this module."
+}
+
 
 variable "environment" {
   type        = string
