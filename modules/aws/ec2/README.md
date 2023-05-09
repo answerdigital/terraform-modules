@@ -60,17 +60,51 @@ Below is an example of how you would call the `ec2` module in your terraform cod
 Here we also give an example of a bash script used to install docker on `Amazon linux`, then create a .env file on the instance and finally run a chosen docker image with the .env file.
 
 ```hcl
+locals {
+  project = "test_project"
+  owner   = "answer_tester"
+}
+
+module "vpc_subnet" {
+  source               = "../../vpc"
+  owner                = local.owner
+  project_name         = local.project
+  enable_vpc_flow_logs = true
+}
+
+data "aws_ami" "ec2_ami" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amzn-ami-hvm-*-x86_64-ebs"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+  owners = ["amazon"]
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 module "ec2_instance_setup" {
-  source                 = "github.com/answerdigital/terraform-modules//modules/aws/ec2?ref=v2"
-  project_name           = var.project_name
-  owner                  = var.owner
-  ami_id                 = var.ami_id
-  availability_zone      = var.az_zones[0]
-  subnet_id              = module.vpc_subnet_setup.public_subnet_ids[0]
-  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
+  source                 = "../."
+  project_name           = local.project
+  owner                  = local.owner
+  ami_id                 = data.aws_ami.ec2_ami.id
+  availability_zone      = data.aws_availability_zones.available.names[0]
+  subnet_id              = module.vpc_subnet.public_subnet_ids[0]
+  vpc_security_group_ids = []
   needs_elastic_ip       = true
 
-  user_data              = <<EOF
+
+  user_data = <<EOF
 #!/bin/bash -xe
 #logs all user_data commands into a user-data.log file
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
@@ -82,15 +116,8 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 
 sudo cat << EOL > /usr/.env
-DATABASE_NAME=${var.database_name}
-DATABASE_HOST=${module.rds_cluster_setup.rds_serverless_endpoint}
-DATABASE_PORT=${module.rds_cluster_setup.rds_serverless_port}
-DATABASE_USER=${module.rds_cluster_setup.rds_serverless_master_username}
-DATABASE_PASS=${module.rds_cluster_setup.rds_serverless_master_password}
 DATABASE_ENGINE=django.db.backends.mysql
 EOL
-
-sudo docker run -p 80:8000 --env-file /usr/.env ${var.docker_image_ref}
   EOF
 }
 ```
