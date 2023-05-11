@@ -1,7 +1,5 @@
 
-locals {
-  state_management_key = "global/${var.environment}/s3/terraform.tfstate"
-}
+
 
 resource "aws_s3_bucket" "project_terraform_state" {
   bucket = "${var.project_name}-var.environment-state-management-bucket"
