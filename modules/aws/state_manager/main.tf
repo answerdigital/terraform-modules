@@ -1,10 +1,3 @@
-variable "project_name" {
-  type = string
-}
-
-variable "environment" {
-  type = string
-}
 
 locals {
   state_management_key = "global/${var.environment}/s3/terraform.tfstate"
