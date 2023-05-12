@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "project_terraform_state" {
-  bucket = "${var.project_name}-var.environment-state-management-bucket"
+  bucket = "${var.project_name}-${var.environment}-state-management-bucket"
   lifecycle {
     prevent_destroy = true
   }
