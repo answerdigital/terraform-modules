@@ -1,7 +1,12 @@
 variable "project_name" {
-  type = string
+  type        = string
+  description = "This is used to label the components of the session storage"
 }
 
+# OPTIONAL VARIABLES
+
 variable "environment" {
-  type = string
+  type        = string
+  description = "This is used to label the components of the session storage with the AWS environment the bucket is hosted on"
+  optional    = true
 }
