@@ -5,6 +5,21 @@ resource "aws_s3_bucket" "project_terraform_state" {
   }
 }
 
+resource "aws_s3_bucket_logging" "project_terraform_state_logging" {
+  count         = var.create_logging_bucket ? 1 : 0
+  bucket        = aws_s3_bucket.project_terraform_state_log_bucket.bucket
+  target_bucket = aws_s3_bucket.project_terraform_state.bucket
+  target_prefix = "log/"
+}
+
+resource "aws_s3_bucket" "project_terraform_state_log_bucket" {
+  bucket = "${var.project_name}-${var.environment}-state-management-bucket-log"
+
+  lifecycle {
+    prevent_destroy = true
+  }
+}
+
 resource "aws_s3_bucket_versioning" "project_versioning" {
   bucket = aws_s3_bucket.project_terraform_state.id
 
