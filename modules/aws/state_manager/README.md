@@ -25,8 +25,8 @@ This Terraform module will produce a State Management bucket that will allow you
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_environment"></a> [environment](#input\_environment) | n/a | `string` | n/a | yes |
-| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | n/a | `string` | n/a | yes |
+| <a name="input_environment"></a> [environment](#input\_environment) | This is used to label the components of the session storage with the AWS environment the bucket is hosted on | `string` | `"test"` | no |
+| <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the components of the session storage | `string` | n/a | yes |
 
 ## Outputs
 
