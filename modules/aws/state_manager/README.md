@@ -17,6 +17,8 @@ This Terraform module will produce a State Management bucket that will allow you
 |------|------|
 | [aws_dynamodb_table.project_tf_locks](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table) | resource |
 | [aws_s3_bucket.project_terraform_state](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket.project_terraform_state_log_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket) | resource |
+| [aws_s3_bucket_logging.project_terraform_state_logging](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_logging) | resource |
 | [aws_s3_bucket_public_access_block.project_s3_public_access](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_public_access_block) | resource |
 | [aws_s3_bucket_server_side_encryption_configuration.project_s3_encryption](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_server_side_encryption_configuration) | resource |
 | [aws_s3_bucket_versioning.project_versioning](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_versioning) | resource |
@@ -25,6 +27,7 @@ This Terraform module will produce a State Management bucket that will allow you
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_create_logging_bucket"></a> [create\_logging\_bucket](#input\_create\_logging\_bucket) | Provide this if you want an access log for the Terraform State Bucket | `bool` | `true` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | This is used to label the components of the session storage with the AWS environment the bucket is hosted on | `string` | `"dev"` | no |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the components of the session storage | `string` | n/a | yes |
 
