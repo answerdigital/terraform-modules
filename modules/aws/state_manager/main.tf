@@ -1,20 +1,19 @@
 resource "aws_s3_bucket" "project_terraform_state" {
   bucket = "${var.project_name}-${var.environment}-state-management-bucket"
   lifecycle {
-    prevent_destroy = true
-  }
+        prevent_destroy = true
+    }
 }
 
 resource "aws_s3_bucket_logging" "project_terraform_state_logging" {
   count         = var.create_logging_bucket ? 1 : 0
-  bucket        = aws_s3_bucket.project_terraform_state_log_bucket.bucket
-  target_bucket = aws_s3_bucket.project_terraform_state.bucket
+  bucket        = aws_s3_bucket.project_terraform_state.id
+  target_bucket = aws_s3_bucket.project_terraform_state_log_bucket.id
   target_prefix = "log/"
 }
 
 resource "aws_s3_bucket" "project_terraform_state_log_bucket" {
   bucket = "${var.project_name}-${var.environment}-state-management-bucket-log"
-
   lifecycle {
     prevent_destroy = true
   }
