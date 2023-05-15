@@ -15,6 +15,15 @@ updates:
           - "version-update:semver-patch"
           - "version-update:semver-minor"
   - package-ecosystem: terraform
+    directory: /modules/aws/elb
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
+  - package-ecosystem: terraform
     directory: /modules/aws/rds_serverless_cluster
     schedule:
       interval: daily
