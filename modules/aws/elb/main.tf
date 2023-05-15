@@ -1,5 +1,5 @@
 
-resource "aws_lb_target_group" "mdm_target_group" {
+resource "aws_lb_target_group" "aws_lb_target_group" {
   name        = "${var.lb_name}-target-group"
   port        = var.application_port
   protocol    = var.application_http_protocol
@@ -36,9 +36,11 @@ resource "aws_lb" "aws_lb" {
   tags = {
     Name = "${var.lb_name}-lb"
   }
+
+  drop_invalid_header_fields = true
 }
 
-resource "aws_lb_listener" "mdm_lb_listener" {
+resource "aws_lb_listener" "aws_lb_listener" {
   load_balancer_arn = aws_lb.aws_lb.arn
   port              = var.application_port
   protocol          = var.application_http_protocol
