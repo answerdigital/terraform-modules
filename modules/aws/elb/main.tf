@@ -1,14 +1,15 @@
+
 resource "aws_lb_target_group" "mdm_target_group" {
   name        = "${var.lb_name}-target-group"
   port        = var.application_port
   protocol    = var.application_http_protocol
-  target_type = "ip" # set target_type to ip
+  target_type = "ip"
   vpc_id      = var.vpc_id
 
   stickiness {
     enabled     = true
     type        = "lb_cookie"
-    cookie_name = "mdm_cookie"
+    cookie_name = "lb_cookie"
   }
 
   health_check {
@@ -16,8 +17,8 @@ resource "aws_lb_target_group" "mdm_target_group" {
     healthy_threshold   = 3
     interval            = 50
     matcher             = 200
-    path                = "/api/authorities"
-    port                = "traffic-port"
+    path                = var.healthcheck_endpoint
+    port                = var.application_port
     protocol            = var.application_http_protocol
     timeout             = 10
     unhealthy_threshold = 3
@@ -32,7 +33,7 @@ resource "aws_lb" "aws_lb" {
   security_groups            = var.security_group_id
   subnets                    = var.subnet_ids
   enable_deletion_protection = true
-  tags                       = {
+  tags = {
     Name = "${var.lb_name}-lb"
   }
 }
