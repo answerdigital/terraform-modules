@@ -33,6 +33,33 @@ updates:
           - "version-update:semver-patch"
           - "version-update:semver-minor"
   - package-ecosystem: terraform
+    directory: /modules/aws/state_manager
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
+  - package-ecosystem: terraform
+    directory: /modules/aws/state_manager/test
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
+  - package-ecosystem: terraform
+    directory: /modules/aws/state_manager/test/test-state
+    schedule:
+      interval: daily
+    ignore:
+      - dependency-name: "*"
+        update-types:
+          - "version-update:semver-patch"
+          - "version-update:semver-minor"
+  - package-ecosystem: terraform
     directory: /modules/aws/vpc
     schedule:
       interval: daily
