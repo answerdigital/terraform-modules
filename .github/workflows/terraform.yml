@@ -97,7 +97,7 @@ jobs:
     needs:
       - determine-modules
       - terraform-docs # to avoid race condition with both committing
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ always() && github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
