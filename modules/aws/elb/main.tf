@@ -7,7 +7,7 @@ resource "aws_lb_target_group" "aws_lb_target_group" {
   vpc_id      = var.vpc_id
 
   stickiness {
-    enabled     = true
+    enabled     = var.sticky_session ? true : false
     type        = "lb_cookie"
     cookie_name = "lb_cookie"
   }
@@ -25,12 +25,11 @@ resource "aws_lb_target_group" "aws_lb_target_group" {
   }
 }
 
-
 resource "aws_lb" "aws_lb" {
   name                       = "${var.lb_name}-lb"
   internal                   = var.internal
   load_balancer_type         = "application"
-  security_groups            = var.security_group_id
+  security_groups            = var.vpc_security_group_ids
   subnets                    = var.subnet_ids
   enable_deletion_protection = true
   tags = {
@@ -45,7 +44,7 @@ resource "aws_lb_listener" "aws_lb_listener" {
   port              = var.application_port
   protocol          = var.application_http_protocol
   default_action {
-    target_group_arn = aws_lb_target_group.mdm_target_group.arn
+    target_group_arn = aws_lb_target_group.aws_lb_target_group.arn
     type             = "forward"
   }
 }
