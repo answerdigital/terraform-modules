@@ -81,14 +81,14 @@ and `eu-west-3` respectively.
 
 ```hcl
 module "vpc_subnet" {
-  source               = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=v2"
+  source               = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v2"
   owner                = "joe_blogs"
   project_name         = "example_project_name"
   enable_vpc_flow_logs = true
 }
 
 module "vpc_subnet" {
-  source                     = "github.com/answerdigital/terraform-modules/modules/aws/vpc?ref=v2"
+  source                     = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v2"
   owner                      = "joe_blogs"
   project_name               = "example_project_name"
   azs                        = ["eu-west-1", "eu-west-3"]
