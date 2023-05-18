@@ -23,7 +23,7 @@ jobs:
       - name: Output all modules
         id: output-all
         run: |
-          JQ_OUTPUT_ALL=$(find modules/ -mindepth 2 -type d | jq -R -s -c 'split("\n")[:-1]')
+          JQ_OUTPUT_ALL=$(find modules -mindepth 2 -maxdepth 2 -type d | jq -MRsc 'split("\n")[:-1]')
           echo "all_modules=$JQ_OUTPUT_ALL" >> $GITHUB_OUTPUT
       - name: Output changed modules
         if: ${{ github.event_name == 'pull_request' }}
@@ -32,7 +32,7 @@ jobs:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           JQ_OUTPUT_CHANGED=$(git diff --name-only $BASE_SHA $GITHUB_SHA modules/*/*/*.tf |
-            cut -d/ -f1-3 | sort -u | jq -R -s -c 'split("\n")[:-1]')
+            cut -d/ -f1-3 | sort -u | jq -MRsc 'split("\n")[:-1]')
           echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
 
   terraform-check:
@@ -97,7 +97,7 @@ jobs:
     needs:
       - determine-modules
       - terraform-docs # to avoid race condition with both committing
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ always() && github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
