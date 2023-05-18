@@ -7,3 +7,9 @@ output "instance_id" {
   value       = aws_instance.ec2.id
   description = "This outputs the unique ID of the EC2 instance."
 }
+
+output "private_key" {
+  value       = tls_private_key.private_key.private_key_pem
+  description = "This outputs the private key"
+  sensitive   = true
+}
