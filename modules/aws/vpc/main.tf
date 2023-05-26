@@ -6,6 +6,10 @@ terraform {
       source  = "hashicorp/random"
       version = ">= 3.4.3"
     }
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
   }
 }
 
@@ -15,6 +19,10 @@ resource "aws_flow_log" "flow_log" {
   traffic_type    = var.vpc_flow_logs_traffic_type
   vpc_id          = aws_vpc.vpc.id
   count           = var.enable_vpc_flow_logs ? 1 : 0
+  tags = {
+    Name  = "${var.project_name}-vpc"
+    Owner = var.owner
+  }
 }
 
 resource "random_uuid" "log_group_guid_identifier" {
@@ -23,12 +31,19 @@ resource "random_uuid" "log_group_guid_identifier" {
 resource "aws_cloudwatch_log_group" "log_group" {
   name  = "${var.project_name}-vpc-flow-logs-${random_uuid.log_group_guid_identifier.result}"
   count = var.enable_vpc_flow_logs ? 1 : 0
+  tags = {
+    Name  = "${var.project_name}-vpc"
+    Owner = var.owner
+  }
 }
 
 resource "aws_iam_role" "iam_role" {
   name  = "${var.project_name}-vpc-logs-iam"
   count = var.enable_vpc_flow_logs ? 1 : 0
-
+  tags = {
+    Name  = "${var.project_name}-vpc"
+    Owner = var.owner
+  }
   assume_role_policy = <<EOF
 {
   "Version": "2012-10-17",
@@ -50,7 +65,6 @@ resource "aws_iam_role_policy" "iam_role_policy" {
   name  = "${var.project_name}-vpc-iam-logs-policy"
   role  = aws_iam_role.iam_role[0].id
   count = var.enable_vpc_flow_logs ? 1 : 0
-
   policy = <<EOF
 {
   "Version": "2012-10-17",
