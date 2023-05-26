@@ -6,6 +6,7 @@ locals {
 module "s3_state_manager" {
   source       = "../."
   project_name = local.project_name
+  owner        = "Test"
 }
 
 output "state_bucket_name" {
