@@ -8,8 +8,7 @@ on:
 
 # for Dependabot terraform-docs
 permissions:
-  pull-requests: write
-  contents: read
+  contents: write
 
 jobs:
   determine-modules:
