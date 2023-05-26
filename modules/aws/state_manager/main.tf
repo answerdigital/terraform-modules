@@ -1,3 +1,14 @@
+terraform {
+  required_version = "~> 1.3"
+
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = ">= 4.0"
+    }
+  }
+}
+
 resource "aws_s3_bucket" "project_terraform_state" {
   bucket = "${var.project_name}-${var.environment}-state-management-bucket"
   lifecycle {
