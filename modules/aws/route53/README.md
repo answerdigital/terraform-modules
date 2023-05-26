@@ -69,7 +69,7 @@ Below is a simple example for an example.com zone with a single subdomain record
 module "example_com" {
   source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2"
 
-  domain = "examples.com"
+  domain = "example.com"
   records = {
     www = {
       name    = "www"
@@ -92,9 +92,9 @@ the bare domain and www subdomain to the canonical domain.
 module "example_com" {
   source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2"
 
-  domain = "examples.com"
+  domain = "example.com"
   aliases = [
-    "examples.org" # examples.org and www.examples.org will redirect to examples.com
+    "example.org" # examples.org and www.examples.org will redirect to examples.com
   ]
   alias_records = {
     "example.org" = {
