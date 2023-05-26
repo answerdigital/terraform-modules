@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: main
 
+# for Dependabot terraform-docs
+permissions:
+  contents: write
+
 jobs:
   determine-modules:
     name: "Determine Terraform Modules"
