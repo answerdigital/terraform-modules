@@ -1,3 +1,4 @@
+locals {
   project = "test_project"
   owner   = "answer_tester"
 }
