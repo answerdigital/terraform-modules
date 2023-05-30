@@ -44,7 +44,7 @@ This Terraform module will produce an EC2 instance which can be accessed via ssh
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | This is the id of the subnet you want the ec2 instance to be created in. | `string` | n/a | yes |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | This allows bash scripts and command line commands to be specified and run in the EC2 instance when launched. Do not pass gzip-compressed data via this argument. | `string` | `""` | no |
 | <a name="input_user_data_replace_on_change"></a> [user\_data\_replace\_on\_change](#input\_user\_data\_replace\_on\_change) | This value indicates whether changes to the `user_data` value triggers a rebuild of the EC2 instance. | `bool` | `true` | no |
-| <a name="input_vpc_security_group_ids"></a> [vpc\_security\_group\_ids](#input\_vpc\_security\_group\_ids) | This is a list of ids that specifies the security groups you want your EC2 to be in. If you do not wish to specify a security group for your module then please set this value to an empty list | `list(string)` | n/a | yes |
+| <a name="input_vpc_security_group_ids"></a> [vpc\_security\_group\_ids](#input\_vpc\_security\_group\_ids) | This is a list of ids that specifies the security groups you want your EC2 to be in. | `list(string)` | n/a | yes |
 
 ## Outputs
 

@@ -18,6 +18,14 @@
 
 | Name | Type |
 |------|------|
+| [aws_security_group.aws_sg](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/security_group) | resource |
 | [aws_ami.ec2_ami](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/ami) | data source |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_ip"></a> [ip](#output\_ip) | n/a |
+| <a name="output_private_key"></a> [private\_key](#output\_private\_key) | n/a |
 <!-- END_TF_DOCS -->
