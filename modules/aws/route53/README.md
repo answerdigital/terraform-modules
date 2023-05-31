@@ -95,7 +95,7 @@ module "example_com" {
 
   domain  = "example.com"
   aliases = [
-    "example.org" # example.org and www.example.org will redirect to examples.com
+    "example.org" # example.org and www.example.org will redirect to example.com
   ]
   alias_records = {
     "example.org" = {

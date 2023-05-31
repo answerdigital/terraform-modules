@@ -10,6 +10,6 @@ output "instance_id" {
 
 output "private_key" {
   value       = tls_private_key.private_key.private_key_pem
-  description = "This outputs the private key"
+  description = "This outputs the private key."
   sensitive   = true
 }
