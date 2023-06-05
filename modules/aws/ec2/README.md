@@ -44,14 +44,15 @@ This Terraform module will produce an EC2 instance which can be accessed via ssh
 | <a name="input_subnet_id"></a> [subnet\_id](#input\_subnet\_id) | This is the id of the subnet you want the ec2 instance to be created in. | `string` | n/a | yes |
 | <a name="input_user_data"></a> [user\_data](#input\_user\_data) | This allows bash scripts and command line commands to be specified and run in the EC2 instance when launched. Do not pass gzip-compressed data via this argument. | `string` | `""` | no |
 | <a name="input_user_data_replace_on_change"></a> [user\_data\_replace\_on\_change](#input\_user\_data\_replace\_on\_change) | This value indicates whether changes to the `user_data` value triggers a rebuild of the EC2 instance. | `bool` | `true` | no |
-| <a name="input_vpc_security_group_ids"></a> [vpc\_security\_group\_ids](#input\_vpc\_security\_group\_ids) | This is a list of ids that specifies the security groups you want your EC2 to be in. If you do not wish to specify a security group for your module then please set this value to an empty list | `list(string)` | n/a | yes |
+| <a name="input_vpc_security_group_ids"></a> [vpc\_security\_group\_ids](#input\_vpc\_security\_group\_ids) | This is a list of ids that specifies the security groups you want your EC2 to be in. | `list(string)` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
 | <a name="output_instance_id"></a> [instance\_id](#output\_instance\_id) | This outputs the unique ID of the EC2 instance. |
-| <a name="output_instance_public_ip_address"></a> [instance\_public\_ip\_address](#output\_instance\_public\_ip\_address) | This outputs the public IP associated with the EC2 instance. Note that this ouput will be the same as the elastic IP if `needs_elastic_ip` is set to `true`. This output is of type `string`. |
+| <a name="output_instance_public_ip_address"></a> [instance\_public\_ip\_address](#output\_instance\_public\_ip\_address) | This outputs the public IP associated with the EC2 instance. Note that this output will be the same as the elastic IP if `needs_elastic_ip` is set to `true`. This output is of type `string`. |
+| <a name="output_private_key"></a> [private\_key](#output\_private\_key) | This outputs the private key. |
 <!-- END_TF_DOCS -->
 
 # Example Usage
@@ -61,17 +62,49 @@ Below is an example of how you would call the `ec2` module in your terraform cod
 Here we also give an example of a bash script used to install docker on `Amazon linux`, then create a .env file on the instance and finally run a chosen docker image with the .env file.
 
 ```hcl
+locals {
+  project = "test_project"
+  owner   = "answer_tester"
+}
+
+module "vpc_subnet" {
+  source               = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v2"
+  owner                = local.owner
+  project_name         = local.project
+  enable_vpc_flow_logs = true
+}
+
+data "aws_ami" "ec2_ami" {
+  most_recent = true
+  filter {
+    name   = "name"
+    values = ["amzn-ami-hvm-*-x86_64-ebs"]
+  }
+  filter {
+    name   = "virtualization-type"
+    values = ["hvm"]
+  }
+  filter {
+    name   = "architecture"
+    values = ["x86_64"]
+  }
+  owners = ["amazon"]
+}
+
+data "aws_availability_zones" "available" {
+  state = "available"
+}
+
 module "ec2_instance_setup" {
   source                 = "github.com/answerdigital/terraform-modules//modules/aws/ec2?ref=v2"
-  project_name           = var.project_name
-  owner                  = var.owner
-  ami_id                 = var.ami_id
-  availability_zone      = var.az_zones[0]
-  subnet_id              = module.vpc_subnet_setup.public_subnet_ids[0]
-  vpc_security_group_ids = [aws_security_group.ec2_security_group.id]
+  project_name           = local.project
+  owner                  = local.owner
+  ami_id                 = data.aws_ami.ec2_ami.id
+  availability_zone      = data.aws_availability_zones.available.names[0]
+  subnet_id              = module.vpc_subnet.public_subnet_ids[0]
+  vpc_security_group_ids = []
   needs_elastic_ip       = true
-
-  user_data              = <<EOF
+  user_data = <<EOF
 #!/bin/bash -xe
 #logs all user_data commands into a user-data.log file
 exec > >(tee /var/log/user-data.log|logger -t user-data -s 2>/dev/console) 2>&1
@@ -83,15 +116,8 @@ sudo systemctl enable docker.service
 sudo systemctl start docker.service
 
 sudo cat << EOL > /usr/.env
-DATABASE_NAME=${var.database_name}
-DATABASE_HOST=${module.rds_cluster_setup.rds_serverless_endpoint}
-DATABASE_PORT=${module.rds_cluster_setup.rds_serverless_port}
-DATABASE_USER=${module.rds_cluster_setup.rds_serverless_master_username}
-DATABASE_PASS=${module.rds_cluster_setup.rds_serverless_master_password}
-DATABASE_ENGINE=django.db.backends.mysql
 EOL
-
-sudo docker run -p 80:8000 --env-file /usr/.env ${var.docker_image_ref}
   EOF
+}
 }
 ```

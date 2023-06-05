@@ -93,7 +93,7 @@ the bare domain and www subdomain to the canonical domain.
 module "example_com" {
   source = "github.com/answerdigital/terraform-modules//modules/aws/route53?ref=v2"
 
-  domain = "example.com"
+  domain  = "example.com"
   aliases = [
     "example.org" # example.org and www.example.org will redirect to example.com
   ]

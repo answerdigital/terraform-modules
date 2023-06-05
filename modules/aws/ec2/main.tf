@@ -87,7 +87,7 @@ resource "aws_eip" "public_elastic_ip" {
   count = var.needs_elastic_ip == true ? 1 : 0
 
   instance = aws_instance.ec2.id
-  vpc      = true
+  domain   = "vpc"
 
   tags = {
     Name  = "${var.project_name}-public-elastic-ip"
