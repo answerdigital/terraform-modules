@@ -9,8 +9,13 @@ module "example_com" {
     "example.org" = {
       foo = {
         name    = "foo"
-        type    = "A"
-        records = ["8.7.6.5"]
+        type    = "CNAME"
+        records = ["www.example.com"]
+      }
+      something_interesting = {
+        name    = "example_service"
+        type    = "TXT"
+        records = ["I can provide text or something, to some service somewhere!"]
       }
     }
   }
@@ -21,4 +26,5 @@ module "example_com" {
       records = ["1.2.3.4"]
     }
   }
+
 }
