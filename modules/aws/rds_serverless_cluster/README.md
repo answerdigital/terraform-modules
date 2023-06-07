@@ -52,6 +52,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 | <a name="input_database_subnet_ids"></a> [database\_subnet\_ids](#input\_database\_subnet\_ids) | This is a list of subnet ids that the database cluster will be created across. The minimum number of subnets that can be supplied is 2. | `list(string)` | n/a | yes |
 | <a name="input_enable_encrypted_storage"></a> [enable\_encrypted\_storage](#input\_enable\_encrypted\_storage) | Enables encrypted storage for the database | `bool` | `true` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | This is used to specify the owner of the resources in this module. | `string` | n/a | yes |
+| <a name="input_prevent_deletion"></a> [prevent\_deletion](#input\_prevent\_deletion) | n/a | `bool` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the resources of the module. | `string` | n/a | yes |
 | <a name="input_replicate_on_availability_zones"></a> [replicate\_on\_availability\_zones](#input\_replicate\_on\_availability\_zones) | A list of availability zones to replicate the database instance on, note this will duplicate the database. | `list(string)` | `[]` | no |
 

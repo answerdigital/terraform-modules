@@ -97,3 +97,7 @@ variable "database_auto_minor_version_upgrade" {
   default     = false
   description = "This is a boolean value determining if minor version upgrades for your database_engine_version should be applied automatically to your server."
 }
+
+variable "prevent_deletion" {
+  type = bool
+}

@@ -21,7 +21,7 @@ resource "aws_secretsmanager_secret_version" "aurora_db_secret_version" {
   secret_id     = aws_secretsmanager_secret.aurora_db_secret.id
   secret_string = <<-EOF
   {
-    "username": "admin",
+    "username": "projectadmin",
     "password": "${random_password.password.result}"
   }
   EOF
@@ -40,7 +40,6 @@ resource "aws_db_subnet_group" "private_db_subnet_group" {
 resource "aws_rds_cluster" "rds_cluster" {
   depends_on = [aws_secretsmanager_secret.aurora_db_secret]
 
-
   cluster_identifier      = "${var.project_name}-cluster"
   engine                  = var.database_engine
   engine_mode             = "provisioned"
@@ -51,9 +50,12 @@ resource "aws_rds_cluster" "rds_cluster" {
   skip_final_snapshot     = true
   storage_encrypted       = var.enable_encrypted_storage
   backup_retention_period = var.backup_retention_period
-  deletion_protection     = false
+  deletion_protection     = var.prevent_deletion
   vpc_security_group_ids  = var.database_security_groups
   db_subnet_group_name    = aws_db_subnet_group.private_db_subnet_group.name
+
+  preferred_backup_window      = "07:00-09:00"
+  preferred_maintenance_window = "sun:04:00-sun:05:00"
 
   serverlessv2_scaling_configuration {
     max_capacity = var.database_serverlessv2_scaling_max_capacity
@@ -75,9 +77,6 @@ resource "aws_rds_cluster_instance" "primary_rds_cluster_instance" {
 
   auto_minor_version_upgrade = var.database_auto_minor_version_upgrade
   availability_zone          = var.database_availability_zone
-
-  preferred_backup_window      = "07:00-09:00"
-  preferred_maintenance_window = "sun:04:00-sun:05:00"
 
   tags = {
     Name  = "${var.project_name}-rds-primary-cluster-instance"
