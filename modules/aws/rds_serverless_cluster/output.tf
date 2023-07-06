@@ -9,12 +9,12 @@ output "rds_cluster_instance_endpoint" {
 }
 
 output "rds_cluster_replica_instance_ports" {
-  value       = aws_rds_cluster_instance.replicated_rds_cluster_instances[*].port
+  value       = values(aws_rds_cluster_instance.replicated_rds_cluster_instances)[*].port
   description = "This is the list of ports via which the replicated instances communicate on."
 }
 
 output "rds_cluster_replica_instance_endpoints" {
-  value       = aws_rds_cluster_instance.replicated_rds_cluster_instances[*].endpoint
+  value       = values(aws_rds_cluster_instance.replicated_rds_cluster_instances)[*].endpoint
   description = "This is the list of endpoints where the replicated instances are hosted."
 }
 
