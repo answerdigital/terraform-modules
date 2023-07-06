@@ -63,9 +63,3 @@ variable "user_data_replace_on_change" {
   default     = true
   description = "This value indicates whether changes to the `user_data` value triggers a rebuild of the EC2 instance."
 }
-
-variable "custom_ssh_key" {
-  type        = string
-  description = "Provide a SSH Key to have that key used for this box, by default the SSH key will be managed by this module"
-  default     = ""
-}
