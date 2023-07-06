@@ -46,18 +46,20 @@ resource "aws_iam_role_policy_attachment" "instance_role" {
 }
 
 resource "tls_private_key" "private_key" {
+  count     = var.custom_key_name == "" ? 1 : 0
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
 resource "aws_key_pair" "key_pair" {
+  count      = var.custom_key_name == "" ? 1 : 0
   key_name   = "${var.project_name}-key-pair"
-  public_key = tls_private_key.private_key.public_key_openssh
+  public_key = tls_private_key.private_key[0].public_key_openssh
 }
 
 resource "aws_instance" "ec2" {
   instance_type = var.ec2_instance_type
-  key_name      = aws_key_pair.key_pair.key_name
+  key_name      = var.custom_key_name == "" ? aws_key_pair.key_pair[0].key_name : var.custom_key_name
   ami           = var.ami_id
   metadata_options {
     http_endpoint = "enabled"

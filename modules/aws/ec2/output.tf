@@ -9,7 +9,7 @@ output "instance_id" {
 }
 
 output "private_key" {
-  value       = tls_private_key.private_key.private_key_pem
-  description = "This outputs the private key."
+  value       = tls_private_key.private_key[0].private_key_pem
+  description = "This outputs the self-generated private key - This will not be populated if you provide your own key"
   sensitive   = true
 }

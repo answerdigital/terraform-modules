@@ -26,6 +26,6 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_generated_private_key"></a> [generated\_private\_key](#output\_generated\_private\_key) | n/a |
 | <a name="output_ip"></a> [ip](#output\_ip) | n/a |
-| <a name="output_private_key"></a> [private\_key](#output\_private\_key) | n/a |
 <!-- END_TF_DOCS -->
