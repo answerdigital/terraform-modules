@@ -17,4 +17,3 @@ output "az_zones" {
   value       = local.az_zones
   description = "A list of the Availability Zones that have been used. This output is of type `string`."
 }
-

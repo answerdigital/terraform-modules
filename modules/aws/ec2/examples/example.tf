@@ -103,4 +103,3 @@ DATABASE_ENGINE=django.db.backends.mysql
 EOL
   EOF
 }
-
