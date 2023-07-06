@@ -5,17 +5,17 @@ module "example_com" {
   aliases = [
     "example.org"
   ]
+  google_site_verification = {
+    name    = "google-site-verification"
+    type    = "TXT"
+    records = ["google-site-verification-key"]
+  },
   alias_records = {
     "example.org" = {
       foo = {
         name    = "foo"
         type    = "CNAME"
         records = ["www.example.com"]
-      }
-      something_interesting = {
-        name    = "example_service"
-        type    = "TXT"
-        records = ["I can provide text or something, to some service somewhere!"]
       }
     }
   }
