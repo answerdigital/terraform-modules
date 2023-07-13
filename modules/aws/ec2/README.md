@@ -37,7 +37,7 @@ This Terraform module will produce an EC2 instance which can be accessed via ssh
 | <a name="input_ami_id"></a> [ami\_id](#input\_ami\_id) | This is the id of the ami image used for the ec2 instance. | `string` | n/a | yes |
 | <a name="input_associate_public_ip_address"></a> [associate\_public\_ip\_address](#input\_associate\_public\_ip\_address) | This is a boolean value indicating if a public IP address should be associated with the EC2 instance. | `bool` | `true` | no |
 | <a name="input_availability_zone"></a> [availability\_zone](#input\_availability\_zone) | This is the availability zone you want the ec2 instance to be created in. | `string` | n/a | yes |
-| <a name="input_custom_key_name"></a> [custom\_key\_name](#input\_custom\_key\_name) | Provide a SSH Key to have that key used for this box, by default the SSH key will be managed by this module | `string` | `""` | no |
+| <a name="input_custom_key_name"></a> [custom\_key\_name](#input\_custom\_key\_name) | Provide the name of an EC2 key pair to use your own key. By default the SSH key will be managed by this module. | `string` | `""` | no |
 | <a name="input_ec2_instance_type"></a> [ec2\_instance\_type](#input\_ec2\_instance\_type) | This is the type of EC2 instance you want. | `string` | `"t2.micro"` | no |
 | <a name="input_needs_elastic_ip"></a> [needs\_elastic\_ip](#input\_needs\_elastic\_ip) | This is a boolean value indicating whether an elastic IP should be generated and associated with the EC2 instance. | `bool` | `false` | no |
 | <a name="input_owner"></a> [owner](#input\_owner) | This is used to specify the owner of the resources in this module. | `string` | n/a | yes |
