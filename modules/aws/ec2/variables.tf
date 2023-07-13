@@ -66,6 +66,6 @@ variable "user_data_replace_on_change" {
 
 variable "custom_key_name" {
   type        = string
-  description = "Provide a SSH Key to have that key used for this box, by default the SSH key will be managed by this module"
+  description = "Provide the name of an EC2 key pair to use your own key. By default the SSH key will be managed by this module."
   default     = ""
 }
