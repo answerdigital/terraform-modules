@@ -5,11 +5,7 @@ module "example_com" {
   aliases = [
     "example.org"
   ]
-  google_site_verification = {
-    name    = "google-site-verification"
-    type    = "TXT"
-    records = ["google-site-verification-key"]
-  },
+
   alias_records = {
     "example.org" = {
       foo = {
@@ -20,6 +16,11 @@ module "example_com" {
     }
   }
   records = {
+    google_site_verification = {
+      name    = "google-site-verification"
+      type    = "TXT"
+      records = ["google-site-verification-key"]
+    }
     www = {
       name    = "www"
       type    = "A"
