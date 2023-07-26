@@ -55,6 +55,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 | <a name="input_prevent_deletion"></a> [prevent\_deletion](#input\_prevent\_deletion) | n/a | `bool` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the resources of the module. | `string` | n/a | yes |
 | <a name="input_replicate_on_availability_zones"></a> [replicate\_on\_availability\_zones](#input\_replicate\_on\_availability\_zones) | A list of availability zones to replicate the database instance on, note this will duplicate the database. | `list(string)` | `[]` | no |
+| <a name="input_performance_insights_enabled"></a> [performance\_insights\_enabled](#input\_performance\_insights\_enabled) | A boolean value determining if the rds instance have the performace insights enabled or not. | `bool` | `false` | no |
 
 ## Outputs
 

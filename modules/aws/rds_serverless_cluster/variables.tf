@@ -101,3 +101,9 @@ variable "database_auto_minor_version_upgrade" {
 variable "prevent_deletion" {
   type = bool
 }
+
+variable "database_performance_insights_enabled" {
+  type = bool
+  default = false
+  description = "This is a boolean value determining if the rds instance have the performace insights enabled or not"
+}
