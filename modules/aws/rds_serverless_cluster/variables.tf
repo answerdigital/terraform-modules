@@ -103,7 +103,7 @@ variable "prevent_deletion" {
 }
 
 variable "database_performance_insights_enabled" {
-  type = bool
-  default = false
+  type        = bool
+  default     = false
   description = "This is a boolean value determining if the rds instance have the performace insights enabled or not"
 }
