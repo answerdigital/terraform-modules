@@ -74,9 +74,10 @@ resource "aws_rds_cluster_instance" "primary_rds_cluster_instance" {
   engine               = aws_rds_cluster.rds_cluster.engine
   engine_version       = aws_rds_cluster.rds_cluster.engine_version
   db_subnet_group_name = aws_db_subnet_group.private_db_subnet_group.name
+
   performance_insights_enabled = var.database_performance_insights_enabled
-  auto_minor_version_upgrade = var.database_auto_minor_version_upgrade
-  availability_zone          = var.database_availability_zone
+  auto_minor_version_upgrade   = var.database_auto_minor_version_upgrade
+  availability_zone            = var.database_availability_zone
 
   tags = {
     Name  = "${var.project_name}-rds-primary-cluster-instance"
