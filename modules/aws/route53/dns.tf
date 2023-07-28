@@ -9,7 +9,7 @@ resource "aws_route53_record" "name_servers" {
   allow_overwrite = true
   name            = var.domain
   ttl             = var.default_ttl
-  type            = "NS"
+  type            = "NA"
   records         = aws_route53_zone.dns_zone.name_servers
 }
 
