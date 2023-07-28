@@ -3,7 +3,7 @@ name: "Check Terraform"
 on:
   push:
     branches: main
-  pull_request:
+  pull_request_target:
     branches: main
 
 # for Dependabot terraform-docs
