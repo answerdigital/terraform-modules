@@ -43,6 +43,7 @@ jobs:
     name: "Check Terraform"
     runs-on: ubuntu-latest
     needs: determine-modules
+    if: ${{ needs.determine-modules.outputs.check_modules != '[]' }}
     strategy:
       matrix:
         module: ${{ fromJSON(needs.determine-modules.outputs.all_modules) }}
