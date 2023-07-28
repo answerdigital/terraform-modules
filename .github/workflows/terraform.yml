@@ -46,7 +46,7 @@ jobs:
     if: ${{ needs.determine-modules.outputs.check_modules != '[]' }}
     strategy:
       matrix:
-        module: ${{ fromJSON(needs.determine-modules.outputs.check_modules) }}
+        module: ${{ fromJSON(needs.determine-modules.outputs.all_modules) }}
     defaults:
       run:
         working-directory: "${{ matrix.module }}"
