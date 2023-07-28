@@ -27,6 +27,7 @@ jobs:
       - name: Output all modules
         id: output-all
         run: |
+          echo $GITHUB_SHA
           JQ_OUTPUT_ALL=$(find modules -mindepth 2 -maxdepth 2 -type d | jq -MRsc 'split("\n")[:-1]')
           echo "all_modules=$JQ_OUTPUT_ALL" >> $GITHUB_OUTPUT
       - name: Output changed modules
