@@ -15,7 +15,7 @@ jobs:
     name: "Determine Terraform Modules"
     runs-on: ubuntu-latest
     outputs:
-      check_modules: ${{ github.event_name == 'pull_request'
+      check_modules: ${{ github.event_name == 'pull_request_target'
         && steps.output-changed.outputs.changed_modules
         || steps.output-all.outputs.all_modules }}
       all_modules: ${{ steps.output-all.outputs.all_modules }}
@@ -30,7 +30,7 @@ jobs:
           JQ_OUTPUT_ALL=$(find modules -mindepth 2 -maxdepth 2 -type d | jq -MRsc 'split("\n")[:-1]')
           echo "all_modules=$JQ_OUTPUT_ALL" >> $GITHUB_OUTPUT
       - name: Output changed modules
-        if: ${{ github.event_name == 'pull_request' }}
+        if: ${{ github.event_name == 'pull_request_target' }}
         id: output-changed
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
@@ -80,7 +80,7 @@ jobs:
     name: "Update Terraform Docs"
     runs-on: ubuntu-latest
     needs: terraform-check
-    if: ${{ github.event_name == 'pull_request' }}
+    if: ${{ github.event_name == 'pull_request_target' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -102,7 +102,7 @@ jobs:
     needs:
       - determine-modules
       - terraform-docs # to avoid race condition with both committing
-    if: ${{ always() && github.event_name == 'pull_request' }}
+    if: ${{ always() && github.event_name == 'pull_request_target' }}
     steps:
       - name: Checkout
         uses: actions/checkout@v3
