@@ -5,7 +5,6 @@ module "example_com" {
   aliases = [
     "example.org"
   ]
-
   alias_records = {
     "example.org" = {
       foo = {
@@ -27,5 +26,4 @@ module "example_com" {
       records = ["1.2.3.4"]
     }
   }
-
 }

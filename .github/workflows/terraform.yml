@@ -35,7 +35,7 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          JQ_OUTPUT_CHANGED=$(git diff --name-only $BASE_SHA $GITHUB_SHA modules/*/*/*.tf |
+          JQ_OUTPUT_CHANGED=$(git diff --name-only $BASE_SHA $GITHUB_SHA modules/**/*.tf |
             cut -d/ -f1-3 | sort -u | jq -MRsc 'split("\n")[:-1]')
           echo "changed_modules=$JQ_OUTPUT_CHANGED" >> $GITHUB_OUTPUT
 
@@ -68,6 +68,17 @@ jobs:
       - name: Terraform Validate
         id: validate
         run: terraform validate
+
+      - name: Terraform Plan
+        id: plan
+        env:
+          "AWS_DEFAULT_REGION": "eu-west-2"
+          "AWS_ACCESS_KEY_ID":  ${{ secrets.AWS_ACCESS_KEY_ID }}
+          "AWS_SECRET_ACCESS_KEY": ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        run: |
+          cd test 
+          terraform init
+          terraform plan
 
       - name: Terraform Security
         uses: aquasecurity/tfsec-action@v1.0.3
@@ -135,4 +146,3 @@ jobs:
           commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
           file_pattern: .github/dependabot.yml
           skip_checkout: true
-
