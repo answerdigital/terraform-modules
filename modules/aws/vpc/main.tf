@@ -13,23 +13,23 @@ terraform {
   }
 }
 
-resource "aws_flow_log" "flow_log" {
-  iam_role_arn    = aws_iam_role.iam_role[0].arn
-  log_destination = aws_cloudwatch_log_group.log_group[0].arn
+resource "aws_flow_log" "this" {
+  iam_role_arn    = aws_iam_role.this[0].arn
+  log_destination = aws_cloudwatch_log_group.this[0].arn
   traffic_type    = var.vpc_flow_logs_traffic_type
-  vpc_id          = aws_vpc.vpc.id
+  vpc_id          = aws_vpc.this.id
   count           = var.enable_vpc_flow_logs ? 1 : 0
 }
 
 resource "random_uuid" "log_group_guid_identifier" {
 }
 
-resource "aws_cloudwatch_log_group" "log_group" {
+resource "aws_cloudwatch_log_group" "this" {
   name  = "${var.project_name}-vpc-flow-logs-${random_uuid.log_group_guid_identifier.result}"
   count = var.enable_vpc_flow_logs ? 1 : 0
 }
 
-resource "aws_iam_role" "iam_role" {
+resource "aws_iam_role" "this" {
   name  = "${var.project_name}-vpc-logs-iam"
   count = var.enable_vpc_flow_logs ? 1 : 0
 
@@ -50,9 +50,9 @@ resource "aws_iam_role" "iam_role" {
 EOF
 }
 
-resource "aws_iam_role_policy" "iam_role_policy" {
+resource "aws_iam_role_policy" "this" {
   name   = "${var.project_name}-vpc-iam-logs-policy"
-  role   = aws_iam_role.iam_role[0].id
+  role   = aws_iam_role.this[0].id
   count  = var.enable_vpc_flow_logs ? 1 : 0
   policy = <<EOF
 {
@@ -74,7 +74,7 @@ EOF
 }
 
 
-resource "aws_vpc" "vpc" {
+resource "aws_vpc" "this" {
   cidr_block           = var.vpc_cidr
   enable_dns_support   = var.enable_dns_support
   enable_dns_hostnames = var.enable_dns_hostnames
@@ -85,9 +85,9 @@ resource "aws_vpc" "vpc" {
   }
 }
 
-resource "aws_subnet" "public_subnets" {
+resource "aws_subnet" "public" {
   count             = length(local.public_subnet_cidrs)
-  vpc_id            = aws_vpc.vpc.id
+  vpc_id            = aws_vpc.this.id
   cidr_block        = element(local.public_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
 
@@ -98,9 +98,9 @@ resource "aws_subnet" "public_subnets" {
   }
 }
 
-resource "aws_subnet" "private_subnets" {
+resource "aws_subnet" "private" {
   count             = length(local.private_subnet_cidrs)
-  vpc_id            = aws_vpc.vpc.id
+  vpc_id            = aws_vpc.this.id
   cidr_block        = element(local.private_subnet_cidrs, count.index)
   availability_zone = element(local.az_zones, count.index)
 
@@ -111,9 +111,9 @@ resource "aws_subnet" "private_subnets" {
   }
 }
 
-resource "aws_internet_gateway" "ig" {
+resource "aws_internet_gateway" "this" {
   count  = length(local.public_subnet_cidrs) > 0 ? 1 : 0
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.this.id
 
   tags = {
     Name  = "${var.project_name}-vpc-ig"
@@ -121,18 +121,18 @@ resource "aws_internet_gateway" "ig" {
   }
 }
 
-resource "aws_route_table" "route_table" {
+resource "aws_route_table" "this" {
   count  = length(local.public_subnet_cidrs) > 0 ? 1 : 0
-  vpc_id = aws_vpc.vpc.id
+  vpc_id = aws_vpc.this.id
 
   route {
     cidr_block = var.ig_cidr
-    gateway_id = aws_internet_gateway.ig[0].id
+    gateway_id = aws_internet_gateway.this[0].id
   }
 
   route {
     ipv6_cidr_block = var.ig_ipv6_cidr
-    gateway_id      = aws_internet_gateway.ig[0].id
+    gateway_id      = aws_internet_gateway.this[0].id
   }
 
   tags = {
@@ -141,8 +141,8 @@ resource "aws_route_table" "route_table" {
   }
 }
 
-resource "aws_route_table_association" "public_subnet_rt_asso" {
+resource "aws_route_table_association" "public" {
   count          = length(local.public_subnet_cidrs)
-  subnet_id      = element(aws_subnet.public_subnets[*].id, count.index)
-  route_table_id = aws_route_table.route_table[0].id
+  subnet_id      = element(aws_subnet.public[*].id, count.index)
+  route_table_id = aws_route_table.this[0].id
 }
