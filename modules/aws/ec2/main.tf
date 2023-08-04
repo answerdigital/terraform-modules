@@ -13,12 +13,12 @@ terraform {
   }
 }
 
-resource "aws_iam_instance_profile" "instance_profile" {
+resource "aws_iam_instance_profile" "this" {
   name = "${var.project_name}-ec2-monitoring-and-setup"
-  role = aws_iam_role.instance_role.name
+  role = aws_iam_role.this.name
 }
 
-resource "aws_iam_role" "instance_role" {
+resource "aws_iam_role" "this" {
   name               = "${var.project_name}-ec2-monitoring-and-setup"
   assume_role_policy = <<-EOF
   {
@@ -36,30 +36,30 @@ resource "aws_iam_role" "instance_role" {
   EOF
 }
 
-resource "aws_iam_role_policy_attachment" "instance_role" {
+resource "aws_iam_role_policy_attachment" "this" {
   for_each = toset([
     "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM",
     "arn:aws:iam::aws:policy/CloudWatchAgentServerPolicy"
   ])
-  role       = aws_iam_role.instance_role.name
+  role       = aws_iam_role.this.name
   policy_arn = each.value
 }
 
-resource "tls_private_key" "private_key" {
+resource "tls_private_key" "this" {
   count     = var.custom_key_name == "" ? 1 : 0
   algorithm = "RSA"
   rsa_bits  = 4096
 }
 
-resource "aws_key_pair" "key_pair" {
+resource "aws_key_pair" "this" {
   count      = var.custom_key_name == "" ? 1 : 0
   key_name   = "${var.project_name}-key-pair"
-  public_key = tls_private_key.private_key[0].public_key_openssh
+  public_key = tls_private_key.this[0].public_key_openssh
 }
 
-resource "aws_instance" "ec2" {
+resource "aws_instance" "this" {
   instance_type = var.ec2_instance_type
-  key_name      = var.custom_key_name == "" ? aws_key_pair.key_pair[0].key_name : var.custom_key_name
+  key_name      = var.custom_key_name == "" ? aws_key_pair.this[0].key_name : var.custom_key_name
   ami           = var.ami_id
   metadata_options {
     http_endpoint = "enabled"
@@ -74,7 +74,7 @@ resource "aws_instance" "ec2" {
   vpc_security_group_ids      = var.vpc_security_group_ids
   associate_public_ip_address = var.associate_public_ip_address
 
-  iam_instance_profile = aws_iam_instance_profile.instance_profile.name
+  iam_instance_profile = aws_iam_instance_profile.this.name
 
   user_data                   = var.user_data
   user_data_replace_on_change = var.user_data_replace_on_change
@@ -85,10 +85,10 @@ resource "aws_instance" "ec2" {
   }
 }
 
-resource "aws_eip" "public_elastic_ip" {
+resource "aws_eip" "this" {
   count = var.needs_elastic_ip == true ? 1 : 0
 
-  instance = aws_instance.ec2.id
+  instance = aws_instance.this.id
   domain   = "vpc"
 
   tags = {
