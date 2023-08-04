@@ -67,8 +67,8 @@ provider "acme" {
 locals {
   base_domain_name  = "test-project.test.com"
   dns_email_address = "dns@test.com"
-  dns_access_key    = "<AWS Access Key>
-  dns_secret_key    = "<AWS Secret Key>
+  dns_access_key    = "<AWS Access Key>"
+  dns_secret_key    = "<AWS Secret Key>"
   dns_region        = "eu-west-2"
 }
 
