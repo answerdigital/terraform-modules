@@ -36,7 +36,7 @@ A alias will also be added to the certificate as a wildcard for the subdomains o
 | <a name="input_aws_hosted_zone_id"></a> [aws\_hosted\_zone\_id](#input\_aws\_hosted\_zone\_id) | Hosted zone Id of the domain | `string` | n/a | yes |
 | <a name="input_aws_region"></a> [aws\_region](#input\_aws\_region) | Region for the networking resources. (Defaults to eu-west-2) | `string` | `"eu-west-2"` | no |
 | <a name="input_aws_secret_key"></a> [aws\_secret\_key](#input\_aws\_secret\_key) | AWS secret key for the AWS account Route53 is on | `string` | n/a | yes |
-| <a name="input_base_domain_name"></a> [base\_domain\_name](#input\_base\_domain\_name) | Domain without www. or https to create a certificate for | `string` | n/a | yes |
+| <a name="input_base_domain_name"></a> [base\_domain\_name](#input\_base\_domain\_name) | Common name to create certificate for. Example: test.test.com | `string` | n/a | yes |
 | <a name="input_email_address"></a> [email\_address](#input\_email\_address) | Email address to register the Certificate | `string` | n/a | yes |
 
 ## Outputs
