@@ -34,3 +34,9 @@ output "rds_cluster_instance_db_name" {
   value       = aws_rds_cluster.rds_cluster.database_name
   description = "This is the name of the database created. This value should be used when referencing the `DATABASE_NAME` in your configuration. This output is of type `string`."
 }
+
+variable "database_performance_insights_enabled" {
+  type        = bool
+  default     = false
+  description = "This is a boolean value determining if the rds instance have the performace insights enabled or not"
+}
