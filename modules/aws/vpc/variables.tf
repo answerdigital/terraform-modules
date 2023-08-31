@@ -1,11 +1,31 @@
 variable "project_name" {
   type        = string
-  description = "This is used to label the VPC as \"`project_name`-vpc\"."
+  description = "The projects's name - can only contain alphanumeric/underscore chatracters."
+
+  validation {
+    condition     = can(regex("^[0-9A-Za-z_]+$", var.project_name))
+    error_message = "For the project_name value, only a-z, A-Z, 0-9 and _ are allowed."
+  }
+}
+
+variable "environment" {
+  type        = string
+  description = "The environment being deployed to - can only contain lower case letters."
+
+  validation {
+    condition     = can(regex("^[a-z]+$", var.environment))
+    error_message = "For the environment value, only a-z are allowed."
+  }
 }
 
 variable "owner" {
   type        = string
-  description = "This is used to identify AWS resources through its tags."
+  description = "The email address of the owner."
+
+  validation {
+    condition     = can(match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.owner))
+    error_message = "Invalid email address format. Please provide a valid email address."
+  }
 }
 
 # VPC variables
@@ -13,6 +33,11 @@ variable "vpc_cidr" {
   type        = string
   description = "This specifies the CIDR block for the VPC."
   default     = "10.0.0.0/16"
+
+  validation {
+    condition     = can(cidrhost(var.vpc_cidr, 0))
+    error_message = "Must be valid IPv4 CIDR."
+  }
 }
 
 variable "enable_vpc_flow_logs" {
@@ -47,7 +72,7 @@ variable "enable_dns_hostnames" {
 # Availability Zone variables
 variable "azs" {
   type        = list(string)
-  description = "This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your terraform project."
+  description = "This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your Terraform project."
   default     = []
 }
 
@@ -69,10 +94,20 @@ variable "ig_cidr" {
   type        = string
   description = "This specifies the CIDR block for the internet gateway."
   default     = "0.0.0.0/0"
+
+  validation {
+    condition     = can(cidrhost(var.ig_cidr, 0))
+    error_message = "Must be valid IPv4 CIDR."
+  }
 }
 
 variable "ig_ipv6_cidr" {
   type        = string
   description = "This specifies the IPV6 CIDR block for the internet gateway."
   default     = "::/0"
+
+  validation {
+    condition     = can(cidrhost(var.ig_ipv6_cidr, 0))
+    error_message = "Must be valid IPv6 CIDR."
+  }
 }

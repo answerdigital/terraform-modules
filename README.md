@@ -4,7 +4,7 @@ The repo for Answer Digital shared Terraform modules.
 
 ## Using these modules
 
-You can use these modules in your own terraform projects as follows:
+You can use these modules in your own Terraform projects as follows:
 
 ```hcl
 module "ec2_setup" {
