@@ -2,13 +2,9 @@ terraform {
   required_version = "~> 1.3"
 
   required_providers {
-    random = {
-      source  = "hashicorp/random"
-      version = ">= 3.5.1"
-    }
     aws = {
       source  = "hashicorp/aws"
-      version = ">= 5.13.1"
+      version = ">= 5.14.0"
     }
   }
 }
@@ -22,18 +18,16 @@ resource "aws_flow_log" "this" {
   vpc_id          = aws_vpc.this.id
 }
 
-resource "random_uuid" "log_group_guid_identifier" {}
-
 resource "aws_cloudwatch_log_group" "vpc_flow_logs" {
   count = var.enable_vpc_flow_logs ? 1 : 0
 
-  name = "clg-${var.project_name}-${local.aws_region_short}-vpc_flow_logs_${replace(random_uuid.log_group_guid_identifier.result, "-", "_")}"
+  name = "${replace("AWS::Logs::LogGroup", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}-vpc_flow_logs"
 }
 
 resource "aws_iam_role" "vpc_flow_logs" {
   count = var.enable_vpc_flow_logs ? 1 : 0
 
-  name = "${var.project_name}-vpc-logs-iam"
+  name = "${replace("AWS::IAM::Role", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}-vpc_flow_logs"
 
   assume_role_policy = <<EOF
 {
@@ -55,7 +49,7 @@ EOF
 resource "aws_iam_role_policy" "vpc_flow_logs" {
   count = var.enable_vpc_flow_logs ? 1 : 0
 
-  name = "${var.project_name}-vpc-iam-logs-policy"
+  name = "${replace("AWS::IAM::RolePolicy", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}-vpc_flow_logs"
   role = aws_iam_role.vpc_flow_logs[0].id
 
   policy = <<EOF
@@ -83,7 +77,7 @@ resource "aws_vpc" "this" {
   enable_dns_hostnames = var.enable_dns_hostnames
 
   tags = {
-    Name  = "${var.project_name}-vpc"
+    Name  = "${replace("AWS::EC2::VPC", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}"
     Owner = var.owner
   }
 }
@@ -96,7 +90,7 @@ resource "aws_subnet" "public" {
   availability_zone = element(local.az_zones, count.index)
 
   tags = {
-    Name  = "${var.project_name}-public-subnet-${count.index + 1}"
+    Name  = "${replace("AWS::EC2::Subnet", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}-public_${count.index + 1}"
     Zone  = "Public"
     Owner = var.owner
   }
@@ -110,7 +104,7 @@ resource "aws_subnet" "private" {
   availability_zone = element(local.az_zones, count.index)
 
   tags = {
-    Name  = "${var.project_name}-private-subnet-${count.index + 1}"
+    Name  = "${replace("AWS::EC2::Subnet", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}-private_${count.index + 1}"
     Zone  = "Private"
     Owner = var.owner
   }
@@ -122,7 +116,7 @@ resource "aws_internet_gateway" "this" {
   vpc_id = aws_vpc.this.id
 
   tags = {
-    Name  = "${var.project_name}-vpc-ig"
+    Name  = "${replace("AWS::EC2::InternetGateway", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}-${count.index + 1}"
     Owner = var.owner
   }
 }
@@ -143,7 +137,7 @@ resource "aws_route_table" "public" {
   }
 
   tags = {
-    Name  = "${var.project_name}-public-route-table"
+    Name  = "${replace("AWS::EC2::RouteTable", "::", "-")}-${var.project_name}-${var.environment}-${local.aws_region_short}-public_${count.index + 1}"
     Owner = var.owner
   }
 }

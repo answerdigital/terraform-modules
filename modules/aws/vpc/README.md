@@ -49,7 +49,7 @@ traffic, this is good from an auditing perspective, however you will be charged 
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_azs"></a> [azs](#input\_azs) | This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your terraform project. | `list(string)` | `[]` | no |
+| <a name="input_azs"></a> [azs](#input\_azs) | This is a list that specifies all the Availability Zones that will have public and private subnets in it. Defaulting this value to an empty list selects of all the Availability Zones in the region you specify when defining the provider in your Terraform project. | `list(string)` | `[]` | no |
 | <a name="input_enable_dns_hostnames"></a> [enable\_dns\_hostnames](#input\_enable\_dns\_hostnames) | This allows AWS DNS hostname support to be switched on or off. | `bool` | `true` | no |
 | <a name="input_enable_dns_support"></a> [enable\_dns\_support](#input\_enable\_dns\_support) | This allows AWS DNS support to be switched on or off. | `bool` | `true` | no |
 | <a name="input_enable_vpc_flow_logs"></a> [enable\_vpc\_flow\_logs](#input\_enable\_vpc\_flow\_logs) | Whether to enable VPC Flow Logs for this VPC, this has cost but is considered a security risk without | `bool` | n/a | yes |
@@ -74,7 +74,7 @@ traffic, this is good from an auditing perspective, however you will be charged 
 
 # Example Usage
 
-Below are examples of how you would call the `vpc` module in your terraform code.
+Below are examples of how you would call the `vpc` module in your Terraform code.
 
 In this example we show two ways the module can be used;
 the first uses the module to create a public and private subnet on each Availability Zone in your defined region,
@@ -84,14 +84,14 @@ and `eu-west-3` respectively.
 ```hcl
 module "vpc_subnet" {
   source               = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v2"
-  owner                = "joe_blogs"
+  owner                = "joe.blogs@answerdigital.com"
   project_name         = "example_project_name"
   enable_vpc_flow_logs = true
 }
 
 module "vpc_subnet" {
   source                     = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v2"
-  owner                      = "joe_blogs"
+  owner                      = "joe.blogs@answerdigital.com"
   project_name               = "example_project_name"
   azs                        = ["eu-west-1", "eu-west-3"]
   num_public_subnets         = 1

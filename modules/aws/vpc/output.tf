@@ -1,6 +1,6 @@
 output "vpc_id" {
   value       = aws_vpc.this.id
-  description = "The ID of the VPC that has been created. This output is of type `list(string)`."
+  description = "The ID of the VPC that has been created. This output is of type `string`."
 }
 
 output "public_subnet_ids" {
@@ -15,5 +15,5 @@ output "private_subnet_ids" {
 
 output "az_zones" {
   value       = local.az_zones
-  description = "A list of the Availability Zones that have been used. This output is of type `string`."
+  description = "A list of the Availability Zones that have been used. This output is of type `list(string)`."
 }
