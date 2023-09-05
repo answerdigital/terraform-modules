@@ -21,7 +21,7 @@ jobs:
       all_modules: ${{ steps.output-all.outputs.all_modules }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Output all modules
@@ -52,7 +52,7 @@ jobs:
         working-directory: "${{ matrix.module }}"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup
         uses: hashicorp/setup-terraform@v2
@@ -83,7 +83,7 @@ jobs:
     if: ${{ github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
@@ -104,7 +104,7 @@ jobs:
     if: ${{ always() && github.event_name == 'pull_request' }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.head.ref }}
 
