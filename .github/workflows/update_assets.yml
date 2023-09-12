@@ -1,0 +1,54 @@
+# WARNING: This workflow operates in a privileged context and
+# in case of a pull_request, it checks out untrusted code.
+# Modify with caution.
+
+name: Update assets in PR
+
+on:
+  workflow_run:
+    workflows: Check Terraform
+    types: completed
+
+jobs:
+  update-assets:
+    name: Update Terraform Assets
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.event.workflow_run.head_repository.full_name }}
+          ref: ${{ github.event.workflow_run.head_branch }}
+
+      - name: Update README files
+        uses: terraform-docs/gh-actions@v1.0.0
+        with:
+          find-dir: modules
+          config-file: ${{ github.workspace }}/.terraform-docs.yml
+          output-method: inject
+
+      - name: Update dependabot.yml
+        run: |
+          cp .github/dependabot-base.yml .github/dependabot.yml
+          sed -i '1i # This file is auto-generated from dependabot-base.yml' .github/dependabot.yml
+
+          find modules -mindepth 2 -maxdepth 2 -type d | sort | while read MODULE; do
+            cat <<EOF >> .github/dependabot.yml
+            - package-ecosystem: terraform
+              directory: /$MODULE
+              schedule:
+                interval: daily
+              ignore:
+                - dependency-name: "*"
+                  update-types:
+                    - "version-update:semver-patch"
+                    - "version-update:semver-minor"
+          EOF
+          done
+
+      - uses: stefanzweifel/git-auto-commit-action@v4
+        continue-on-error: ${{ github.event.workflow_run.event == 'pull_request' }}
+        with:
+          commit_message: Update documentation & dependabot entries
+          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+          skip_checkout: true

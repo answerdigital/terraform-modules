@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: main
 
-# for Dependabot terraform-docs
-permissions:
-  contents: write
-
 jobs:
   determine-modules:
     name: "Determine Terraform Modules"
@@ -18,10 +14,9 @@ jobs:
       check_modules: ${{ github.event_name == 'pull_request'
         && steps.output-changed.outputs.changed_modules
         || steps.output-all.outputs.all_modules }}
-      all_modules: ${{ steps.output-all.outputs.all_modules }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 0
       - name: Output all modules
@@ -52,7 +47,7 @@ jobs:
         working-directory: "${{ matrix.module }}"
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Setup
         uses: hashicorp/setup-terraform@v2
@@ -75,64 +70,3 @@ jobs:
           github_token: ${{ github.token }}
           soft_fail: true
           working_directory: "${{ matrix.module }}"
-
-  terraform-docs:
-    name: "Update Terraform Docs"
-    runs-on: ubuntu-latest
-    needs: terraform-check
-    if: ${{ github.event_name == 'pull_request' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-
-      - name: Update README files
-        uses: terraform-docs/gh-actions@v1.0.0
-        with:
-          find-dir: "modules"
-          config-file: "${{ github.workspace }}/.terraform-docs.yml"
-          output-method: inject
-          git-push: "true"
-
-  dependabot:
-    name: Update Dependabot Entries
-    runs-on: ubuntu-latest
-    needs:
-      - determine-modules
-      - terraform-docs # to avoid race condition with both committing
-    if: ${{ always() && github.event_name == 'pull_request' }}
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          ref: ${{ github.event.pull_request.head.ref }}
-
-      - name: Update dependabot.yml
-        env:
-          MODULES: ${{ needs.determine-modules.outputs.all_modules }}
-        run: |
-          cp .github/dependabot-base.yml .github/dependabot.yml
-          sed -i '1i # This file is auto-generated from dependabot-base.yml' .github/dependabot.yml
-
-          jq -r '.[]' <<< "$MODULES" | sort | while read MODULE; do
-            cat <<EOF >> .github/dependabot.yml
-            - package-ecosystem: terraform
-              directory: /$MODULE
-              schedule:
-                interval: daily
-              ignore:
-                - dependency-name: "*"
-                  update-types:
-                    - "version-update:semver-patch"
-                    - "version-update:semver-minor"
-          EOF
-          done
-
-      - uses: stefanzweifel/git-auto-commit-action@v4
-        with:
-          commit_message: Update dependabot terraform entries
-          commit_author: "github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
-          file_pattern: .github/dependabot.yml
-          skip_checkout: true
-
