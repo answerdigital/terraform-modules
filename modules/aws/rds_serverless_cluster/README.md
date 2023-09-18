@@ -46,6 +46,7 @@ These secrets are also set as outputs of the module and can be referenced throug
 | <a name="input_database_engine"></a> [database\_engine](#input\_database\_engine) | This specifies the engine the database will use. This value has to be one of two options: aurora-mysql, aurora-postgresql | `string` | n/a | yes |
 | <a name="input_database_engine_version"></a> [database\_engine\_version](#input\_database\_engine\_version) | This is the version of the engine you would like. | `string` | n/a | yes |
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | The name assigned to the database. | `string` | n/a | yes |
+| <a name="input_database_performance_insights_enabled"></a> [database\_performance\_insights\_enabled](#input\_database\_performance\_insights\_enabled) | This is a boolean value determining if the rds instance have the performace insights enabled or not | `bool` | `false` | no |
 | <a name="input_database_security_groups"></a> [database\_security\_groups](#input\_database\_security\_groups) | This is a list of VPC security group ids to associate with the database cluster. | `list(string)` | `[]` | no |
 | <a name="input_database_serverlessv2_scaling_max_capacity"></a> [database\_serverlessv2\_scaling\_max\_capacity](#input\_database\_serverlessv2\_scaling\_max\_capacity) | This sets the maximum scaling capacity of the severless database in Aurora capacity units (ACU). | `number` | `1` | no |
 | <a name="input_database_serverlessv2_scaling_min_capacity"></a> [database\_serverlessv2\_scaling\_min\_capacity](#input\_database\_serverlessv2\_scaling\_min\_capacity) | This sets the minimum scaling capacity of the severless database in Auroracapacity units (ACU). | `number` | `0.5` | no |
@@ -55,7 +56,6 @@ These secrets are also set as outputs of the module and can be referenced throug
 | <a name="input_prevent_deletion"></a> [prevent\_deletion](#input\_prevent\_deletion) | n/a | `bool` | n/a | yes |
 | <a name="input_project_name"></a> [project\_name](#input\_project\_name) | This is used to label the resources of the module. | `string` | n/a | yes |
 | <a name="input_replicate_on_availability_zones"></a> [replicate\_on\_availability\_zones](#input\_replicate\_on\_availability\_zones) | A list of availability zones to replicate the database instance on, note this will duplicate the database. | `list(string)` | `[]` | no |
-| <a name="input_performance_insights_enabled"></a> [performance\_insights\_enabled](#input\_performance\_insights\_enabled) | A boolean value determining if the rds instance have the performace insights enabled or not. | `bool` | `false` | no |
 
 ## Outputs
 
