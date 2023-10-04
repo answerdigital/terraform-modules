@@ -1,3 +1,11 @@
+# create the groups ourselves if requested
+resource "aws_identitystore_group" "internal" {
+  for_each = toset(var.create_groups ? local.groups : [])
+
+  identity_store_id = local.instance_identity_store_id
+  display_name      = each.value
+}
+
 resource "aws_ssoadmin_permission_set" "this" {
   for_each = var.permission_sets
 
@@ -20,7 +28,7 @@ resource "aws_ssoadmin_account_assignment" "to_group" {
   instance_arn       = local.instance_arn
   permission_set_arn = aws_ssoadmin_permission_set.this[each.value.permission_set].arn
 
-  principal_id   = data.aws_identitystore_group.by_display_name[each.value.group].group_id
+  principal_id   = (var.create_groups ? aws_identitystore_group.internal : data.aws_identitystore_group.by_display_name)[each.value.group].group_id
   principal_type = "GROUP"
 
   target_id   = each.value.account_id

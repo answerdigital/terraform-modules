@@ -17,7 +17,8 @@ variable "permission_sets" {
 variable "assignments" {
   description = <<EOT
     List of assignments between group, account and permission set. The key of each object is the group
-    name that will be assigned the permissions. Ideally this group should be created via SCIM.
+    name that will be assigned the permissions. Ideally the organisation will use an external identity
+    provider and this group should be created via SCIM. To also create the groups, enable `create_groups`.
     
     • `account_ids`     - (Required) The AWS account IDs to apply the assignment.
     • `permission_sets` - (Required) The Permission Sets to be assigned to the group. These should
@@ -27,4 +28,10 @@ variable "assignments" {
     account_ids     = list(string)
     permission_sets = list(string)
   }))
+}
+
+variable "create_groups" {
+  description = "Whether the module should also create the groups."
+  type        = bool
+  default     = false
 }

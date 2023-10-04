@@ -24,5 +24,5 @@ locals {
     ]
   ]))
 
-  groups = toset(keys(var.assignments))
+  groups = keys(var.assignments)
 }
