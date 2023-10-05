@@ -3,7 +3,7 @@ variable "email_address" {
   type        = string
 
   validation {
-    condition     = can(match("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.email_address))
+    condition     = can(regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$", var.email_address))
     error_message = "Invalid email address format. Please provide a valid email address."
   }
 }
@@ -18,7 +18,7 @@ variable "base_domain_name" {
   type        = string
 
   validation {
-    condition     = can(match("^(?!(http://|https://)).+", var.base_domain_name))
+    condition     = !can(regex("^https?://", var.base_domain_name))
     error_message = "Base domain name cannot start with http:// or https://."
   }
 }
@@ -41,7 +41,7 @@ variable "aws_region" {
   default     = "eu-west-2"
 
   validation {
-    condition     = can(match("[a-z][a-z]-[a-z]+-[1-9]", var.aws_region))
+    condition     = can(regex("[a-z][a-z]-[a-z]+-[1-9]", var.aws_region))
     error_message = "Must be valid AWS Region names."
   }
 }
