@@ -42,7 +42,7 @@ updates:
           - "version-update:semver-patch"
           - "version-update:semver-minor"
   - package-ecosystem: terraform
-    directory: /modules/aws/sso-account-assignment
+    directory: /modules/aws/sso_account_assignment
     schedule:
       interval: daily
     ignore:
