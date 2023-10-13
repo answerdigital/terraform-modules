@@ -3,10 +3,19 @@ resource "aws_s3_bucket" "redirect" {
   bucket   = each.key
 }
 
-resource "aws_s3_bucket_acl" "redirect" {
+resource "aws_s3_bucket_ownership_controls" "redirect" {
   for_each = toset(concat(var.aliases, [for a in var.aliases : "www.${a}"]))
   bucket   = aws_s3_bucket.redirect[each.key].bucket
-  acl      = "private"
+  rule {
+    object_ownership = "ObjectWriter"
+  }
+}
+
+resource "aws_s3_bucket_acl" "redirect" {
+  for_each   = toset(concat(var.aliases, [for a in var.aliases : "www.${a}"]))
+  depends_on = [aws_s3_bucket_ownership_controls.redirect]
+  bucket     = aws_s3_bucket.redirect[each.key].bucket
+  acl        = "private"
 }
 
 resource "aws_s3_bucket_website_configuration" "redirect" {
