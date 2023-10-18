@@ -47,7 +47,7 @@ jobs:
           EOF
           done
 
-      - uses: stefanzweifel/git-auto-commit-action@v4
+      - uses: stefanzweifel/git-auto-commit-action@v5
         continue-on-error: ${{ github.event.workflow_run.event == 'pull_request' }}
         with:
           commit_message: Update documentation & dependabot entries
