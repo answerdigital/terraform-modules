@@ -57,15 +57,13 @@ module "iam_example" {
   }
 
   assignments = {
-    "SystemAdministrator" = {
-      account_ids = [
-        for account in aws_organizations_organization.example.accounts : account.id
-      ]
+    "SystemAdministrator" = [{
+      account_ids = aws_organizations_organization.example.accounts.*.id
 
       permission_sets = [
         "AdministratorAccess"
       ]
-    }
+    }]
   }
 }
 ```

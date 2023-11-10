@@ -24,10 +24,10 @@ variable "assignments" {
     • `permission_sets` - (Required) The Permission Sets to be assigned to the group. These should
                                      be a subset of the Permission Sets created above.
   EOT
-  type = map(object({
+  type = map(list(object({
     account_ids     = list(string)
     permission_sets = list(string)
-  }))
+  })))
 }
 
 variable "create_groups" {
