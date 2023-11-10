@@ -12,17 +12,19 @@ locals {
     ]
   ])
 
-  account_assignments = flatten(flatten([
-    for group, assignment in var.assignments : [
-      for permission_set in assignment.permission_sets : [
-        for account_id in assignment.account_ids : {
-          group          = group
-          account_id     = account_id
-          permission_set = permission_set
-        }
+  account_assignments = flatten(flatten(flatten([
+    for group, assignments in var.assignments : [
+      for assignment in assignments : [
+        for permission_set in assignment.permission_sets : [
+          for account_id in assignment.account_ids : {
+            group          = group
+            account_id     = account_id
+            permission_set = permission_set
+          }
+        ]
       ]
     ]
-  ]))
+  ])))
 
   groups = keys(var.assignments)
 }
