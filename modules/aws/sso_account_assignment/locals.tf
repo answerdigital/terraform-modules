@@ -12,6 +12,13 @@ locals {
     ]
   ])
 
+  inline_policies = [
+    for permission_set, options in var.permission_sets : {
+      permission_set = permission_set
+      inline_policy  = options.inline_policy
+    } if options.inline_policy != ""
+  ]
+
   account_assignments = flatten(flatten(flatten([
     for group, assignments in var.assignments : [
       for assignment in assignments : [
