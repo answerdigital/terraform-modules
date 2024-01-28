@@ -67,3 +67,28 @@ module "iam_example" {
   }
 }
 ```
+
+You can also provide inline IAM policies:
+
+```hcl
+data "aws_iam_policy_document" "example" {
+  statement {
+    actions = [
+      "s3:ListAllMyBuckets",
+      "s3:GetBucketLocation",
+    ]
+
+    resources = ["arn:aws:s3:::*"]
+  }
+}
+
+module "iam_example" {
+  # ...
+
+  permission_sets = {
+    S3BucketAccess = {
+      inline_policy = data.aws_iam_policy_document.example.json
+    }
+  }
+}
+```
