@@ -22,6 +22,14 @@ resource "aws_ssoadmin_managed_policy_attachment" "this" {
   permission_set_arn = aws_ssoadmin_permission_set.this[each.value.permission_set].arn
 }
 
+resource "aws_ssoadmin_permission_set_inline_policy" "this" {
+  for_each = { for p in local.inline_policies : p.permission_set => p }
+
+  inline_policy      = each.value.inline_policy
+  instance_arn       = local.instance_arn
+  permission_set_arn = aws_ssoadmin_permission_set.this[each.key].arn
+}
+
 resource "aws_ssoadmin_account_assignment" "to_group" {
   for_each = { for a in local.account_assignments : "${a.account_id}_${a.group}_${a.permission_set}" => a }
 
