@@ -22,7 +22,7 @@ jobs:
           ref: ${{ github.event.workflow_run.head_branch }}
 
       - name: Update README files
-        uses: terraform-docs/gh-actions@v1.0.0
+        uses: terraform-docs/gh-actions@v1.1.0
         with:
           find-dir: modules
           config-file: ${{ github.workspace }}/.terraform-docs.yml
