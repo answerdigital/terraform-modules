@@ -28,6 +28,9 @@ jobs:
           config-file: ${{ github.workspace }}/.terraform-docs.yml
           output-method: inject
 
+      - name: Reset .git owner
+        run: "sudo chown -R $USER: .git"
+
       - name: Update dependabot.yml
         run: |
           cp .github/dependabot-base.yml .github/dependabot.yml
