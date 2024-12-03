@@ -1,4 +1,4 @@
-data "cloudflare_zones" "dns_zone_lookup" {
+data "cloudflare_zones" "lookup" {
   count = var.create_zone ? 0 : 1
 
   filter {
@@ -7,13 +7,13 @@ data "cloudflare_zones" "dns_zone_lookup" {
   }
 }
 
-resource "cloudflare_zone" "dns_zone" {
+resource "cloudflare_zone" "dns" {
   count      = var.create_zone ? 1 : 0
   zone       = var.domain
   account_id = var.account_id
 }
 
-resource "cloudflare_record" "dns_record" {
+resource "cloudflare_record" "dns" {
   for_each = var.records
 
   zone_id  = local.zone_id
