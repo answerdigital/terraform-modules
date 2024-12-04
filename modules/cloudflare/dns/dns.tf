@@ -51,3 +51,15 @@ resource "cloudflare_record" "caa" {
     value = each.value
   }
 }
+
+resource "cloudflare_record" "caa_iodef" {
+  zone_id  = local.zone_id
+  name     = "@"
+  type     = "CAA"
+
+  data {
+    flags = "0"
+    tag   = "iodef"
+    value = "mailto:${local.security_contact}"
+  }
+}
