@@ -1,15 +1,15 @@
 data "cloudflare_zones" "lookup" {
-  count = var.create_zone ? 0 : 1
+  for_each = toset(var.create_zone ? [] : [var.domain])
 
   filter {
-    name       = var.domain
+    name       = each.value
     account_id = var.account_id
   }
 }
 
 resource "cloudflare_zone" "dns" {
-  count      = var.create_zone ? 1 : 0
-  zone       = var.domain
+  for_each   = toset(var.create_zone ? [var.domain] : [])
+  zone       = each.value
   account_id = var.account_id
 }
 
