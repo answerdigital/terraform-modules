@@ -43,6 +43,7 @@ traffic, this is good from an auditing perspective, however you will be charged 
 | [aws_vpc.vpc](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/vpc) | resource |
 | [random_uuid.log_group_guid_identifier](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/uuid) | resource |
 | [aws_availability_zones.available](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/availability_zones) | data source |
+| [aws_region.current](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/data-sources/region) | data source |
 
 ## Inputs
 
