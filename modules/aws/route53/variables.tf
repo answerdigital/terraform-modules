@@ -106,3 +106,99 @@ variable "caa_issuers" {
     "amazon.com",
   ]
 }
+
+variable "registrar_contacts" {
+  description = <<EOT
+    Contact information for a registered domain. The individual entries can be
+    provided for each contact, which will override the entry for the default contact.
+
+    • `registrant` - (Optional) The legal owner of the domain.
+    • `admin`      - (Optional) The person responsible for administering the domain.
+    • `billing`    - (Optional) The person responsible for domain billing.
+    • `tech`       - (Optional) The person responsible for domain technical settings.
+    • `default`    - (Optional) A default contact to be used in place of others.
+  EOT
+  type = object({
+    registrant = optional(object({
+      email             = optional(string)
+      first_name        = optional(string)
+      last_name         = optional(string)
+      contact_type      = optional(string)
+      phone_number      = optional(string)
+      fax               = optional(string)
+      organization_name = optional(string)
+      address_line_1    = optional(string)
+      address_line_2    = optional(string)
+      city              = optional(string)
+      state             = optional(string)
+      zip_code          = optional(string)
+      country_code      = optional(string)
+      extra_params      = optional(map(string))
+    }))
+    admin = optional(object({
+      email             = optional(string)
+      first_name        = optional(string)
+      last_name         = optional(string)
+      contact_type      = optional(string)
+      phone_number      = optional(string)
+      fax               = optional(string)
+      organization_name = optional(string)
+      address_line_1    = optional(string)
+      address_line_2    = optional(string)
+      city              = optional(string)
+      state             = optional(string)
+      zip_code          = optional(string)
+      country_code      = optional(string)
+      extra_params      = optional(map(string))
+    }))
+    billing = optional(object({
+      email             = optional(string)
+      first_name        = optional(string)
+      last_name         = optional(string)
+      contact_type      = optional(string)
+      phone_number      = optional(string)
+      fax               = optional(string)
+      organization_name = optional(string)
+      address_line_1    = optional(string)
+      address_line_2    = optional(string)
+      city              = optional(string)
+      state             = optional(string)
+      zip_code          = optional(string)
+      country_code      = optional(string)
+      extra_params      = optional(map(string))
+    }))
+    tech = optional(object({
+      email             = optional(string)
+      first_name        = optional(string)
+      last_name         = optional(string)
+      contact_type      = optional(string)
+      phone_number      = optional(string)
+      fax               = optional(string)
+      organization_name = optional(string)
+      address_line_1    = optional(string)
+      address_line_2    = optional(string)
+      city              = optional(string)
+      state             = optional(string)
+      zip_code          = optional(string)
+      country_code      = optional(string)
+      extra_params      = optional(map(string))
+    }))
+    default = optional(object({
+      email             = optional(string)
+      first_name        = optional(string)
+      last_name         = optional(string)
+      contact_type      = optional(string)
+      phone_number      = optional(string)
+      fax               = optional(string)
+      organization_name = optional(string)
+      address_line_1    = optional(string)
+      address_line_2    = optional(string)
+      city              = optional(string)
+      state             = optional(string)
+      zip_code          = optional(string)
+      country_code      = optional(string)
+      extra_params      = optional(map(string))
+    }))
+  })
+  default = {}
+}
