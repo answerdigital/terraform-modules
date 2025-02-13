@@ -48,7 +48,7 @@ resource "cloudflare_dns_record" "caa" {
   type     = "CAA"
 
   data = {
-    flags = "0"
+    flags = 0
     tag   = "issue"
     value = each.value
   }
