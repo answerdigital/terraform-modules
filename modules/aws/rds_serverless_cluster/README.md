@@ -76,7 +76,7 @@ Below is an example of how you would call the `rds_serverless_cluster` module in
 
 ```hcl
 module "rds_cluster_setup" {
-  source                     = "github.com/answerdigital/terraform-modules//modules/aws/rds_serverless_cluster?ref=v4"
+  source                     = "github.com/answerdigital/terraform-modules//modules/aws/rds_serverless_cluster?ref=v5"
   project_name               = var.project_name
   owner                      = var.owner
   database_availability_zone = module.vpc_subnet_setup.az_zones[0]

@@ -69,7 +69,7 @@ locals {
 }
 
 module "vpc_subnet" {
-  source               = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v4"
+  source               = "github.com/answerdigital/terraform-modules//modules/aws/vpc?ref=v5"
   owner                = local.owner
   project_name         = local.project
   enable_vpc_flow_logs = true
@@ -97,7 +97,7 @@ data "aws_availability_zones" "available" {
 }
 
 module "ec2_instance_setup" {
-  source                 = "github.com/answerdigital/terraform-modules//modules/aws/ec2?ref=v4"
+  source                 = "github.com/answerdigital/terraform-modules//modules/aws/ec2?ref=v5"
   project_name           = local.project
   owner                  = local.owner
   ami_id                 = data.aws_ami.ec2_ami.id

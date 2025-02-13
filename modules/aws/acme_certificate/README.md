@@ -78,7 +78,7 @@ data "aws_route53_zone" "test_com" {
 }
 
 module "test_project_test_com" {
-  source             = "github.com/answerdigital/terraform-modules//modules/aws/acme_certificate?ref=v4"
+  source             = "github.com/answerdigital/terraform-modules//modules/aws/acme_certificate?ref=v5"
   email_address      = local.dns_email_address
   aws_hosted_zone_id = data.aws_route53_zone.test_com.zone_id
   base_domain_name   = local.base_domain_name

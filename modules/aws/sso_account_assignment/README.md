@@ -49,7 +49,7 @@ resource "aws_organizations_organization" "example" {
 }
 
 module "iam_example" {
-  source = "github.com/answerdigital/terraform-modules//modules/aws/sso_account_assignment?ref=v4"
+  source = "github.com/answerdigital/terraform-modules//modules/aws/sso_account_assignment?ref=v5"
 
   permission_sets = {
     AdministratorAccess = {
