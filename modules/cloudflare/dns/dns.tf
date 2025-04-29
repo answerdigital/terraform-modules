@@ -18,7 +18,7 @@ resource "cloudflare_dns_record" "dns" {
   for_each = var.records
 
   zone_id  = local.zone_id
-  name     = each.value.name
+  name     = each.value.name != null ? "${each.value.name}.${var.domain}" : var.domain
   ttl      = each.value.ttl != null ? each.value.ttl : var.default_ttl
   type     = each.value.type
   content  = each.value.content
@@ -33,7 +33,7 @@ resource "cloudflare_dns_record" "apex_txt" {
   ]))
 
   zone_id = local.zone_id
-  name    = "@"
+  name    = var.domain
   ttl     = var.default_ttl
   type    = "TXT"
   content = each.value
@@ -43,7 +43,7 @@ resource "cloudflare_dns_record" "apex_txt" {
 resource "cloudflare_dns_record" "caa" {
   for_each = toset(var.caa_issuers)
   zone_id  = local.zone_id
-  name     = "@"
+  name     = var.domain
   ttl      = var.default_ttl
   type     = "CAA"
 
