@@ -18,7 +18,7 @@ variable "records" {
   description = <<EOT
     List of DNS records for the domain.
 
-    • `name`     - (Optional) The name of the record. Defaults to "@" (i.e. an apex record).
+    • `name`     - (Optional) The sudomain name (without the domain suffix). Defaults to empty (i.e. an apex record).
     • `ttl`      - (Optional) The TTL of the record. Defaults to `default_ttl`.
     • `type`     - (Required) The record type.
     • `content`  - (Required) The content of the record.
@@ -26,7 +26,7 @@ variable "records" {
     • `proxied`  - (Optional) Whether to use Cloudflare’s origin protection. Defaults to `false`.
   EOT
   type = map(object({
-    name     = optional(string, "@")
+    name     = optional(string)
     ttl      = optional(number)
     type     = string
     content  = string
